@@ -2,7 +2,7 @@
 
 ## 在全新 NixOS 上使用
 
-当前仅提供 `horon-vm`：**x86_64、NixOS 26.05、UEFI/systemd-boot**，应用后使用 Plasma 6。物理机和 macOS 的独立配置尚未提供。
+当前仅提供 `horon-vm`：**x86_64、UEFI/systemd-boot**，应用后使用 nixos-unstable 和 Plasma 6，具体版本由 `flake.lock` 固定。物理机和 macOS 的独立配置尚未提供。
 
 ### 1. 克隆到普通用户目录
 
@@ -31,7 +31,7 @@ cp /etc/nixos/hardware-configuration.nix \
 - `home/common/git.nix` 的 Git 姓名和邮箱。
 - `hosts/x86_64-linux/horon-vm/default.nix` 的引导设置应匹配本机；实际 hostname 默认是 `nixos`，配置入口仍叫 `horon-vm`。
 
-本流程针对新装的 26.05；不要为套用配置随意更改已有系统的 `system.stateVersion` 或 `home.stateVersion`。若家目录已有同名应用配置，遇到 HM 文件冲突时先保留并整理原文件，不强制覆盖。
+当前两处 `stateVersion` 为 `26.05`，不要因切换 unstable 或套用配置随意修改已有系统的 `system.stateVersion` 或 `home.stateVersion`。若家目录已有同名应用配置，遇到 HM 文件冲突时先保留并整理原文件，不强制覆盖。
 
 ### 3. 应用配置
 

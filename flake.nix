@@ -2,10 +2,10 @@
   description = "Horon's NixOS flake";
 
   inputs = {
-    # NixOS 官方软件源，这里使用 nixos-26.05 分支
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    # 跟踪 nixos-unstable，具体版本由 flake.lock 锁定。
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager/release-26.05";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

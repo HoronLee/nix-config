@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-这是 HoronLee 的个人 NixOS 配置仓库，以 Nix/Flakes 和 Home Manager 声明系统、软件和用户环境。当前唯一输出为 `horon-vm`（`x86_64-linux`、NixOS 26.05、Plasma 6）；物理机、服务器与 Darwin 尚未接入。
+这是 HoronLee 的个人 NixOS 配置仓库，以 Nix/Flakes 和 Home Manager 声明系统、软件和用户环境。当前唯一输出为 `horon-vm`（`x86_64-linux`、nixos-unstable、Plasma 6）；物理机、服务器与 Darwin 尚未接入。
 
 ## Architecture & Data Flow
 
@@ -45,7 +45,7 @@ sudo nixos-rebuild switch --flake .#horon-vm
 
 ## Important Files
 
-- `flake.nix` / `flake.lock`：Nixpkgs `nixos-26.05`、HM `release-26.05`，HM `follows` Nixpkgs；锁文件需提交，不为日常配置改动更新。
+- `flake.nix` / `flake.lock`：Nixpkgs `nixos-unstable`、HM `master`，HM `follows` Nixpkgs；具体版本由锁文件固定，需提交锁文件，不为日常配置改动更新。两处 `stateVersion` 保持 `26.05`。
 - `hosts/x86_64-linux/horon-vm/hardware-configuration.nix`：QEMU、挂载和 swap 的生成配置；引导器和系统 `stateVersion` 在同目录 `default.nix`。
 - `modules/nixos/user.nix`：账户与公钥；修改用户名需同步 flake 中的 `username`。`home/common/git.nix` 单独管理 Git 身份。
 - `modules/nixos/ssh.nix`：禁止 root 直登，普通用户暂保留密码认证；不得擅自改变认证策略。
