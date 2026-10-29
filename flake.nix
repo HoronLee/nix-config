@@ -10,19 +10,20 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, ... }: {
-    nixosConfigurations = {
-      horon-vm = nixpkgs.lib.nixosSystem {
-        modules = [
-          ./configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.horonlee = ./home.nix;
-          }
-        ];
+  outputs = { nixpkgs, home-manager, ... }:
+    let
+      mkNixosHost = import ./lib/mkNixosHost.nix {
+        inherit nixpkgs home-manager;
+      };
+    in
+    {
+      nixosConfigurations = {
+        horon-vm = mkNixosHost {
+          system = "x86_64-linux";
+          hostModule = ./hosts/x86_64-linux/horon-vm;
+          username = "horonlee";
+          homeModule = ./home;
+        };
       };
     };
-  };
 }
