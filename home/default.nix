@@ -3,6 +3,8 @@
   imports = [
     ./common/git.nix
     ./common/shell.nix
+    ./common/yazi.nix
+    ./common/neovim.nix
     ./common/terminals
     ./linux
   ];

@@ -1,9 +1,8 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
-    # 系统信息与终端文件管理器
+    # 系统信息
     fastfetch
-    yazi
     # neofetch  # 已被 fastfetch 替代
     # nnn       # 使用 yazi
 

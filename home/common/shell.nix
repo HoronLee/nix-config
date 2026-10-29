@@ -26,8 +26,5 @@
     ll = "eza -lh";
     la = "eza -lah";
     lt = "eza --tree --level=2";
-
-    # 别名暂不启用。
-    # k = "kubectl";
   };
 }

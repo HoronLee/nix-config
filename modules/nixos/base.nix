@@ -37,10 +37,10 @@
   environment.systemPackages = with pkgs; [
     # Flakes 通过 git 命令拉取其依赖项，所以必须先安装好 git
     git
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    neovim
     wget
   ];
  
-  # 将默认编辑器设置为 vim
-  environment.variables.EDITOR = "vim";
+  # 系统账户使用基础 Neovim，个人配置由 Home Manager 管理。
+  environment.variables.EDITOR = "nvim";
 }

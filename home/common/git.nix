@@ -7,4 +7,5 @@
       email = "horonlee@foxmail.com";
     };
   };
+  programs.lazygit.enable = true;
 }
