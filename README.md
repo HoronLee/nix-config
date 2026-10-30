@@ -58,6 +58,8 @@ sudo nixos-rebuild switch --flake .#horon-vm
 - `modules/nixos/desktop.nix`：保留音频、打印与 Firefox；`niri.nix` 管 niri、greetd/tuigreet，portal 与 GNOME Keyring 复用 NixOS niri 模块。
 - `home/linux/niri/config.kdl`：主入口仅 include `cfg/` 中的 input、layout、autostart、rules、keybinds、misc；HM 部署整棵配置树并固定到 store，不使用可写的仓库外链接。窗口操作沿用基线，仅调整明确选择的键位与输入习惯。
 - `home/linux/niri/cfg/rules.kdl`：通用窗口规则设置 `draw-border-with-background false`，只绘制焦点环和边框外圈，避免底色遮挡应用的透明背景；不强制应用透明，也无需逐个枚举终端。应用特例放在通用规则之后。
+- `home/common/terminals/`：仅安装 Ghostty 和 Kitty，已移除 Alacritty 声明，`Super+T` 使用 Kitty。`ghostty.nix` 管字体、透明度、目录继承、标签/分窗快捷键及 90 ms 光标拖尾动画。不声明 Noctalia 终端模板、不初始化主题文件。
+- 当前 `horon-vm` 的 virgl 最高提供 OpenGL 4.2，低于 Ghostty 1.3.1 所需的 4.3；退出发生在 shader 编译之前，因此保留 shader 和动画设置。Ghostty 保持安装供后续使用，不加入软件渲染或版本伪装设置。
 - `home/linux/niri/default.nix`：Linux 的 Kitty 隐藏窗口装饰，其他应用与 macOS 不受影响；应用后需重新打开 Kitty。`home/linux/packages.nix` 安装 Edge 和 Nautilus，供快捷键直接调用，Firefox 暂保留。
 - `home/linux/noctalia/config.toml`：启用内置 Polkit agent、指定壁纸和中央中文时钟。锁屏跟随桌面壁纸，保留默认模糊与遮罩。未开启闲置自动锁屏/熄屏，保留 Noctalia 默认睡前锁屏。
 - `assets/wallpapers/nixos-1.png`：由 HM 链接到 `~/Pictures/Wallpapers/nixos-1.png`，不依赖原机器的图片目录。
