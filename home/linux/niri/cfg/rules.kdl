@@ -1,0 +1,16 @@
+// 通用窗口外观：保留焦点外圈，避免底色遮挡透明内容。
+window-rule {
+    draw-border-with-background false
+}
+
+// Upstream workaround for WezTerm's initial configure bug.
+window-rule {
+    match app-id=r#"^org\.wezfurlong\.wezterm$"#
+    default-column-width {}
+}
+
+// Upstream Firefox picture-in-picture behavior, including Flatpak Firefox.
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}

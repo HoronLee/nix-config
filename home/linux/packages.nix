@@ -1,6 +1,12 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
+    # 文件管理器
+    nautilus
+
+    # 浏览器。
+    microsoft-edge
+
     # 系统信息
     fastfetch
     # neofetch  # 已被 fastfetch 替代

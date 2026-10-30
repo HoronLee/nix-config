@@ -56,8 +56,10 @@ sudo nixos-rebuild switch --flake .#horon-vm
 ## 桌面与输入法配置
 
 - `modules/nixos/desktop.nix`：保留音频、打印与 Firefox；`niri.nix` 管 niri、greetd/tuigreet，portal 与 GNOME Keyring 复用 NixOS niri 模块。
-- `home/linux/niri/config.kdl`：基于 niri 26.04 默认配置，仅适配 Noctalia 自启和必要快捷键；通过 HM 部署原生 KDL，不使用可写的仓库外链接。
-- `home/linux/noctalia/config.toml`：仅启用内置 Polkit agent 并指定壁纸；锁屏跟随桌面壁纸，保留默认模糊与遮罩。未开启闲置自动锁屏/熄屏，保留 Noctalia 默认睡前锁屏。
+- `home/linux/niri/config.kdl`：主入口仅 include `cfg/` 中的 input、layout、autostart、rules、keybinds、misc；HM 部署整棵配置树并固定到 store，不使用可写的仓库外链接。窗口操作沿用基线，仅调整明确选择的键位与输入习惯。
+- `home/linux/niri/cfg/rules.kdl`：通用窗口规则设置 `draw-border-with-background false`，只绘制焦点环和边框外圈，避免底色遮挡应用的透明背景；不强制应用透明，也无需逐个枚举终端。应用特例放在通用规则之后。
+- `home/linux/niri/default.nix`：Linux 的 Kitty 隐藏窗口装饰，其他应用与 macOS 不受影响；应用后需重新打开 Kitty。`home/linux/packages.nix` 安装 Edge 和 Nautilus，供快捷键直接调用，Firefox 暂保留。
+- `home/linux/noctalia/config.toml`：启用内置 Polkit agent、指定壁纸和中央中文时钟。锁屏跟随桌面壁纸，保留默认模糊与遮罩。未开启闲置自动锁屏/熄屏，保留 Noctalia 默认睡前锁屏。
 - `assets/wallpapers/nixos-1.png`：由 HM 链接到 `~/Pictures/Wallpapers/nixos-1.png`，不依赖原机器的图片目录。
 - `modules/nixos/input-method.nix`：Fcitx5 Wayland frontend、keyboard-us + Rime、`Ctrl+Space` 切换。只安装万象中文方案，不包含日韩引擎。
 - `home/linux/rime/*.custom.yaml`：标准全拼、en/eng 与 in/ing 模糊音、每页 6 候选。用户词库、学习数据和编译缓存保持应用可写，不入仓库。
@@ -67,16 +69,27 @@ sudo nixos-rebuild switch --flake .#horon-vm
 
 | 按键 | 动作 |
 |---|---|
-| `Super+T` | Alacritty |
-| `Super+D` | Noctalia 启动器 |
+| `Super+T` | Kitty |
+| `Alt+Space` | Noctalia 启动器（原 `Super+D` 已注释） |
 | `Super+V` | 剪贴板历史 |
 | `Super+Shift+V` | 切换窗口浮动 |
 | `Super+Ctrl+V` | 切换平铺/浮动焦点 |
 | `Super+Alt+L` | 锁屏 |
 | `Super+Shift+,` | Noctalia 设置 |
+| `Super+Tab` | 当前与最近工作区切换 |
+| `Super+S` | 控制中心 |
+| `Super+Shift+Q` | 会话菜单 |
+| `Super+Shift+Enter` | 壁纸选择器 |
+| `Super+B` | Microsoft Edge |
+| `Super+E` | Nautilus 文件管理器 |
+| `Super+Shift+/` | 快捷键帮助 |
 | `Super+Q` | 关闭窗口 |
-| `Super+Shift+E` | 退出 niri（确认后） |
+| `Ctrl+Alt+Delete` | 退出 niri（原 `Super+Shift+E` 已注释） |
 | `Print` | niri 内置截图 |
+
+`Super+V` 设置了 `allow-inhibiting=false`，远程桌面等应用请求接管快捷键时仍可打开本地剪贴板；如需把该组合传给远端，再取消该属性。媒体键、截图和其他基线键位保持不变；`Alt+Tab` 继续使用 niri 内置最近窗口切换器。
+
+`cfg/input.kdl` 启用鼠标焦点跟随及重复选择工作区时返回上一工作区。时钟格式为 `{:%Y年%-m月%-d日 %p %I:%M %A}`，星期与上午/下午取决于 `LC_TIME`，当前为中文；小时保留两位前导零。
 
 ### 修改与验证
 
