@@ -1,0 +1,13 @@
+tt.*
+.tests
+doc/tags
+debug
+.repro
+foo.*
+*.log
+data
+.vscode/
+assets/
+
+# Neovim 拼写词典的自动生成二进制文件
+spell/*.spl

@@ -1,8 +1,98 @@
+# 桌面 Shell
 [shell]
+font_family = "Maple Mono NF CN"
+panel_anchor_bar = "default"
 polkit_agent = true
+screen_time_enabled = true
+telemetry_enabled = true
+
+# Dock
+[dock]
+enabled = true
+launcher_position = "start"
+position = "left"
+reserve_space = false
+show_dots = true
+smart_auto_hide = true
+
+# 日出日落调度
+[location]
+auto_locate = true
+
+[nightlight]
+enabled = true
+temperature_day = 6700
+
+# 自动亮暗与壁纸配色
+[theme]
+builtin = "Noctalia"
+community_palette = "Catppuccin Mocha Blue"
+mode = "auto"
+source = "wallpaper"
+wallpaper_scheme = "m3-content"
+
+# 模板选择独立于应用安装声明。
+[theme.templates]
+enable_builtin_templates = true
+enable_community_templates = true
+builtin_ids = ["btop", "ghostty", "kitty", "niri"]
+community_ids = [
+  "telegram",
+  "zed",
+  "fastfetch",
+  "zellij",
+  "fcitx5",
+  "fzf",
+  "herdr",
+  "lazygit",
+]
+
+# 壁纸
+[wallpaper]
+directory = "~/Pictures/Wallpapers"
 
 [wallpaper.default]
 path = "~/Pictures/Wallpapers/nixos-1.png"
 
+# 时钟
 [widget.clock]
 format = "{:%Y年%-m月%-d日 %p %I:%M %A}"
+
+# 锁屏小组件及 Virtual-1 布局
+[lockscreen_widgets]
+enabled = false
+schema_version = 2
+widget_order = ["lockscreen-login-box@Virtual-1"]
+
+[lockscreen_widgets.grid]
+cell_size = 16
+major_interval = 4
+visible = true
+
+[lockscreen_widgets.widget."lockscreen-login-box@Virtual-1"]
+box_height = 196.0
+box_width = 810.0
+cx = 640.0
+cy = 618.0
+output = "Virtual-1"
+placement_height = 800.0
+placement_width = 1280.0
+rotation = 0.0
+type = "login_box"
+
+[lockscreen_widgets.widget."lockscreen-login-box@Virtual-1".settings]
+background_color = "surface_container"
+background_opacity = 0.88
+background_radius = 12.0
+center_password_text = false
+input_opacity = 1.0
+input_radius = 6.0
+layout = "regular"
+show_caps_lock = true
+show_keyboard_layout = true
+show_login_button = true
+show_media = true
+show_password_reveal = true
+show_session_buttons = true
+show_unlock_hint = true
+show_weather = true

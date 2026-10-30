@@ -31,7 +31,7 @@
     neovim
     wget
   ];
- 
+
   # 系统账户使用基础 Neovim，个人配置由 Home Manager 管理。
   environment.variables.EDITOR = "nvim";
 

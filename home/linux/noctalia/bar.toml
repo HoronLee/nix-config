@@ -1,0 +1,26 @@
+# 状态栏小组件按区域排列。
+[bar.default]
+start = ["launcher", "wallpaper", "workspaces", "taskbar"]
+center = ["clock"]
+end = [
+  "media",
+  "tray",
+  "clipboard",
+  "notifications",
+  "bluetooth",
+  "volume",
+  "control-center",
+  "group:g1",
+  "session",
+]
+
+# 资源监控共用胶囊背景
+[[bar.default.capsule_group]]
+id = "g1"
+members = ["cpu", "ram", "network_tx", "network_rx"]
+enabled = true
+fill = "surface_container"
+opacity = 1.0
+padding = 6.0
+accordion = false
+accordion_direction = "end"

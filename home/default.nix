@@ -1,6 +1,8 @@
 { ... }:
 {
   imports = [
+    ./common/dev.nix
+    ./common/packages.nix
     ./common/git.nix
     ./common/shell.nix
     ./common/ssh.nix

@@ -72,4 +72,3 @@ sudo nixos-rebuild switch --flake .#horon-vm
 - https://github.com/ryan4yin/nix-config
 - https://tangled.org/pluie.me/flake
 - https://codeberg.org/ity/tablet
-

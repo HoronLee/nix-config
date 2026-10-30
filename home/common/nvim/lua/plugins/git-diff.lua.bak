@@ -1,0 +1,22 @@
+return {
+  {
+    "sindrets/diffview.nvim",
+    keys = {
+      {
+        "<leader>gv",
+        "<cmd>DiffviewOpen<cr>",
+        desc = "Diffview Open",
+      },
+      {
+        "<leader>gV",
+        "<cmd>DiffviewFileHistory %<cr>",
+        desc = "File Git History",
+      },
+      {
+        "<leader>gq",
+        "<cmd>DiffviewClose<cr>",
+        desc = "Diffview Close",
+      },
+    },
+  },
+}

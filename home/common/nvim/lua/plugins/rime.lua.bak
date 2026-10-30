@@ -1,0 +1,7 @@
+return {
+  "HoronLee/rime.nvim",
+  main = "rime_toggle",
+  lazy = false,
+  cond = vim.fn.has("linux") == 1,
+  opts = { enabled = true },
+}

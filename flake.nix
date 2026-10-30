@@ -10,7 +10,8 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs =
+    { nixpkgs, home-manager, ... }:
     let
       mkNixosHost = import ./lib/mkNixosHost.nix {
         inherit nixpkgs home-manager;

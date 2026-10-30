@@ -1,5 +1,10 @@
 { nixpkgs, home-manager }:
-{ system, hostModule, username, homeModule }:
+{
+  system,
+  hostModule,
+  username,
+  homeModule,
+}:
 nixpkgs.lib.nixosSystem {
   inherit system;
   modules = [
