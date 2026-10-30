@@ -34,4 +34,7 @@
  
   # 系统账户使用基础 Neovim，个人配置由 Home Manager 管理。
   environment.variables.EDITOR = "nvim";
+
+  # 应用启动器为 Terminal=true 的桌面项选择终端；显式指定 kitty。
+  environment.sessionVariables.TERMINAL = "kitty";
 }
