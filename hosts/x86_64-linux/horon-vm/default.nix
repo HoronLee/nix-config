@@ -5,7 +5,9 @@
     ../../../modules/nixos/base.nix
     ../../../modules/nixos/user.nix
     ../../../modules/nixos/ssh.nix
-    ../../../modules/nixos/plasma.nix
+    ../../../modules/nixos/desktop.nix
+    ../../../modules/nixos/niri.nix
+    ../../../modules/nixos/input-method.nix
   ];
 
   # Use the systemd-boot EFI boot loader.

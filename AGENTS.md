@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-这是 HoronLee 的个人 NixOS 配置仓库，以 Nix/Flakes 和 Home Manager 声明系统、软件和用户环境。当前唯一输出为 `horon-vm`（`x86_64-linux`、nixos-unstable、Plasma 6）；物理机、服务器与 Darwin 尚未接入。
+这是 HoronLee 的个人 NixOS 配置仓库，以 Nix/Flakes 和 Home Manager 声明系统、软件和用户环境。当前唯一输出为 `horon-vm`（`x86_64-linux`、nixos-unstable、niri + Noctalia、greetd/tuigreet）；物理机、服务器与 Darwin 尚未接入。
 
 ## Architecture & Data Flow
 
@@ -14,9 +14,9 @@
 ## Key Directories
 
 - `hosts/<platform>/<host>/`：主机装配入口和生成的硬件配置，按平台分组；不提前创建空主机。
-- `modules/nixos/`：`base.nix` 管 Nix、网络、区域和基础编辑器；`user.nix` 管账户；`ssh.nix` 管 sshd；`plasma.nix` 管桌面、音频和打印。
+- `modules/nixos/`：`base.nix` 管 Nix、网络、区域和基础编辑器；`user.nix` 管账户；`ssh.nix` 管 sshd；`desktop.nix` 管音频、打印与 Firefox；`niri.nix` 管桌面会话和登录；`input-method.nix` 管 Fcitx5-Rime。
 - `home/common/`：Git/Lazygit、Shell/Starship、SSH 客户端、Yazi、Neovim、终端；Kitty 独立在 `terminals/kitty.nix`。
-- `home/linux/`：用户工具清单、字体发现、Yazi 剪贴板依赖与 SSH agent 服务。
+- `home/linux/`：用户工具、字体发现、Yazi 剪贴板依赖、SSH agent，以及 niri KDL、Noctalia TOML、Rime 用户补丁；`assets/wallpapers/` 保存固定桌面与锁屏背景。
 
 ## Development Commands
 
@@ -50,6 +50,8 @@ sudo nixos-rebuild switch --flake .#horon-vm
 - `modules/nixos/user.nix`：账户与公钥；修改用户名需同步 flake 中的 `username`。`home/common/git.nix` 单独管理 Git 身份。
 - `modules/nixos/ssh.nix`：禁止 root 直登，普通用户暂保留密码认证；不得擅自改变认证策略。
 - `home/common/ssh.nix` / `home/linux/ssh-agent.nix`：按需加载密钥与 agent。私钥只放用户 `~/.ssh/`，不经 Nix 路径、`home.file` 或 Git 进入 Nix store。
+- `home/linux/rime/default.nix`：固定万象语法模型 URL 与 hash；LTS 同名文件可能被上游覆盖，校验失败需明确更新。只部署静态补丁和模型，用户词库、缓存、凭据不得入 Git/store。
+- Noctalia 负责 Polkit 提示、通知、剪贴板历史和锁屏；不叠加 KDE agent 或第二份 Noctalia 启动服务。当前无 idle 定时规则；GUI 覆盖层不自动进入声明。
 
 ## Runtime/Tooling Preferences
 

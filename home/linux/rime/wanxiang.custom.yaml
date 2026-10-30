@@ -1,0 +1,6 @@
+patch:
+  speller/algebra:
+    __patch:
+      - wanxiang_algebra:/模糊音_en_eng
+      - wanxiang_algebra:/模糊音_in_ing
+      - wanxiang_algebra:/base/全拼
