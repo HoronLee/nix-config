@@ -14,7 +14,7 @@
 ## Key Directories
 
 - `hosts/<platform>/<host>/`：主机装配入口和生成的硬件配置，按平台分组；不提前创建空主机。
-- `modules/nixos/`：`base.nix` 管 Nix、网络、区域和基础编辑器；`user.nix` 管账户；`ssh.nix` 管 sshd；`desktop.nix` 管音频、打印与 Firefox；`niri.nix` 管桌面会话和登录；`input-method.nix` 管 Fcitx5-Rime。
+- `modules/nixos/`：`base.nix` 管网络、区域和基础编辑器；`nix.nix` 管 Nix 实验特性、构建 UID、二进制缓存与每周 GC；`user.nix` 管账户；`ssh.nix` 管 sshd；`desktop.nix` 管音频、打印与 Firefox；`niri.nix` 管桌面会话和登录；`input-method.nix` 管 Fcitx5-Rime。
 - `home/common/`：Git/Lazygit、Shell/Starship、SSH 客户端、Yazi、Neovim、终端；Kitty 独立在 `terminals/kitty.nix`。
 - `home/linux/`：用户工具、字体发现、Yazi 剪贴板依赖、SSH agent，以及 niri KDL、Noctalia TOML、Rime 用户补丁；`assets/wallpapers/` 保存固定桌面与锁屏背景。
 

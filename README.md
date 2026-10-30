@@ -53,6 +53,18 @@ sudo nixos-rebuild switch --flake .#horon-vm
 
 配置仓库可以一直放在用户目录，不需要移动到 `/etc/nixos` 或建立链接。
 
+## Nix 管理与存储维护
+
+`modules/nixos/nix.nix` 集中管理 Nix 守护进程设置与 GC，主机模块显式导入；网络、区域与基础软件仍由 `base.nix` 管理。
+
+- 自动 GC 每周执行，使用 `--delete-older-than 14d` 清理过期历史代次，再回收无引用的 store 对象。当前代次保留；已删除的历史代次无法回滚。定时器沿用 NixOS 的持久化默认值，错过任务后补执行。
+- 启用 `nix-command`、`flakes`、`auto-allocate-uids`、`configurable-impure-env`。自动 UID 分配同时设置 `auto-allocate-uids = true`，NixOS 据此停用预创建的构建用户池。
+- `configurable-impure-env` 允许按需配置固定输出构建的环境变量，未声明 `impure-env`，不添加代理、令牌或额外受信任用户。
+- 启用 `auto-optimise-store`，新增 store 对象时将内容相同的文件合并为硬链接，不删除系统代次；现有 store 可按需手动运行 `sudo nix-store --optimise` 完整去重。
+- 构建期间可用空间低于 5 GiB 时触发 GC，尝试回收到 10 GiB。只回收无引用对象，不删除受保护的历史代次；可回收对象不足时无法保证达到目标空间。
+- `hosts/x86_64-linux/horon-vm/default.nix` 将 systemd-boot 启动菜单限制为最近 10 个系统代次，控制启动分区文件数量；不单独删除 store 中的系统闭包。
+- 二进制缓存保留清华镜像及 NixOS 默认官方缓存。
+
 ## 桌面与输入法配置
 
 - `modules/nixos/desktop.nix`：保留音频、打印与 Firefox；`niri.nix` 管 niri、greetd/tuigreet，portal 与 GNOME Keyring 复用 NixOS niri 模块。

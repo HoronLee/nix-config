@@ -24,14 +24,6 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # 启用 Flakes 和 nix 命令行功能。
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  # 使用清华源
-  nix.settings.substituters = [
-    "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
-  ];
-
   # 系统级软件包。
   environment.systemPackages = with pkgs; [
     # Flakes 通过 git 命令拉取其依赖项，所以必须先安装好 git
