@@ -70,7 +70,6 @@ sudo nixos-rebuild switch --flake .#horon-vm
 ## 参考资料
 
 - https://github.com/ryan4yin/nix-config
-- https://github.com/ryan4yin/nix-config/tree/i3-kickstarter
 - https://tangled.org/pluie.me/flake
 - https://codeberg.org/ity/tablet
 
