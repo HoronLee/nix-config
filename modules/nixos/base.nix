@@ -3,7 +3,7 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
+  # 系统时区。
   time.timeZone = "Asia/Shanghai";
 
   # Select internationalisation properties.
@@ -24,7 +24,7 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # 启用 Flakes 特性以及配套的船新 nix 命令行工具
+  # 启用 Flakes 和 nix 命令行功能。
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # 使用清华源
@@ -32,8 +32,7 @@
     "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
   ];
 
-  # List packages installed in system profile.
-  # You can use https://search.nixos.org/ to find more packages (and options).
+  # 系统级软件包。
   environment.systemPackages = with pkgs; [
     # Flakes 通过 git 命令拉取其依赖项，所以必须先安装好 git
     git

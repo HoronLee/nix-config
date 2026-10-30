@@ -2,7 +2,7 @@
 
 ## 在全新 NixOS 上使用
 
-当前仅提供 `horon-vm`：**x86_64、UEFI/systemd-boot**，使用 nixos-unstable、niri + Noctalia、greetd + tuigreet，以及 Fcitx5-Rime 万象标准全拼。版本由 `flake.lock` 固定。可从无桌面的 NixOS 安装起步，物理机和 macOS 的独立配置尚未提供。虚拟机需使用 Virtio 显卡并启用 3D/OpenGL。
+当前仅提供 `horon-vm`：**x86_64、UEFI/systemd-boot**，使用 nixos-unstable、niri + Noctalia、greetd + tuigreet，以及 Fcitx5-Rime 万象标准全拼。版本由 `flake.lock` 固定。可从无桌面的 NixOS 安装起步，其他部署目标的独立配置尚未提供。虚拟机需使用 Virtio 显卡并启用 3D/OpenGL。
 
 ### 1. 克隆到普通用户目录
 
@@ -15,7 +15,7 @@ git clone https://github.com/HoronLee/nix-config.git ~/projects/nix-config
 cd ~/projects/nix-config
 ```
 
-### 2. 替换本机硬件配置并核对个人信息
+### 2. 替换目标主机硬件配置并核对个人信息
 
 使用本次 NixOS 安装生成的文件，**不要沿用仓库中的 VM 磁盘 UUID**：
 
@@ -29,7 +29,7 @@ cp /etc/nixos/hardware-configuration.nix \
 - `flake.nix` 的 `username` 与 `modules/nixos/user.nix` 的账户名：默认 `horonlee`，应与本次安装的普通用户一致。
 - `modules/nixos/user.nix` 的 SSH 授权公钥：替换成自己的公钥，或移除不需要的公钥；私钥不要放进仓库。
 - `home/common/git.nix` 的 Git 姓名和邮箱。
-- `hosts/x86_64-linux/horon-vm/default.nix` 的引导设置应匹配本机；实际 hostname 默认是 `nixos`，配置入口仍叫 `horon-vm`。
+- `hosts/x86_64-linux/horon-vm/default.nix` 的引导设置应匹配目标主机；实际 hostname 默认是 `nixos`，配置入口仍叫 `horon-vm`。
 
 当前两处 `stateVersion` 为 `26.05`，不要因切换 unstable 或套用配置随意修改已有系统的 `system.stateVersion` 或 `home.stateVersion`。若家目录已有同名应用配置，遇到 HM 文件冲突时先保留并整理原文件，不强制覆盖。
 
@@ -59,10 +59,10 @@ sudo nixos-rebuild switch --flake .#horon-vm
 - `home/linux/niri/config.kdl`：主入口仅 include `cfg/` 中的 input、layout、autostart、rules、keybinds、misc；HM 部署整棵配置树并固定到 store，不使用可写的仓库外链接。窗口操作沿用基线，仅调整明确选择的键位与输入习惯。
 - `home/linux/niri/cfg/rules.kdl`：通用窗口规则设置 `draw-border-with-background false`，只绘制焦点环和边框外圈，避免底色遮挡应用的透明背景；不强制应用透明，也无需逐个枚举终端。应用特例放在通用规则之后。
 - `home/common/terminals/`：仅安装 Ghostty 和 Kitty，已移除 Alacritty 声明，`Super+T` 使用 Kitty。`ghostty.nix` 管字体、透明度、目录继承、标签/分窗快捷键及 90 ms 光标拖尾动画。不声明 Noctalia 终端模板、不初始化主题文件。
-- 当前 `horon-vm` 的 virgl 最高提供 OpenGL 4.2，低于 Ghostty 1.3.1 所需的 4.3；退出发生在 shader 编译之前，因此保留 shader 和动画设置。Ghostty 保持安装供后续使用，不加入软件渲染或版本伪装设置。
+- `horon-vm` 使用 virgl 虚拟显卡。Ghostty 1.3.1 要求 OpenGL 4.3 或更新版本，虚拟显卡提供的 OpenGL 4.2 不满足要求；此限制与自定义 shader 无关。默认终端使用 Kitty，Ghostty 保留安装和动画设置，不配置软件渲染或版本覆盖。
 - `home/linux/niri/default.nix`：Linux 的 Kitty 隐藏窗口装饰，其他应用与 macOS 不受影响；应用后需重新打开 Kitty。`home/linux/packages.nix` 安装 Edge 和 Nautilus，供快捷键直接调用，Firefox 暂保留。
 - `home/linux/noctalia/config.toml`：启用内置 Polkit agent、指定壁纸和中央中文时钟。锁屏跟随桌面壁纸，保留默认模糊与遮罩。未开启闲置自动锁屏/熄屏，保留 Noctalia 默认睡前锁屏。
-- `assets/wallpapers/nixos-1.png`：由 HM 链接到 `~/Pictures/Wallpapers/nixos-1.png`，不依赖原机器的图片目录。
+- `assets/wallpapers/nixos-1.png`：由 HM 链接到 `~/Pictures/Wallpapers/nixos-1.png`，图片由仓库提供。
 - `modules/nixos/input-method.nix`：Fcitx5 Wayland frontend、keyboard-us + Rime、`Ctrl+Space` 切换。只安装万象中文方案，不包含日韩引擎。
 - `home/linux/rime/*.custom.yaml`：标准全拼、en/eng 与 in/ing 模糊音、每页 6 候选。用户词库、学习数据和编译缓存保持应用可写，不入仓库。
 - 万象模型由 `home/linux/rime/default.nix` 的 URL + SHA-256 固定，不提交大文件。上游 LTS 同名资产可能被覆盖；新下载校验失败时需审查模型更新，不能去掉 hash。首次输入可能需要等待 Rime 编译词典。

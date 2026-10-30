@@ -20,7 +20,7 @@
   #   xxx
   # '';
 
-  # 原作者的 X11 DPI 设置，暂不启用。
+  # X11 DPI 设置示例，暂不启用。
   # xresources.properties = {
   #   "Xcursor.size" = 16;
   #   "Xft.dpi" = 172;

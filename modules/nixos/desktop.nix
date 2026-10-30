@@ -11,7 +11,7 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
+    # JACK 支持，暂不启用。
     # jack.enable = true;
   };
 
