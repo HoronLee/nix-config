@@ -113,8 +113,8 @@ nix build .#nixosConfigurations.nixos-vm.config.home-manager.users.horonlee.home
 
 ## 开发环境与 Neovim
 
-- `home/common/packages.nix`：统一列出通用 CLI、语言、包管理器、语言服务与格式化、构建工具，并声明开发环境变量和用户 PATH。默认使用包集中最新正式系列，版本由 `flake.lock` 固定。
-- `home/linux/packages.nix`：Linux 桌面应用、调试和硬件工具。Nautilus、Edge 由这里统一安装，不依赖某个合成器或桌面 Shell 组合。
+- `home/common/packages.nix`：统一列出共享 CLI、Edge、pciutils、usbutils、语言、包管理器、语言服务与格式化、构建工具，并声明开发环境变量和用户 PATH。Linux 与未来 macOS 尽量共用 Nixpkgs 软件声明，版本由 `flake.lock` 固定。
+- `home/linux/packages.nix`：Nautilus、iotop、strace、ltrace、sysstat、lm_sensors、ethtool 等 Linux 专用软件，不依赖某个合成器或桌面 Shell 组合。
 - `home/common/nvim/`：原生 LazyVim 配置。Home Manager 将 `~/.config/nvim` 链接到 `~/projects/nix-config/home/common/nvim`，目录必须保持存在；Lua、Extras 和锁文件保持可写，通过 Git 同步。Nix generation 回滚不恢复这些可写文件。
 - `programs.neovim.sideloadInitLua` 将 Home Manager 生成的初始化代码交给包装器加载，保留原生 `init.lua`。
 - Nix LSP 使用 `nixd`，关闭 `nil_ls`，格式化使用 `nixfmt`；包补全读取本仓库锁定的 Nixpkgs，模块选项固定读取实际存在的 `nixos-vm` NixOS 与内嵌 Home Manager 定义，不按编辑器运行平台猜测。Darwin 接入后再添加对应主机选项集合。
@@ -133,11 +133,11 @@ tombi format --check $(git ls-files '*.toml')
 
 - `modules/nixos/desktop.nix`：保留音频、打印与 Firefox；`niri.nix` 管 niri、greetd/tuigreet，portal 与 GNOME Keyring 复用 NixOS niri 模块。
 - `home/linux/niri/config.kdl`：通用入口 include `cfg/` 中的 input、layout、rules、keybinds、misc，不启动或调用 Noctalia。HM 读取原生 KDL 作为可合并文本，最终配置与片段仍固定到 store，不使用可写的仓库外链接。
-- `home/desktops/niri-noctalia.kdl`：部署为 `~/.config/niri/desktop-niri-noctalia.kdl`，启动 Noctalia，定义启动器、控制中心、锁屏、媒体、音量、亮度等专用快捷键，以及 Edge、Nautilus 在该组合中的启动键；这两个应用由 Linux 包清单统一安装。仅选择通用 Niri 模块时不会部署此文件。`~/.config/niri/noctalia.kdl` 保留给 Noctalia 自动生成配色，不由 HM 覆盖、备份替换或链接到 store。
+- `home/desktops/niri-noctalia.kdl`：部署为 `~/.config/niri/desktop-niri-noctalia.kdl`，启动 Noctalia，定义启动器、控制中心、锁屏、媒体、音量、亮度等专用快捷键，以及 Edge、Nautilus 在该组合中的启动键；应用安装分别由 common、Linux 包清单负责。仅选择通用 Niri 模块时不会部署此文件。`~/.config/niri/noctalia.kdl` 保留给 Noctalia 自动生成配色，不由 HM 覆盖、备份替换或链接到 store。
 - `home/linux/niri/cfg/rules.kdl`：通用窗口规则设置 `draw-border-with-background false`，只绘制焦点环和边框外圈，避免底色遮挡应用的透明背景；不强制应用透明，也无需逐个枚举终端。应用特例放在通用规则之后。
 - `home/common/terminals/`：仅安装 Ghostty 和 Kitty，已移除 Alacritty 声明，`Super+T` 使用 Kitty。`ghostty.nix` 管字体、透明度、目录继承、标签/分窗快捷键及 90 ms 光标拖尾动画；模板选择由 Noctalia 管理，不在终端模块初始化生成主题。
 - `nixos-vm` 使用 virgl 虚拟显卡。Ghostty 1.3.1 要求 OpenGL 4.3 或更新版本，虚拟显卡提供的 OpenGL 4.2 不满足要求；此限制与自定义 shader 无关。默认终端使用 Kitty，Ghostty 保留安装和动画设置，不配置软件渲染或版本覆盖。
-- `home/linux/niri/default.nix`：Linux 的 Kitty 隐藏窗口装饰，其他应用与 macOS 不受影响；应用后需重新打开 Kitty。`home/linux/packages.nix` 安装 Edge 和 Nautilus，供不同 Linux 桌面共用，Firefox 暂保留。
+- `home/linux/niri/default.nix`：Linux 的 Kitty 隐藏窗口装饰，其他应用与 macOS 不受影响；应用后需重新打开 Kitty。Edge 由共享包清单安装，Nautilus 由 Linux 包清单安装，Firefox 暂保留。
 - `home/linux/noctalia/config.toml`：声明 Polkit、Shell 字体、Dock、自动定位、日夜色温、自动亮暗与壁纸配色、模板名单和壁纸。白天色温为 6700 K，夜间沿用 4000 K；屏幕使用时间与遥测均启用。不显式声明 lockscreen_widgets.enabled，沿用当前版本的默认 false；该选项控制额外锁屏小组件，锁屏与登录框仍可使用。登录框使用程序默认布局，不保存 `Virtual-1` 专属坐标；未开启闲置自动锁屏/熄屏。
 - `home/linux/noctalia/bar.toml`：左侧为启动器、壁纸、工作区和任务栏，中央为时钟，右侧包含媒体、托盘、剪贴板、通知、蓝牙、音量、控制中心、资源监控组和会话。CPU、内存、网络上下行共用不折叠的胶囊。
 - 内置模板为 btop、Ghostty、Kitty、niri；社区模板为 Telegram、Zed、Fastfetch、Zellij、Fcitx5、FZF、Herdr、Lazygit。仅声明选择，不安装应用、不提交模板缓存或生成的主题；应用读取主题及只读配置兼容性按应用分别处理。

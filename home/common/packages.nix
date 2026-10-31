@@ -6,6 +6,9 @@
     fastfetch
     # nnn       # 使用 yazi
 
+    # 网页浏览器。
+    microsoft-edge
+
     # 压缩与解压。
     zip
     xz
@@ -48,6 +51,10 @@
     btop
     iftop
     lsof
+
+    # 硬件信息。
+    pciutils
+    usbutils
 
     # 开发工具。
     # 语言。
