@@ -7,14 +7,11 @@ local nixd = {
   formatting = { command = { "nixfmt" } },
 }
 
--- 当前仅有 horon-vm 输出；Darwin 主机接入后再添加其模块选项集合。
-if vim.fn.has("linux") == 1 then
-  local options = flake .. ".nixosConfigurations.horon-vm.options"
-  nixd.options = {
-    nixos = { expr = options },
-    home_manager = { expr = options .. ".home-manager.users.type.getSubOptions []" },
-  }
-end
+local options = flake .. ".nixosConfigurations.nixos-vm.options"
+nixd.options = {
+  nixos = { expr = options },
+  home_manager = { expr = options .. ".home-manager.users.type.getSubOptions []" },
+}
 
 return {
   {

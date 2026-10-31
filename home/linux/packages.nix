@@ -1,10 +1,10 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
-    # 文件管理器
+    # 文件浏览器
     nautilus
 
-    # 浏览器。
+    # 网页浏览器
     microsoft-edge
 
     # 性能与资源监控

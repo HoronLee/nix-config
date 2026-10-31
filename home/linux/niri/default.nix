@@ -4,7 +4,7 @@
   home.packages = [ pkgs.xwayland-satellite ];
 
   xdg.configFile = {
-    "niri/config.kdl".source = ./config.kdl;
+    "niri/config.kdl".text = builtins.readFile ./config.kdl;
     "niri/cfg" = {
       source = ./cfg;
       recursive = true;

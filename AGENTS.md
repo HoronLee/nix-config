@@ -2,14 +2,14 @@
 
 ## Project Overview
 
-这是 HoronLee 的个人 NixOS 配置仓库，以 Nix/Flakes 和 Home Manager 声明系统、软件和用户环境。当前唯一输出为 `horon-vm`（`x86_64-linux`、nixos-unstable、niri + Noctalia、greetd/tuigreet）；物理机、服务器与 Darwin 尚未接入。
+这是 HoronLee 的个人 NixOS 配置仓库，以 Nix/Flakes 和 Home Manager 声明系统、软件和用户环境。当前唯一输出为 `nixos-vm`（`x86_64-linux`、nixos-unstable、niri + Noctalia、greetd/tuigreet）；物理机、服务器与 Darwin 尚未接入。
 
 ## Architecture & Data Flow
 
 - `flake.nix` 注册主机并提供依赖；`lib/mkNixosHost.nix` 接收 `system`、`hostModule`、`username`、`homeModule`，组合 NixOS 和 HM。HM 复用系统 Nixpkgs，通过 `nixos-rebuild` 一起部署，无独立 HM 输出。
-- 系统流：`flake.nix` → 构造器 → `hosts/x86_64-linux/horon-vm/default.nix` → 硬件与 `modules/nixos/*.nix`。
-- 用户流：构造器 → `home/default.nix` → `home/common/` 和 `home/linux/`。当前入口无条件导入 Linux 模块，接入 Darwin 前需要调整。
-- 主机决定硬件、引导、hostname 和模块选择；公共系统设置与用户设置分别维护。输出名 `horon-vm` 与实际 hostname `nixos` 不同，命令显式指定 `#horon-vm`。
+- 系统流：`flake.nix` → 构造器 → `hosts/x86_64-linux/nixos-vm/default.nix` → 硬件与 `modules/nixos/*.nix`。
+- 用户流：构造器 → `home/hosts/nixos-vm.nix` → 通用、Linux、桌面组合、Rime 和 SSH agent。`home/default.nix` 只导入通用配置。
+- 主机决定硬件、引导、hostname 和模块选择。输出名与声明的 hostname 均为 `nixos-vm`；首次应用前显式指定 `#nixos-vm`，应用成功且实际 hostname 已更新后，`nixos-rebuild --flake .` 可以省略输出名。
 
 ## Key Directories
 
@@ -24,10 +24,10 @@
 
 ```sh
 git add path/to/new-module.nix  # 替换为新增模块路径，Git flake 才能读取。
-nix eval .#nixosConfigurations.horon-vm.config.system.build.toplevel.drvPath
-nixos-rebuild build --flake .#horon-vm --no-link
+nix eval .#nixosConfigurations.nixos-vm.config.system.build.toplevel.drvPath
+nixos-rebuild build --flake .#nixos-vm --no-link
 # 用户要求应用时：
-sudo nixos-rebuild switch --flake .#horon-vm
+sudo nixos-rebuild switch --flake .#nixos-vm
 ```
 
 未提交的已跟踪文件仍可构建，dirty 警告正常。`nix flake update` 仅在明确升级时执行。未定义 `formatter`、`devShells` 或 lint 脚本，不把 `nix fmt`、`nix develop` 当作既有工作流。
@@ -46,7 +46,7 @@ sudo nixos-rebuild switch --flake .#horon-vm
 ## Important Files
 
 - `flake.nix` / `flake.lock`：Nixpkgs `nixos-unstable`、HM `master`，HM `follows` Nixpkgs；具体版本由锁文件固定，需提交锁文件，不为日常配置改动更新。两处 `stateVersion` 保持 `26.05`。
-- `hosts/x86_64-linux/horon-vm/hardware-configuration.nix`：QEMU、挂载和 swap 的生成配置；引导器和系统 `stateVersion` 在同目录 `default.nix`。
+- `hosts/x86_64-linux/nixos-vm/hardware-configuration.nix`：QEMU、挂载和 swap 的生成配置；引导器和系统 `stateVersion` 在同目录 `default.nix`。
 - `modules/nixos/user.nix`：账户与公钥；修改用户名需同步 flake 中的 `username`。`home/common/git.nix` 单独管理 Git 身份。
 - `modules/nixos/ssh.nix`：禁止 root 直登，普通用户暂保留密码认证；不得擅自改变认证策略。
 - `home/common/ssh.nix` / `home/linux/ssh-agent.nix`：按需加载密钥与 agent。私钥只放用户 `~/.ssh/`，不经 Nix 路径、`home.file` 或 Git 进入 Nix store。
@@ -69,6 +69,6 @@ sudo nixos-rebuild switch --flake .#horon-vm
 
 ## 参考资料
 
-- https://github.com/ryan4yin/nix-config
-- https://tangled.org/pluie.me/flake
-- https://codeberg.org/ity/tablet
+- <https://github.com/ryan4yin/nix-config>
+- <https://tangled.org/pluie.me/flake>
+- <https://codeberg.org/ity/tablet>

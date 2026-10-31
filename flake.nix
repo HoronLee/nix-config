@@ -19,11 +19,11 @@
     in
     {
       nixosConfigurations = {
-        horon-vm = mkNixosHost {
+        nixos-vm = mkNixosHost {
           system = "x86_64-linux";
-          hostModule = ./hosts/x86_64-linux/horon-vm;
+          hostModule = ./hosts/x86_64-linux/nixos-vm;
           username = "horonlee";
-          homeModule = ./home;
+          homeModule = ./home/hosts/nixos-vm.nix;
         };
       };
     };

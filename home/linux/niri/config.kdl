@@ -1,9 +1,7 @@
 // Based on niri v26.04/resources/default-config.kdl:
 // https://github.com/YaLTeR/niri/blob/v26.04/resources/default-config.kdl
-// Upstream layout and window behavior; Noctalia supplies the desktop shell.
 include "./cfg/input.kdl"
 include "./cfg/layout.kdl"
-include "./cfg/autostart.kdl"
 include "./cfg/rules.kdl"
 include "./cfg/keybinds.kdl"
 include "./cfg/misc.kdl"

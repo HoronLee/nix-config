@@ -3,10 +3,6 @@
   imports = [
     ./packages.nix
     ./yazi.nix
-    ./ssh-agent.nix
-    ./niri
-    ./noctalia
-    ./rime
   ];
 
   # 文件管理示例，暂不启用。
