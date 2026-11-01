@@ -3,6 +3,7 @@
   home-manager,
   catppuccin,
   omp,
+  magpie,
 }:
 {
   system,
@@ -22,6 +23,9 @@ nixpkgs.lib.nixosSystem {
         catppuccin.homeModules.catppuccin
         omp.homeManagerModules.default
       ];
+      home-manager.extraSpecialArgs = {
+        magpieApp = magpie.packages.${system}.magpie-app;
+      };
       home-manager.users.${username} = homeModule;
     }
   ];

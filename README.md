@@ -66,12 +66,11 @@ flake.nix                         # 系统输出与依赖
 lib/mkNixosHost.nix                # NixOS 与内嵌 HM 的组合
 hosts/x86_64-linux/nixos-vm/        # VM 系统入口、硬件与引导
 modules/nixos/                    # 可复用的系统模块
-pkgs/magpie/                      # Magpie 安装更新辅助命令
 home/
 ├── default.nix                   # 只导入通用用户配置
 ├── hosts/nixos-vm.nix             # 选择平台、桌面、Rime 和 SSH agent
 ├── common/                       # 共享用户配置，包含 CLI 和 GUI
-│   ├── agents/                   # OMP 配置与 Magpie 安装检查
+│   ├── agents/                   # OMP 配置与 Magpie 安装
 │   ├── packages.nix              # 通用工具、开发工具与环境变量
 │   ├── theme.nix                 # 共享 Catppuccin 策略
 │   ├── btop.nix                  # btop 配置
@@ -140,14 +139,13 @@ tombi format --check $(git ls-files '*.toml')
 
 ### Magpie
 
-- `modules/nixos/base.nix` 启用 `programs.nix-ld`，为 Magpie 官方 Linux 桌面二进制提供 GTK 3、WebKitGTK 4.1、libsoup3 等运行库。
-- `pkgs/magpie/default.nix` 提供 `magpie-install`。Home Manager 在激活阶段调用它，读取上游最新版本并检查本地客户端；同版或更高版本直接保留，缺失、旧版本或 Nix store 中的副本由官方安装器 `--gui` 安装。
-- Linux 客户端位于 `~/.local/bin/magpie`，启动器条目由官方安装器生成并指向该路径，客户端保持可写并支持应用内更新。
-- macOS 使用同一安装检查：官方脚本将 `magpie.app` 放入可写的 `/Applications` 或 `~/Applications`，并在 `~/.local/bin/magpie` 创建命令链接。两种平台的 HM 配置均已求值；macOS 真机运行待验证。
-- 激活检查需要访问 `https://usemagpie.ai/api/latest`；网络、版本读取或安装失败会明确报错。普通 `nix build` 只构建安装辅助程序，Magpie 客户端版本由上游发布与应用内更新管理。
-- NixOS 上官方安装器可能仍提示常规系统目录中缺少 GTK/WebKit；实际动态加载由 `nix-ld` 的库目录提供。可用 `magpie --version` 检查客户端能否运行。
-
-应用配置后，也可手动执行 `magpie-install` 检查版本，使用 `magpie app` 打开桌面客户端。现有 `~/.config/magpie` 中的设置和账户数据保持原有归属。
+- `flake.nix` 引入 `sugar/magpie` flake，把上游源码固定到具体版本并用 nixpkgs 的 `buildGoModule` 构建；`lib/mkNixosHost.nix` 通过 `extraSpecialArgs` 把 `magpie-app` 传给 Home Manager。
+- `home/common/agents/magpie.nix` 在 Linux 上安装该包。桌面入口由包内 `makeDesktopItem` 生成，可执行文件为 `magpie-app`。
+- 包内包装器设置 `MAGPIE_BUN` 指向 nixpkgs 的 bun，并默认令 `WEBKIT_DISABLE_COMPOSITING_MODE=0`：上游在 Wayland 下会关闭 WebKitGTK 的 GPU 合成，这一项维持开启。如需关闭，导出 `WEBKIT_DISABLE_COMPOSITING_MODE=1`。
+- `modules/nixos/nix.nix` 增加 `magpie.cachix.org` 及其公钥，构建产物可直接从缓存获取。`cache.asnk.io` 未提供公钥，Nix 无法验签，因此未启用。
+- 客户端由 Nix 固定版本，不参与应用内自更新；升级时执行 `nix flake update magpie` 并重新构建。`~/.config/magpie` 中的设置与账户数据仍由应用自身管理。
+- 该 flake 只提供 `x86_64-linux` 与 `aarch64-linux` 包。macOS 不在其支持范围内，仍使用官方安装器手动安装，并保留应用内自更新。
+- `modules/nixos/base.nix` 仍启用 `programs.nix-ld`，供其他预编译二进制（如 Mason 下载的工具）使用，与 Magpie 无关。
 
 ### OMP
 

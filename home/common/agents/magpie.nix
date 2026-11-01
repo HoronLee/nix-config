@@ -1,10 +1,10 @@
-{ pkgs, lib, ... }:
-let
-  installer = pkgs.callPackage ../../../pkgs/magpie { };
-in
-lib.mkIf (pkgs.stdenv.hostPlatform.isLinux || pkgs.stdenv.hostPlatform.isDarwin) {
-  home.packages = [ installer ];
-  home.activation.magpieInstall = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    run ${installer}/bin/magpie-install
-  '';
+{
+  pkgs,
+  lib,
+  magpieApp,
+  ...
+}:
+{
+  # Magpie 官方二进制不在 Nix 构建；此包固定上游源码并带桌面入口。
+  home.packages = lib.optionals pkgs.stdenv.hostPlatform.isLinux [ magpieApp ];
 }

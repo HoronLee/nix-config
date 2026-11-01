@@ -17,7 +17,6 @@
 - `modules/nixos/`：`base.nix` 管网络、区域、基础编辑器与 `programs.nix-ld`；`nix.nix` 管 Nix 实验特性、构建 UID、二进制缓存与每周 GC；`user.nix` 管账户；`ssh.nix` 管 sshd；`desktop.nix` 管音频、打印与 Firefox；`niri.nix` 管合成器并复用官方 portal/Keyring 配套，`greeter.nix` 管图形登录；`input-method.nix` 管 Fcitx5-Rime。
 - `home/common/`：Git/Lazygit、Shell/Starship、SSH 客户端、Yazi、Neovim、终端、AI agent 配置与共享 Catppuccin 策略；`theme.nix` 声明默认 Mocha/Pink 与自动端口策略，原生主题的配置与端口覆盖放在对应应用模块。
 - `home/linux/`：用户工具、字体发现、Yazi 剪贴板依赖、SSH agent、Niri KDL、Noctalia TOML、Rime 用户补丁；`home/linux/desktops/niri-noctalia.nix` 组合 Shell 启动与快捷键；`assets/wallpapers/` 保存固定桌面与锁屏背景。
-- `pkgs/magpie/`：Magpie 官方客户端按需安装与版本检查脚本，不作为二进制打包。
 
 ## Development Commands
 
@@ -46,7 +45,7 @@ sudo nixos-rebuild switch --flake .#nixos-vm
 
 ## Important Files
 
-- `flake.nix` / `flake.lock`：Nixpkgs `nixos-unstable`、HM `master`、Catppuccin `main`、OMP 官方 flake；HM、Catppuccin 与 OMP 的 Nixpkgs 输入 follows 根输入，构造器通过 `home-manager.sharedModules` 导入 Catppuccin HM 模块与 OMP HM 模块。Noctalia 使用 `pkgs.noctalia`。具体版本由锁文件固定，日常配置编辑沿用现有锁定版本。两处 stateVersion 保持 `26.05`。
+- `flake.nix` / `flake.lock`：Nixpkgs `nixos-unstable`、HM `master`、Catppuccin `main`、OMP 官方 flake、`sugar/magpie` flake；HM、Catppuccin、OMP 与 Magpie 的 Nixpkgs 输入 follows 根输入，构造器通过 `home-manager.sharedModules` 导入 Catppuccin HM 模块与 OMP HM 模块。Noctalia 使用 `pkgs.noctalia`。具体版本由锁文件固定，日常配置编辑沿用现有锁定版本。两处 stateVersion 保持 `26.05`。
 - `hosts/x86_64-linux/nixos-vm/hardware-configuration.nix`：QEMU、挂载和 swap 的生成配置；引导器和系统 `stateVersion` 在同目录 `default.nix`。
 - `modules/nixos/user.nix`：账户与公钥；修改用户名需同步 flake 中的 `username`。`home/common/git.nix` 单独管理 Git 身份。
 - `modules/nixos/ssh.nix`：禁止 root 直登，普通用户暂保留密码认证；不得擅自改变认证策略。
@@ -54,7 +53,7 @@ sudo nixos-rebuild switch --flake .#nixos-vm
 - `home/linux/rime/default.nix`：固定万象语法模型 URL 与 hash；LTS 同名文件可能被上游覆盖，校验失败需明确更新。只部署静态补丁和模型，用户词库、缓存、凭据不得入 Git/store。
 - Noctalia 负责 Polkit 提示、通知、剪贴板历史和锁屏；不叠加 KDE agent 或第二份 Noctalia 启动服务。当前无 idle 定时规则；GUI 覆盖层不自动进入声明。
 - Noctalia Greeter 使用 `appearance.scheme = "Catppuccin"` 内置配色。Noctalia 内置、社区应用模板均显式关闭；这两个开关的程序默认值为 true。config/bar TOML 通过 `mkOutOfStoreSymlink` 指向仓库，GUI 状态文件最后加载并覆盖同名键。Kitty、Ghostty、Fish、Yazi、Lazygit 使用原生 Latte/Mocha 选择；Starship 保留程序默认 ANSI 样式，fzf、eza、btop 使用官方 Mocha 主题文件。LazyVim 自行加载已有 Catppuccin。eza、fzf 使用 HM 默认 Shell 集成。应用主题逻辑归对应模块，Noctalia 模块只管理自身配置与壁纸。登录器/合成器迁移优先 boot 后重启验证。
-- `home/common/agents/omp.nix`：启用 OMP，并覆盖锁定 Bun 包中已弃用的平台属性，消除求值警告。`home/common/agents/magpie.nix` 在激活阶段调用 `magpie-install`，仅当本地缺失或落后于上游版本时安装。Magpie 运行库由 `programs.nix-ld` 提供。
+- `home/common/agents/omp.nix`：启用 OMP，并覆盖锁定 Bun 包中已弃用的平台属性，消除求值警告。`home/common/agents/magpie.nix` 安装 flake 打包的 `magpie-app`；该包固定上游源码，包装器设置 `MAGPIE_BUN` 与 `WEBKIT_DISABLE_COMPOSITING_MODE=0`。构建缓存见 `modules/nixos/nix.nix` 的 `magpie.cachix.org`。升级用 `nix flake update magpie`，不使用应用内自更新。
 
 ## Runtime/Tooling Preferences
 
