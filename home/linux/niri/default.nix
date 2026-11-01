@@ -10,7 +10,4 @@
       recursive = true;
     };
   };
-
-  # 只影响 Linux 上的 Kitty，不改变其他应用的装饰或 macOS 配置。
-  programs.kitty.settings.hide_window_decorations = true;
 }

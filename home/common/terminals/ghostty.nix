@@ -1,10 +1,19 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
+  catppuccin.ghostty.enable = false;
+
+  xdg.configFile."ghostty/themes/catppuccin-latte".source =
+    "${config.catppuccin.sources.ghostty}/catppuccin-latte.conf";
+  xdg.configFile."ghostty/themes/catppuccin-mocha".source =
+    "${config.catppuccin.sources.ghostty}/catppuccin-mocha.conf";
+
   home.packages = [ pkgs.maple-mono.NF-CN ];
 
   programs.ghostty = {
     enable = true;
     settings = {
+      theme = "light:catppuccin-latte,dark:catppuccin-mocha";
+
       # 字体
       font-family = "Maple Mono NF CN";
       font-size = 12;

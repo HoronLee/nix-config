@@ -20,7 +20,9 @@ binds {
     Mod+Shift+Return hotkey-overlay-title="Wallpaper Selector: Noctalia" {
         spawn "noctalia" "msg" "panel-toggle" "wallpaper"
     }
-
+    Mod+Shift+S hotkey-overlay-title="Screenshot: 区域 (Noctalia)" {
+        spawn-sh "noctalia msg screenshot-region";
+    }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: Noctalia" {
         spawn "noctalia" "msg" "session" "lock"
     }

@@ -1,5 +1,8 @@
 { config, ... }:
 {
+  # Catppuccin 的加载与亮暗选择由 LazyVim Lua 配置负责。
+  catppuccin.nvim.enable = false;
+
   programs.neovim = {
     enable = true;
     defaultEditor = true;

@@ -21,8 +21,6 @@
     fd
     jq
     yq-go
-    eza
-    fzf
 
     # 网络诊断与传输。
     mtr
@@ -48,7 +46,6 @@
     nix-output-monitor
 
     # 资源监控与文件占用。
-    btop
     iftop
     lsof
 

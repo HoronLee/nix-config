@@ -6,6 +6,12 @@ polkit_agent = true
 screen_time_enabled = true
 telemetry_enabled = true
 
+# 截图
+[shell.screenshot]
+annotate = true
+copy_to_clipboard = true
+save_to_file = false
+
 # Dock
 [dock]
 enabled = true
@@ -19,33 +25,21 @@ smart_auto_hide = true
 [location]
 auto_locate = true
 
+# 夜间模式
 [nightlight]
 enabled = true
 temperature_day = 6700
 
-# 自动亮暗与壁纸配色
+# 主题
 [theme]
-builtin = "Noctalia"
-community_palette = "Catppuccin Mocha Blue"
+source = "builtin"
+builtin = "Catppuccin"
 mode = "auto"
-source = "wallpaper"
-wallpaper_scheme = "m3-content"
 
-# 模板选择独立于应用安装声明。
+# 应用配色由 Home Manager 声明。
 [theme.templates]
-enable_builtin_templates = true
-enable_community_templates = true
-builtin_ids = ["btop", "ghostty", "kitty", "niri"]
-community_ids = [
-  "telegram",
-  "zed",
-  "fastfetch",
-  "zellij",
-  "fcitx5",
-  "fzf",
-  "herdr",
-  "lazygit",
-]
+enable_builtin_templates = false
+enable_community_templates = false
 
 # 壁纸
 [wallpaper]

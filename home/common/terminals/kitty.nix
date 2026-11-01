@@ -1,13 +1,21 @@
 { pkgs, ... }:
 {
+  catppuccin.kitty.enable = false;
+
   programs.kitty = {
     enable = true;
+    autoThemeFiles = {
+      light = "Catppuccin-Latte";
+      dark = "Catppuccin-Mocha";
+      noPreference = "Catppuccin-Mocha";
+    };
     font = {
       package = pkgs.maple-mono.NF-CN;
       name = "Maple Mono NF CN";
       size = 12;
     };
     settings = {
+      hide_window_decorations = true;
       cursor_trail = 3;
       background_opacity = 0.85;
       # 实际模糊效果取决于合成器。

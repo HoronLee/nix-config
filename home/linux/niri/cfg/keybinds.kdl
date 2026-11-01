@@ -3,7 +3,7 @@ binds {
     Mod+Shift+Slash {
         show-hotkey-overlay
     }
-    Mod+T hotkey-overlay-title="Open a Terminal: Kitty" {
+    Mod+Return hotkey-overlay-title="Open a Terminal: Kitty" {
         spawn "kitty"
     }
     Mod+Tab {

@@ -1,6 +1,5 @@
 {
   description = "Horon's NixOS flake";
-
   inputs = {
     # 跟踪 nixos-unstable，具体版本由 flake.lock 锁定。
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -8,13 +7,31 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    catppuccin = {
+      url = "github:catppuccin/nix/main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    omp = {
+      url = "github:can1357/oh-my-pi";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
-
   outputs =
-    { nixpkgs, home-manager, ... }:
+    {
+      nixpkgs,
+      home-manager,
+      catppuccin,
+      omp,
+      ...
+    }:
     let
       mkNixosHost = import ./lib/mkNixosHost.nix {
-        inherit nixpkgs home-manager;
+        inherit
+          nixpkgs
+          home-manager
+          catppuccin
+          omp
+          ;
       };
     in
     {

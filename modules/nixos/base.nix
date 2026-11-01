@@ -24,12 +24,31 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  # 支持 Magpie 官方桌面二进制及其自更新下载的版本。
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      gtk3
+      webkitgtk_4_1
+      libsoup_3
+      wayland
+      libX11
+      fontconfig
+      gdk-pixbuf
+      glib
+      dbus
+    ];
+  };
+
   # 系统级软件包。
   environment.systemPackages = with pkgs; [
     # Flakes 通过 git 命令拉取其依赖项，所以必须先安装好 git
     git
     neovim
     wget
+    curl
+    gnumake
+    just
   ];
 
   # 系统账户使用基础 Neovim，个人配置由 Home Manager 管理。

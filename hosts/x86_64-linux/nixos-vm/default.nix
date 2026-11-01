@@ -8,6 +8,7 @@
     ../../../modules/nixos/ssh.nix
     ../../../modules/nixos/desktop.nix
     ../../../modules/nixos/niri.nix
+    ../../../modules/nixos/greeter.nix
     ../../../modules/nixos/input-method.nix
   ];
 

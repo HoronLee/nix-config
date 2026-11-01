@@ -1,4 +1,9 @@
-{ nixpkgs, home-manager }:
+{
+  nixpkgs,
+  home-manager,
+  catppuccin,
+  omp,
+}:
 {
   system,
   hostModule,
@@ -13,6 +18,10 @@ nixpkgs.lib.nixosSystem {
     {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
+      home-manager.sharedModules = [
+        catppuccin.homeModules.catppuccin
+        omp.homeManagerModules.default
+      ];
       home-manager.users.${username} = homeModule;
     }
   ];

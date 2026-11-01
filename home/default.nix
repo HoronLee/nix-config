@@ -1,7 +1,12 @@
 { ... }:
 {
   imports = [
+    ./common/agents
     ./common/packages.nix
+    ./common/theme.nix
+    ./common/btop.nix
+    ./common/eza.nix
+    ./common/fzf.nix
     ./common/git.nix
     ./common/shell.nix
     ./common/ssh.nix
