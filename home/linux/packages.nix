@@ -4,8 +4,18 @@
     # 文件浏览器
     nautilus
 
+    # 网页浏览器
+    microsoft-edge
+
     # 性能与资源监控
     iotop
+    iftop
+
+    # 网络诊断
+    mtr
+    ipcalc
+    dnsutils
+    ldns
 
     # 程序调试与文件占用排查
     strace
@@ -15,5 +25,7 @@
     sysstat
     lm_sensors
     ethtool
+    pciutils
+    usbutils
   ];
 }

@@ -6,9 +6,6 @@
     fastfetch
     # nnn       # 使用 yazi
 
-    # 网页浏览器。
-    microsoft-edge
-
     # 压缩与解压。
     zip
     xz
@@ -22,15 +19,11 @@
     jq
     yq-go
 
-    # 网络诊断与传输。
-    mtr
+    # 网络传输。
     iperf3
-    dnsutils
-    ldns
     aria2
     socat
     nmap
-    ipcalc
 
     # 基础工具。
     cowsay
@@ -46,12 +39,7 @@
     nix-output-monitor
 
     # 资源监控与文件占用。
-    iftop
     lsof
-
-    # 硬件信息。
-    pciutils
-    usbutils
 
     # 开发工具。
     # 语言。

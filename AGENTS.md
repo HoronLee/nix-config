@@ -6,7 +6,7 @@
 
 ## Architecture & Data Flow
 
-- `flake.nix` 注册主机并提供依赖；`lib/mkNixosHost.nix` 接收 `system`、`hostModule`、`username`、`homeModule`，组合 NixOS 和 HM。HM 复用系统 Nixpkgs，通过 `nixos-rebuild` 一起部署，无独立 HM 输出。
+- `flake.nix` 注册主机并提供依赖；`lib/mkNixosHost.nix` 接收 `system`、`hostModule`、`username`、`homeModule`，组合 NixOS 和 HM。HM 复用系统 Nixpkgs，通过 `nixos-rebuild` 一起部署，无独立 HM 输出。`lib/mkDarwinHost.nix` 是按同样参数组合 nix-darwin 与 HM 的入口，尚未注册 `darwinConfigurations`。
 - 系统流：`flake.nix` → 构造器 → `hosts/x86_64-linux/nixos-vm/default.nix` → 硬件与 `modules/nixos/*.nix`。
 - 用户流：构造器 → `home/hosts/nixos-vm.nix` → 通用、Linux、桌面组合、Rime 和 SSH agent。`home/default.nix` 只导入通用配置。
 - 主机决定硬件、引导、hostname 和模块选择。输出名与声明的 hostname 均为 `nixos-vm`；首次应用前显式指定 `#nixos-vm`，应用成功且实际 hostname 已更新后，`nixos-rebuild --flake .` 可以省略输出名。
@@ -15,7 +15,7 @@
 
 - `hosts/<platform>/<host>/`：主机装配入口和生成的硬件配置，按平台分组；不提前创建空主机。
 - `modules/nixos/`：`base.nix` 管网络、区域、基础编辑器与 `programs.nix-ld`；`nix.nix` 管 Nix 实验特性、构建 UID、二进制缓存与每周 GC；`user.nix` 管账户；`ssh.nix` 管 sshd；`desktop.nix` 管音频、打印与 Firefox；`niri.nix` 管合成器并复用官方 portal/Keyring 配套，`greeter.nix` 管图形登录；`input-method.nix` 管 Fcitx5-Rime。
-- `home/common/`：Git/Lazygit、Shell/Starship、SSH 客户端、Yazi、Neovim、终端、AI agent 配置与共享 Catppuccin 策略；`theme.nix` 声明默认 Mocha/Pink 与自动端口策略，原生主题的配置与端口覆盖放在对应应用模块。
+- `home/common/`：Git/Lazygit、Shell/Starship、SSH 客户端、Yazi、Neovim、终端、AI agent 配置与共享 Catppuccin 策略；`theme.nix` 声明默认 Mocha/Pink 与自动端口策略，原生主题的配置与端口覆盖放在对应应用模块。`packages.nix` 只放跨平台包，新增 Linux 专属包写入 `home/linux/packages.nix`。
 - `home/linux/`：用户工具、字体发现、Yazi 剪贴板依赖、SSH agent、Niri KDL、Noctalia TOML、Rime 用户补丁；`home/linux/desktops/niri-noctalia.nix` 组合 Shell 启动与快捷键；`assets/wallpapers/` 保存固定桌面与锁屏背景。
 
 ## Development Commands

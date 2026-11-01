@@ -19,6 +19,10 @@
     magpie = {
       url = "git+https://forge.asnk.io/sugar/magpie";
     };
+    darwin = {
+      url = "github:nix-darwin/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     {
@@ -27,6 +31,7 @@
       catppuccin,
       omp,
       magpie,
+      darwin,
       ...
     }:
     let
@@ -37,6 +42,14 @@
           catppuccin
           omp
           magpie
+          ;
+      };
+      mkDarwinHost = import ./lib/mkDarwinHost.nix {
+        inherit
+          home-manager
+          darwin
+          catppuccin
+          omp
           ;
       };
     in

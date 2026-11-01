@@ -64,6 +64,7 @@ sudo nixos-rebuild switch --flake .
 ```text
 flake.nix                         # 系统输出与依赖
 lib/mkNixosHost.nix                # NixOS 与内嵌 HM 的组合
+lib/mkDarwinHost.nix               # nix-darwin 与内嵌 HM 的组合
 hosts/x86_64-linux/nixos-vm/        # VM 系统入口、硬件与引导
 modules/nixos/                    # 可复用的系统模块
 home/
@@ -71,7 +72,7 @@ home/
 ├── hosts/nixos-vm.nix             # 选择平台、桌面、Rime 和 SSH agent
 ├── common/                       # 共享用户配置，包含 CLI 和 GUI
 │   ├── agents/                   # OMP 配置与 Magpie 安装
-│   ├── packages.nix              # 通用工具、开发工具与环境变量
+│   ├── packages.nix              # 跨平台工具、开发工具与环境变量
 │   ├── theme.nix                 # 共享 Catppuccin 策略
 │   ├── btop.nix                  # btop 配置
 │   ├── eza.nix                   # eza 与默认 Shell 集成
@@ -95,7 +96,7 @@ home/
 
 合成器与桌面 Shell 分别声明，组合模块负责两者的集成。Niri 用户模块提供通用 KDL；`niri-noctalia.nix` 用 HM 的 `lib.mkAfter` 在主配置末尾追加 `include "./desktop-niri-noctalia.kdl"`，并部署组合专用片段。Niri 原生 include 合并各文件的快捷键，后出现的同名快捷键优先。添加桌面组合时，复用通用模块、声明对应启动项和快捷键，并在系统主机入口选择合成器的 NixOS 集成。
 
-Yazi 本体由 `home/common/yazi.nix` 启用；`home/linux/yazi.nix` 增加 `wl-clipboard`、`xclip`。common 按共享职责组织；接入 Darwin 时复用共享模块，并逐项验证软件在 ARM macOS 上的支持情况。
+Yazi 本体由 `home/common/yazi.nix` 启用；`home/linux/yazi.nix` 增加 `wl-clipboard`、`xclip`。`home/common/` 只放跨平台内容，Linux 专属包集中在 `home/linux/packages.nix`；接入 Darwin 时复用共享模块，并逐项验证软件在 ARM macOS 上的支持情况。`lib/mkDarwinHost.nix` 已按相同结构提供 Darwin 组合入口，但尚未注册 `darwinConfigurations`，等真机到位再补主机模块。
 
 构建检查入口：
 

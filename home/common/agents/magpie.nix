@@ -1,10 +1,12 @@
 {
   pkgs,
   lib,
-  magpieApp,
+  magpieApp ? null,
   ...
 }:
 {
-  # Magpie 官方二进制不在 Nix 构建；此包固定上游源码并带桌面入口。
-  home.packages = lib.optionals pkgs.stdenv.hostPlatform.isLinux [ magpieApp ];
+  # 上游只发布 Linux 包，其他平台不传该参数。
+  home.packages = lib.optionals (magpieApp != null && pkgs.stdenv.hostPlatform.isLinux) [
+    magpieApp
+  ];
 }
