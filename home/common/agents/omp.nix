@@ -20,7 +20,7 @@
         ];
       });
     });
-    # 只声明与本机一致的通用外观和行为；模型、provider 与授权状态由 Magpie 管理。
+    # 只声明通用外观和行为；模型、provider 与授权状态由 Magpie 管理。
     settings = {
       theme = {
         light = "light-catppuccin";
