@@ -7,6 +7,10 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    darwin = {
+      url = "github:nix-darwin/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     catppuccin = {
       url = "github:catppuccin/nix/main";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -18,10 +22,6 @@
     # 固定上游源码的 Magpie 打包，附 magpie.cachix.org 缓存。
     magpie = {
       url = "git+https://forge.asnk.io/sugar/magpie";
-    };
-    darwin = {
-      url = "github:nix-darwin/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
   outputs =

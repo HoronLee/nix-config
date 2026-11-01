@@ -69,6 +69,9 @@
     stdenv.cc
     pkg-config
 
+    # 密码管理
+    bitwarden-desktop
+
     tree-sitter
   ];
 
