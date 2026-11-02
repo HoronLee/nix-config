@@ -10,5 +10,8 @@
     (lib.mkIf config.my.apps.ghostty.enable {
       homebrew.casks = [ "ghostty" ];
     })
+    (lib.mkIf config.my.apps.orbstack.enable {
+      homebrew.casks = [ "orbstack" ];
+    })
   ];
 }

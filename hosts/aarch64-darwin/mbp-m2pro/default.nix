@@ -20,5 +20,6 @@
   my.apps = {
     clash-verge.enable = true;
     ghostty.enable = true;
+    orbstack.enable = true;
   };
 }

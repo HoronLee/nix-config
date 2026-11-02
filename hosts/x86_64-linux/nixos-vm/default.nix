@@ -3,6 +3,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../../modules/nixos/system
+    ../../../modules/nixos/docker.nix
     ../../../modules/nixos/desktop
     ../../../modules/nixos/desktop/greeter.nix
     ../../../modules/nixos/apps.nix

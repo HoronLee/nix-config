@@ -5,6 +5,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../../modules/nixos/system
+    ../../../modules/nixos/docker.nix
     ../../../modules/nixos/server.nix
   ];
 
