@@ -59,7 +59,25 @@
           system = "x86_64-linux";
           hostModule = ./hosts/x86_64-linux/nixos-vm;
           username = "horonlee";
-          homeModule = ./home/hosts/nixos-vm.nix;
+          homeModule = ./home/profiles/linux-desktop-niri.nix;
+        };
+
+        # 生成 hosts/x86_64-linux/dell-r430/hardware-configuration.nix
+        # 并 git add 后，取消下面的注释。
+        # dell-r430 = mkNixosHost {
+        #   system = "x86_64-linux";
+        #   hostModule = ./hosts/x86_64-linux/dell-r430;
+        #   username = "horonlee";
+        #   homeModule = ./home/profiles/linux-server.nix;
+        # };
+      };
+
+      darwinConfigurations = {
+        mbp-m2pro = mkDarwinHost {
+          system = "aarch64-darwin";
+          hostModule = ./hosts/aarch64-darwin/mbp-m2pro;
+          username = "horonlee";
+          homeModule = ./home/profiles/darwin.nix;
         };
       };
     };

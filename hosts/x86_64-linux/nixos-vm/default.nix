@@ -2,15 +2,15 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../../modules/nixos/base.nix
-    ../../../modules/nixos/nix.nix
-    ../../../modules/nixos/user.nix
-    ../../../modules/nixos/ssh.nix
-    ../../../modules/nixos/desktop.nix
-    ../../../modules/nixos/niri.nix
-    ../../../modules/nixos/greeter.nix
-    ../../../modules/nixos/input-method.nix
+    ../../../modules/nixos/system
+    ../../../modules/nixos/desktop
+    ../../../modules/nixos/desktop/greeter.nix
+    ../../../modules/nixos/apps.nix
   ];
+
+  networking.hostName = "nixos-vm";
+
+  system.stateVersion = "26.05";
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -18,7 +18,8 @@
   boot.loader.systemd-boot.configurationLimit = 10;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos-vm";
-
-  system.stateVersion = "26.05";
+  my.apps = {
+    clash-verge.enable = true;
+    ghostty.enable = true;
+  };
 }

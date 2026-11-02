@@ -14,7 +14,4 @@
     # JACK 支持，暂不启用。
     # jack.enable = true;
   };
-
-  # Install firefox.
-  programs.firefox.enable = true;
 }

@@ -2,7 +2,8 @@
 {
   imports = [
     ./packages.nix
-    ./yazi.nix
+    ./tui/yazi.nix
+    ./apps/magpie.nix
   ];
 
   # 文件管理示例，暂不启用。

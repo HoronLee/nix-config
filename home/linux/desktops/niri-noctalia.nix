@@ -1,8 +1,8 @@
 { lib, ... }:
 {
   imports = [
-    ../niri
-    ../noctalia
+    ../wm/niri
+    ../ws/noctalia
   ];
 
   xdg.configFile = {
