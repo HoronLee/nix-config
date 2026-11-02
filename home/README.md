@@ -1,30 +1,42 @@
 # Home
 
-用户层配置。`core` 和 `gui` 是两个部署入口，`profiles/` 把它们和平台层组合成某类主机。
+用户层配置。`core.nix` 和 `gui.nix` 是两个入口，`profiles/` 把它们与平台层组合成具体主机。
 
 ## 入口
 
 | 文件 | 内容 | 用途 |
 | --- | --- | --- |
-| `core.nix` | CLI、TUI、Neovim、OMP、字体、主题 | 无 GUI 的服务器 |
+| `core.nix` | CLI、TUI、Neovim、OMP、字体、主题 | 服务器 |
 | `gui.nix` | `core.nix` + `common/gui` | 桌面和 macOS |
 | `linux/default.nix` | Linux CLI 包、Yazi | Linux core |
-| `linux/gui/` | Nautilus、Edge、Magpie | Linux GUI |
+| `linux/gui/` | Linux 专属 GUI | Linux 桌面 |
 | `profiles/` | 按主机角色组合 | flake 的 `homeModule` |
 
 ## Profiles
 
 | Profile | 导入 | 适用 |
 | --- | --- | --- |
-| `linux-server.nix` | `core.nix` + `linux` + `ssh-agent` | 无 GUI 服务器 |
-| `linux-desktop-niri.nix` | `gui.nix` + `linux` + `linux/gui` + Niri/Noctalia + Rime + SSH agent | Linux 桌面 |
+| `linux-server.nix` | `core.nix` + `linux` | 无 GUI 服务器 |
+| `linux-desktop-niri.nix` | `gui.nix` + `linux` + `linux/gui` + Niri/Noctalia + Rime | Linux 桌面 |
 | `darwin.nix` | `gui.nix` | macOS |
 
-`linux-server` 仍然安装 btop、yazi、OMP 等 TUI 工具，只是不导入任何 GUI 模块。
+SSH agent 由 `common/ssh.nix` 统一启用，Linux 使用 systemd，macOS 使用 launchd。
+
+## GUI 应用放置规则
+
+| 情况 | 位置 |
+| --- | --- |
+| 两个平台都有同一个 nix 包 | `common/gui/packages.nix` |
+| 只支持当前平台且始终安装 | 该平台 `gui/packages.nix` |
+| 只支持 macOS 且始终安装 | `modules/darwin/apps.nix` 的 cask |
+| 两个平台实现不同，且需要统一开关 | `my.apps` + 两侧实现 |
+| 需要选项、override、补丁、额外配置 | 单独 `<app>.nix` |
+
+`my.apps` 只用于有平台差异或需要统一开关的应用，不用于所有跨平台包。当前使用它的只有 `clash-verge`、`ghostty`、`obs`。
 
 ## 放哪里
 
-- 非交互 CLI 工具：`common/cli/`
+- 非交互 CLI：`common/cli/`
 - 交互式 TUI：`common/tui/`
 - 跨平台 GUI：`common/gui/`
 - Linux 专属 GUI：`linux/gui/`
@@ -33,14 +45,12 @@
 - 输入法：`linux/im/`
 - 桌面组合：`linux/desktops/`
 
-可选跨平台应用（Clash Verge、Ghostty、OBS、Obsidian）用 `my.apps` 开关，选项在 `modules/common/apps.nix`。
+## 自动导入
 
-## scanPaths
+`mylib.scanPaths ./.` 只读取当前目录的普通 `.nix` 文件，排除 `default.nix`，不递归子目录。
 
-叶子目录的 `default.nix` 使用 `mylib.scanPaths ./.` 自动导入同目录的 `.nix` 文件：
-
-- 排除 `default.nix` 自身。
-- 不递归子目录。
-- 组合文件（`core.nix`、`gui.nix`、`profiles/`）保持显式 imports，便于看出层级。
+- `cli/`、`tui/`、`terminals/`、`agents/` 使用自动导入。
+- `gui/` 使用显式 imports，便于看清文件职责。
+- 被当作目录导入的目录需要 `default.nix`；直接导入具体 `.nix` 文件的目录不需要。
 
 `mylib` 由 `lib/mkNixosHost.nix` 和 `lib/mkDarwinHost.nix` 通过 `home-manager.extraSpecialArgs` 传入。

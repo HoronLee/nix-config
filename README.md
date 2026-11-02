@@ -65,7 +65,7 @@ lib/
   scanPaths.nix            # 叶子目录自动导入
 hosts/<system>/<host>/     # 机器级系统配置
 modules/
-  common/apps.nix          # 跨平台应用选项
+  common/apps.nix          # 有平台差异的应用开关
   nixos/system/            # base、nix、user、ssh
   nixos/desktop/           # services、firefox、niri、greeter、input-method
   nixos/apps.nix           # NixOS 侧应用安装
@@ -84,7 +84,7 @@ home/
 - `hosts/`：硬件、bootloader、hostname、`system.stateVersion`。不放用户 dotfiles。
 - `modules/nixos/system/`：所有 NixOS 主机共享的系统基础。
 - `modules/nixos/desktop/`：桌面服务、Firefox、Niri、输入法。`greeter.nix` 单独导入，服务器默认不启动图形登录。
-- `modules/nixos/apps.nix`：跨平台应用的 NixOS 安装实现；`modules/darwin/apps.nix` 负责 macOS cask。
+- `modules/nixos/apps.nix`：需要 NixOS 系统集成的应用，例如 Clash Verge 的 service；`modules/darwin/apps.nix` 负责 macOS cask。
 - `home/core.nix`：CLI、TUI、Neovim、字体和主题，不含 GUI。服务器使用这一层。
 - `home/gui.nix`：`core.nix` 加上跨平台 GUI，桌面和 macOS 使用。
 - `home/linux/default.nix`：Linux 专属 CLI/TUI；`home/linux/gui/`：Linux GUI 应用。
@@ -94,26 +94,37 @@ home/
 
 | Profile | 导入内容 | 用途 |
 | --- | --- | --- |
-| `linux-server.nix` | `core.nix` + `linux` + `ssh-agent` | 无 GUI 的服务器 |
-| `linux-desktop-niri.nix` | `gui.nix` + `linux` + `linux/gui` + Niri/Noctalia + Rime + SSH agent | Linux 桌面 |
+| `linux-server.nix` | `core.nix` + `linux` | 无 GUI 的服务器 |
+| `linux-desktop-niri.nix` | `gui.nix` + `linux` + `linux/gui` + Niri/Noctalia + Rime | Linux 桌面 |
 | `darwin.nix` | `gui.nix` | macOS |
 
-`linux-server` 仍包含 btop、yazi、OMP 等 TUI 工具，只是不安装 GUI 应用。
+`linux-server` 仍包含 btop、yazi、OMP 等 TUI 工具，只是不安装 GUI 应用。SSH agent 由 `home/common/ssh.nix` 在 Linux 和 macOS 上统一启用。
+
+## 应用放置规则
+
+| 情况 | 位置 |
+| --- | --- |
+| 两个平台都有同一个 nix 包 | `home/common/gui/packages.nix` |
+| 只支持当前平台且始终安装 | 该平台 `gui/packages.nix` |
+| 只支持 macOS 且始终安装 | `modules/darwin/apps.nix` 的 cask 列表 |
+| 两个平台实现不同，并且需要统一开关 | `my.apps` + 两侧实现 |
+| 需要选项、override、补丁、额外配置 | 单独 `<app>.nix` |
+
+`my.apps` 只用于有平台差异或需要统一开关的应用，不用于所有跨平台包。完整说明见 [`home/README.md`](home/README.md#gui-应用放置规则)。
 
 ## 跨平台应用开关
 
-`clash-verge`、`ghostty`、`obs` 和 `obsidian` 用 `my.apps` 控制：
+`clash-verge`、`ghostty` 和 `obs` 用 `my.apps` 控制：
 
 ```nix
 my.apps = {
   clash-verge.enable = true;
   ghostty.enable = true;
   obs.enable = true;
-  obsidian.enable = true;
 };
 ```
 
-选项定义在 `modules/common/apps.nix`。NixOS 侧由 `modules/nixos/apps.nix` 安装，macOS 侧由 `modules/darwin/apps.nix` 安装 cask。它负责“这台桌面主机装不装某个跨平台应用”，不负责 GUI/无 GUI 的划分。Obsidian 只安装本体，vault、插件和 `.obsidian` 配置由同步插件管理。
+选项定义在 `modules/common/apps.nix`。Linux 和 macOS 的实现分别放在对应平台模块里；统一开关只负责“这台桌面主机装不装这个应用”。像 VS Code、Telegram、Obsidian 这类两个平台都用同一个 nix 包的应用，直接放在 `home/common/gui/packages.nix`，不再经过 `my.apps`。
 
 ## 服务器 Mihomo / ClashTui
 
@@ -157,6 +168,6 @@ nix eval --raw \
 
 - [hosts/README.md](hosts/README.md)：新增系统主机
 - [modules/README.md](modules/README.md)：系统模块分层
-- [home/README.md](home/README.md)：用户层与 profile
+- [home/README.md](home/README.md)：用户层、profile 与应用放置规则
 - [home/common/README.md](home/common/README.md)：跨平台用户模块
 - [home/linux/README.md](home/linux/README.md)：Linux 桌面、WM、WS、IM

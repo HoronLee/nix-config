@@ -1,8 +1,8 @@
-{ mylib, ... }:
+{ ... }:
 {
   imports = [
     ../terminals
     ../editor/zed
-  ]
-  ++ mylib.scanPaths ./.;
+    ./packages.nix
+  ];
 }

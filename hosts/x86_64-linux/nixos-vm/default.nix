@@ -19,6 +19,5 @@
     clash-verge.enable = true;
     ghostty.enable = true;
     obs.enable = true;
-    obsidian.enable = true;
   };
 }
