@@ -1,0 +1,211 @@
+[
+  {
+    "context": "Editor && VimControl && !menu",
+    "bindings": {
+      "space space": "file_finder::Toggle",
+      "space f b": "tab_switcher::Toggle",
+      "space f p": "projects::OpenRecent",
+      "space f g": "pane::DeploySearch",
+      "space /": "text_finder::Toggle",
+      "space e": "project_panel::ToggleFocus",
+      "space c s": "outline_panel::ToggleFocus",
+      "space g g": "git_panel::ToggleFocus",
+      "space g b": "git::Blame",
+      "space p d": "diagnostics::Deploy",
+      "space c f": "editor::Format",
+      "space c r": "editor::Rename",
+      "space c a": "editor::ToggleCodeActions",
+      "g r": "editor::FindAllReferences",
+      "space w k": "pane::SplitUp",
+      "space w j": "pane::SplitDown",
+      "space w h": "pane::SplitLeft",
+      "space w l": "pane::SplitRight",
+      "space w c": [
+        "pane::CloseAllItems",
+        {
+          "close_pinned": false
+        }
+      ],
+      "space b d": [
+        "pane::CloseActiveItem",
+        {
+          "close_pinned": false
+        }
+      ]
+    }
+  },
+  {
+    "context": "vim_mode == normal || vim_mode == visual",
+    "bindings": {
+      "s": "vim::PushSneak",
+      "shift-s": "vim::PushSneakBackward",
+      "g w": "vim::HelixJumpToWord"
+    }
+  },
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      "f": [
+        "vim::PushFindForward",
+        {
+          "before": false,
+          "multiline": true
+        }
+      ],
+      "t": [
+        "vim::PushFindForward",
+        {
+          "before": true,
+          "multiline": true
+        }
+      ],
+      "shift-f": [
+        "vim::PushFindBackward",
+        {
+          "after": false,
+          "multiline": true
+        }
+      ],
+      "shift-t": [
+        "vim::PushFindBackward",
+        {
+          "after": true,
+          "multiline": true
+        }
+      ]
+    }
+  },
+  {
+    "context": "Editor && vim_mode == normal && !menu",
+    "bindings": {
+      "shift-h": "pane::ActivatePreviousItem",
+      "shift-l": "pane::ActivateNextItem"
+    }
+  },
+  {
+    "context": "MarkdownPreview && !menu",
+    "bindings": {
+      "shift-h": "pane::ActivatePreviousItem",
+      "shift-l": "pane::ActivateNextItem"
+    }
+  },
+  {
+    "context": "!(Editor && vim_mode == insert)",
+    "bindings": {
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-j": "workspace::ActivatePaneDown",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-l": "workspace::ActivatePaneRight"
+    }
+  },
+  {
+    "context": "Dock",
+    "bindings": {
+      "ctrl-w h": "workspace::ActivatePaneLeft",
+      "ctrl-w l": "workspace::ActivatePaneRight",
+      "ctrl-w k": "workspace::ActivatePaneUp",
+      "ctrl-w j": "workspace::ActivatePaneDown"
+    }
+  },
+  {
+    "bindings": {
+      "ctrl-shift-k": "zed::OpenKeymap",
+      "ctrl-alt-n": "task::Spawn",
+      "ctrl-alt-r": [
+        "task::Rerun",
+        {
+          "reevaluate_context": false
+        }
+      ]
+    }
+  },
+  {
+    "context": "ProjectPanel",
+    "bindings": {
+      "y r": "workspace::CopyRelativePath"
+    }
+  },
+  {
+    "context": "ProjectPanel",
+    "unbind": {
+      "alt-cmd-shift-c": "workspace::CopyRelativePath"
+    }
+  },
+  {
+    "context": "ProjectPanel",
+    "bindings": {
+      "y y": "workspace::CopyPath"
+    }
+  },
+  {
+    "context": "ProjectPanel",
+    "unbind": {
+      "alt-cmd-c": "workspace::CopyPath"
+    }
+  },
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "r": "project_panel::Rename"
+    }
+  },
+  {
+    "context": "ProjectPanel && not_editing",
+    "unbind": {
+      "shift-r": "project_panel::Rename"
+    }
+  },
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "a": "project_panel::NewFile"
+    }
+  },
+  {
+    "context": "ProjectPanel && not_editing",
+    "unbind": {
+      "%": "project_panel::NewFile"
+    }
+  },
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "a d": "project_panel::NewDirectory"
+    }
+  },
+  {
+    "context": "ProjectPanel && not_editing",
+    "unbind": {
+      "d": "project_panel::NewDirectory"
+    }
+  },
+  {
+    "context": "NotebookEditor && notebook_mode == command",
+    "unbind": {
+      "d d": "notebook::DeleteCell"
+    }
+  },
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "d": "project_panel::Delete"
+    }
+  },
+  {
+    "context": "ProjectPanel && not_editing",
+    "unbind": {
+      "shift-d": "project_panel::Delete"
+    }
+  },
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      "space g v": "git::Diff"
+    }
+  },
+  {
+    "bindings": {
+      "ctrl-cmd-shift-g": "git_graph::Open"
+    }
+  }
+]
