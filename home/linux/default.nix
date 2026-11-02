@@ -4,7 +4,6 @@
     ./packages.nix
     ./tui/yazi.nix
   ];
-
   # 文件管理示例，暂不启用。
   # home.file.".config/i3/wallpaper.jpg".source = ./wallpaper.jpg;
   # home.file.".config/i3/scripts" = {
@@ -15,12 +14,10 @@
   # home.file.".xxx".text = ''
   #   xxx
   # '';
-
   # X11 DPI 设置示例，暂不启用。
   # xresources.properties = {
   #   "Xcursor.size" = 16;
   #   "Xft.dpi" = 172;
   # };
-
   fonts.fontconfig.enable = true;
 }
