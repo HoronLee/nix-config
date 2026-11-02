@@ -22,6 +22,12 @@
   "project_panel": {
     "dock": "left"
   },
+  "git_panel": {
+    "dock": "left"
+  },
+  "cursor_animation": {
+    "enabled": true
+  },
   "agent": {
     "dock": "right",
     "threads_sidebar": {
