@@ -56,7 +56,7 @@
     cargo
     lua55Packages.luarocks
 
-    # 语言服务与格式化。
+    # LSP & fmt
     nixd
     nixfmt
     tombi
