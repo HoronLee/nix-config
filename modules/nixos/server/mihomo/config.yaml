@@ -1,0 +1,22 @@
+mihomo:
+  core:
+    config_dir: /var/lib/private/mihomo
+    bin_path: /run/current-system/sw/bin/mihomo
+    config_path: /etc/mihomo/config.yaml
+  core_service:
+    service_name: mihomo
+    is_user: false
+
+singbox:
+  core:
+    bin_path: /run/current-system/sw/bin/sing-box
+    config_dir: /var/lib/clashtui/sing-box
+    config_path: /var/lib/clashtui/sing-box/config.json
+  core_service:
+    service_name: clashtui_singbox
+    is_user: false
+
+timeout:
+extra:
+  edit_cmd:
+  open_dir_cmd:

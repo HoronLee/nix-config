@@ -1,6 +1,10 @@
 { ... }:
 {
-  # 服务器没有本地显示输出；SSH 由 ssh.nix 提供。
+  imports = [
+    ./server/mihomo
+  ];
+
+  # 1U 服务器没有本地显示输出；SSH 由 ssh.nix 提供。
   hardware.enableRedistributableFirmware = true;
   services.smartd.enable = true;
 

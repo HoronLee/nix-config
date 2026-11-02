@@ -113,6 +113,21 @@ my.apps = {
 
 选项定义在 `modules/common/apps.nix`。NixOS 侧由 `modules/nixos/apps.nix` 安装，macOS 侧由 `modules/darwin/apps.nix` 安装 cask。它负责“这台桌面主机装不装某个跨平台应用”，不负责 GUI/无 GUI 的划分。
 
+## 服务器 Mihomo / ClashTui
+
+服务器通过 `modules/nixos/server/mihomo` 启用 `mihomo.service`。ClashTui 负责订阅和配置，进程、TUN 权限和开机启动由 NixOS 管理。
+
+```sh
+sudo clashtui
+```
+
+- `2 Files`：添加订阅 URL，选中后写入 `/etc/mihomo/config.yaml`。
+- `7 CoreSrvCtl`：启动或重启 `mihomo`。
+- 面板：SSH 转发 `9090` 后打开 `http://127.0.0.1:9090/ui`。
+- secret 在 `/var/lib/clashtui/mihomo/core_override_config.yaml`，初始为 `CHANGE_ME`。
+- 订阅链接需要返回 Clash YAML；base64 订阅先转换。
+- 用 `systemctl status mihomo` 查看服务状态。
+
 ## 状态版本
 
 - NixOS 的 `system.stateVersion` 使用首次安装的 release。`nixos-vm` 和 `dell-r430` 是 `26.05`，升级 nixpkgs 后不要跟着改。
