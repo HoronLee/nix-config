@@ -24,6 +24,7 @@ nixpkgs.lib.nixosSystem {
         omp.homeManagerModules.default
       ];
       home-manager.extraSpecialArgs = {
+        mylib = import ../lib;
         # 上游用 os.Executable() 写启动项，会绕过 wrapGAppsHook3 的环境。
         magpieApp = magpie.packages.${system}.magpie-app.overrideAttrs (old: {
           patches = (old.patches or [ ]) ++ [ ../pkgs/magpie/exec-wrapper.patch ];

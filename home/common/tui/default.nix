@@ -1,7 +1,4 @@
-{ ... }:
+{ mylib, ... }:
 {
-  imports = [
-    ./btop.nix
-    ./yazi.nix
-  ];
+  imports = mylib.scanPaths ./.;
 }

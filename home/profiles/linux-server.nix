@@ -1,7 +1,7 @@
 { ... }:
 {
   imports = [
-    ../default.nix
+    ../core.nix
     ../linux
     ../linux/ssh-agent.nix
   ];

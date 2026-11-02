@@ -10,8 +10,6 @@
     ./common/ssh.nix
     ./common/fonts.nix
     ./common/editor/nvim
-    ./common/editor/zed
-    ./common/terminals
   ];
 
   home.stateVersion = "26.05";

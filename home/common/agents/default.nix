@@ -1,6 +1,4 @@
-{ ... }:
+{ mylib, ... }:
 {
-  imports = [
-    ./omp.nix
-  ];
+  imports = mylib.scanPaths ./.;
 }

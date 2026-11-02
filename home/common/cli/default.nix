@@ -1,8 +1,4 @@
-{ ... }:
+{ mylib, ... }:
 {
-  imports = [
-    ./eza.nix
-    ./fzf.nix
-    ./git.nix
-  ];
+  imports = mylib.scanPaths ./.;
 }

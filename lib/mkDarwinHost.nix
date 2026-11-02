@@ -22,6 +22,9 @@ darwin.lib.darwinSystem {
         catppuccin.homeModules.catppuccin
         omp.homeManagerModules.default
       ];
+      home-manager.extraSpecialArgs = {
+        mylib = import ../lib;
+      };
       home-manager.users.${username} = homeModule;
     }
   ];

@@ -1,0 +1,3 @@
+{
+  scanPaths = import ./scanPaths.nix;
+}

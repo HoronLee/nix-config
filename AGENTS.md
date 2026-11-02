@@ -2,72 +2,96 @@
 
 ## Project Overview
 
-这是 HoronLee 的个人 NixOS 配置仓库，以 Nix/Flakes 和 Home Manager 声明系统、软件和用户环境。当前唯一输出为 `nixos-vm`（`x86_64-linux`、nixos-unstable、Niri + Noctalia、greetd/Noctalia Greeter）；物理机、服务器与 Darwin 尚未接入。
+这是 HoronLee 的个人 Nix 配置仓库，用 Nix Flakes 管理 NixOS、nix-darwin 和内嵌 Home Manager。当前输出：
+
+- `nixosConfigurations.nixos-vm`：`x86_64-linux`，UEFI + systemd-boot，Niri + Noctalia，Fcitx5-Rime。
+- `darwinConfigurations.mbp-m2pro`：`aarch64-darwin`，Homebrew cask。
+- `dell-r430`：host 模块已存在，`hardware-configuration.nix` 尚未生成，暂未注册到 flake。
 
 ## Architecture & Data Flow
 
-- `flake.nix` 注册主机并提供依赖；`lib/mkNixosHost.nix` 接收 `system`、`hostModule`、`username`、`homeModule`，组合 NixOS 和 HM。HM 复用系统 Nixpkgs，通过 `nixos-rebuild` 一起部署，无独立 HM 输出。`lib/mkDarwinHost.nix` 是按同样参数组合 nix-darwin 与 HM 的入口，尚未注册 `darwinConfigurations`。
-- 系统流：`flake.nix` → 构造器 → `hosts/x86_64-linux/nixos-vm/default.nix` → 硬件与 `modules/nixos/*.nix`。
-- 用户流：构造器 → `home/hosts/nixos-vm.nix` → 通用、Linux、桌面组合、Rime 和 SSH agent。`home/default.nix` 只导入通用配置。
-- 主机决定硬件、引导、hostname 和模块选择。输出名与声明的 hostname 均为 `nixos-vm`；首次应用前显式指定 `#nixos-vm`，应用成功且实际 hostname 已更新后，`nixos-rebuild --flake .` 可以省略输出名。
+- 系统流：`flake.nix` → `lib/mkNixosHost.nix` 或 `lib/mkDarwinHost.nix` → `hosts/<system>/<host>/default.nix` → `modules/nixos/*` 或 `modules/darwin/*`。
+- 用户流：构造器的 `homeModule` → `home/profiles/*.nix` → `home/core.nix` 或 `home/gui.nix` → `home/common/*`、`home/linux/*`。
+- Home Manager 复用系统 nixpkgs，通过 `nixos-rebuild` / `darwin-rebuild` 部署；没有独立 `homeConfigurations`。
+- `lib/scanPaths.nix` 通过 `mylib` 传入 HM，只用于叶子目录；组合文件保持显式 imports。
+- 主机决定硬件、引导、hostname、系统模块；profile 决定用户层是 core、gui 还是 Linux 桌面组合。
 
 ## Key Directories
 
-- `hosts/<platform>/<host>/`：主机装配入口和生成的硬件配置，按平台分组；不提前创建空主机。
-- `modules/nixos/`：`base.nix` 管网络、区域、基础编辑器与 `programs.nix-ld`；`nix.nix` 管 Nix 实验特性、构建 UID、二进制缓存与每周 GC；`user.nix` 管账户；`ssh.nix` 管 sshd；`desktop.nix` 管音频、打印与 Firefox；`niri.nix` 管合成器并复用官方 portal/Keyring 配套，`greeter.nix` 管图形登录；`input-method.nix` 管 Fcitx5-Rime。
-- `home/common/`：Git/Lazygit、Shell/Starship、SSH 客户端、Yazi、Neovim、终端、AI agent 配置与共享 Catppuccin 策略；`theme.nix` 声明默认 Mocha/Pink 与自动端口策略，原生主题的配置与端口覆盖放在对应应用模块。`packages.nix` 只放跨平台包，新增 Linux 专属包写入 `home/linux/packages.nix`。
-- `home/linux/`：用户工具、字体发现、Yazi 剪贴板依赖、SSH agent、Niri KDL、Noctalia TOML、Rime 用户补丁；`home/linux/desktops/niri-noctalia.nix` 组合 Shell 启动与快捷键；`assets/wallpapers/` 保存固定桌面与锁屏背景。
+- `hosts/<system>/<host>/`：主机装配入口和生成的硬件配置。`default.nix` 管 hostname、bootloader、`system.stateVersion` 和系统模块 imports。
+- `modules/nixos/system/`：`default.nix` 聚合 `base.nix`、`nix.nix`、`user.nix`、`ssh.nix`。
+- `modules/nixos/desktop/`：`default.nix` 聚合 `services.nix`、`firefox.nix`、`niri.nix`、`input-method.nix`；`greeter.nix` 单独导入。
+- `modules/nixos/apps.nix`：`my.apps` 的 NixOS 安装实现；`modules/darwin/apps.nix`：macOS cask 实现；`modules/common/apps.nix`：选项声明。
+- `modules/nixos/server.nix`：服务器通用项，目前是固件和 `smartd`。
+- `home/core.nix`：无 GUI 的用户层，含 CLI、TUI、Neovim、OMP、字体、主题。
+- `home/gui.nix`：`core.nix` 加 `home/common/gui`，供桌面和 macOS 使用。
+- `home/common/`：`cli/`、`tui/`、`terminals/`、`gui/`、`editor/`、`agents/`、`packages.nix`、`shell.nix`、`ssh.nix`、`fonts.nix`、`theme.nix`。
+- `home/linux/`：`default.nix` 是 Linux core；`gui/` 是 Linux GUI；`wm/niri/`、`ws/noctalia/`、`desktops/`、`im/rime/` 是桌面、Shell、输入法配置。
+- `home/profiles/`：`linux-server.nix`、`linux-desktop-niri.nix`、`darwin.nix`。
+
+## GUI 与服务器
+
+- `linux-server` 只导入 `core.nix`、`linux` 和 `ssh-agent`，不导入 `common/gui`、`linux/gui`、桌面组合或 Rime。
+- `linux-desktop-niri` 导入 `gui.nix`、`linux`、`linux/gui`、`desktops/niri-noctalia.nix`、`im/rime` 和 `ssh-agent`。
+- `darwin` 导入 `gui.nix`。
+- `my.apps` 只决定桌面主机上可选跨平台应用是否安装，例如 `clash-verge` 和 `ghostty`；它不负责 GUI/无 GUI 的划分。
+- 服务器当前没有代理软件。需要代理时用 `services.mihomo`，配置文件放在 Nix store 之外；不要为了代理把 Clash Verge GUI 加进 server profile。
 
 ## Development Commands
 
 在真实仓库 `~/projects/nix-config` 中执行：
 
 ```sh
-git add path/to/new-module.nix  # 替换为新增模块路径，Git flake 才能读取。
+git add path/to/new-module.nix  # 新增文件必须先进入 Git，flake 才能读取。
 nix eval .#nixosConfigurations.nixos-vm.config.system.build.toplevel.drvPath
 nixos-rebuild build --flake .#nixos-vm --no-link
-# 用户要求应用时：
+nix eval --raw .#darwinConfigurations.mbp-m2pro.config.system.build.toplevel.drvPath
+
+# 用户明确要求应用时：
 sudo nixos-rebuild switch --flake .#nixos-vm
+sudo darwin-rebuild switch --flake .#mbp-m2pro
 ```
 
-未提交的已跟踪文件仍可构建，dirty 警告正常。`nix flake update` 仅在明确升级时执行。未定义 `formatter`、`devShells` 或 lint 脚本，不把 `nix fmt`、`nix develop` 当作既有工作流。
+格式化使用 `nixfmt`，不要假设存在 `nix fmt` 或 `devShells`。`nix flake update` 只在明确升级依赖时执行。
 
 ## Code Conventions & Common Patterns
 
-- 两空格缩进，`name = value;`，显式 `imports`；目录导入读取 `default.nix`。函数头只接收需要的 `pkgs`、`lib`、`config` 等参数。
-- 默认值能省略就省略；启用项、用户选择和必要的非默认值显式声明。`programs.*` 已安装的软件不重复加入 `home.packages`。
-- 模块按类型和优先级合并，不能依赖后导入覆盖前导入；不用 `mkForce` 掩盖归属冲突，不新增未使用的扫描器、开关、参数或框架。
-- 依赖由主机构造器与模块系统传入，不逐文件手动传递 `pkgs/config`。无业务异步或状态机模式；遇到 Nix 求值错误修复原因，不隐藏错误。
-- 公共别名使用 `home.shellAliases`；Starship、Yazi、Kitty 的 Shell 集成优先沿用 HM 默认，不复制函数或每个终端启动一个 agent。
-- 系统 Neovim 供 root 基础编辑，HM 管个人编辑器；系统 Fish 管登录 Shell，HM Fish 管用户配置，不将这些视为重复。
-- `system.stateVersion` 与 `home.stateVersion` 独立维护，不随软件源升级修改。更换机器重新生成硬件文件，禁止复用 VM 的磁盘 UUID。
-- 保留任务之外的用户修改及已注释配置，不顺手启用或删除。GUI 修改不会反向写入 Nix。
+- 两空格缩进，`name = value;`；组合文件使用显式 `imports`。
+- 叶子目录的 `default.nix` 可以用 `mylib.scanPaths ./.`：只导入普通 `.nix` 文件，排除自身，不递归子目录。不要在组合层使用扫描器。
+- 模块按类型和优先级合并，不依赖导入顺序覆盖；不用 `mkForce` 掩盖归属冲突。
+- `system.stateVersion` 使用首次安装的 release，不随 nixpkgs 升级修改；NixOS 主机当前为 `26.05`，darwin 为 `7`，`home.stateVersion` 在 `home/core.nix`。
+- `hardware-configuration.nix` 按主机提交；它包含磁盘 UUID、subvol 和内核模块，不包含密钥。换机器时重新生成，禁止复用 VM 的文件。
+- bootloader 与固件、磁盘布局相关，放 host 模块，不放进硬件文件。
+- 私钥、订阅地址、controller secret 不进入 Git 或 Nix store；需要时用 sops-nix/agenix，或放在 `/etc` 下并限制权限。
+- 有 NixOS 模块的应用用模块安装；没有模块的 GUI 才放 `home/*/gui` 或 `home.packages`。`programs.*` 已安装的软件不重复加入 `home.packages`。
+- 保留任务之外的用户修改及已注释配置，不顺手启用或删除。
 
 ## Important Files
 
-- `flake.nix` / `flake.lock`：Nixpkgs `nixos-unstable`、HM `master`、Catppuccin `main`、OMP 官方 flake、`sugar/magpie` flake；HM、Catppuccin、OMP 与 Magpie 的 Nixpkgs 输入 follows 根输入，构造器通过 `home-manager.sharedModules` 导入 Catppuccin HM 模块与 OMP HM 模块。Noctalia 使用 `pkgs.noctalia`。具体版本由锁文件固定，日常配置编辑沿用现有锁定版本。两处 stateVersion 保持 `26.05`。
-- `hosts/x86_64-linux/nixos-vm/hardware-configuration.nix`：QEMU、挂载和 swap 的生成配置；引导器和系统 `stateVersion` 在同目录 `default.nix`。
-- `modules/nixos/user.nix`：账户与公钥；修改用户名需同步 flake 中的 `username`。`home/common/git.nix` 单独管理 Git 身份。
-- `modules/nixos/ssh.nix`：禁止 root 直登，普通用户暂保留密码认证；不得擅自改变认证策略。
-- `home/common/ssh.nix` / `home/linux/ssh-agent.nix`：按需加载密钥与 agent。私钥只放用户 `~/.ssh/`，不经 Nix 路径、`home.file` 或 Git 进入 Nix store。
-- `home/linux/rime/default.nix`：固定万象语法模型 URL 与 hash；LTS 同名文件可能被上游覆盖，校验失败需明确更新。只部署静态补丁和模型，用户词库、缓存、凭据不得入 Git/store。
-- Noctalia 负责 Polkit 提示、通知、剪贴板历史和锁屏；不叠加 KDE agent 或第二份 Noctalia 启动服务。当前无 idle 定时规则；GUI 覆盖层不自动进入声明。
-- Noctalia Greeter 使用 `appearance.scheme = "Catppuccin"` 内置配色。Noctalia 内置、社区应用模板均显式关闭；这两个开关的程序默认值为 true。config/bar TOML 通过 `mkOutOfStoreSymlink` 指向仓库，GUI 状态文件最后加载并覆盖同名键。Kitty、Ghostty、Fish、Yazi、Lazygit 使用原生 Latte/Mocha 选择；Starship 保留程序默认 ANSI 样式，fzf、eza、btop 使用官方 Mocha 主题文件。LazyVim 自行加载已有 Catppuccin。eza、fzf 使用 HM 默认 Shell 集成。应用主题逻辑归对应模块，Noctalia 模块只管理自身配置与壁纸。登录器/合成器迁移优先 boot 后重启验证。
-- `home/common/agents/omp.nix`：启用 OMP，并覆盖锁定 Bun 包中已弃用的平台属性，消除求值警告。`home/common/agents/magpie.nix` 安装 flake 打包的 `magpie-app`；该包固定上游源码，包装器设置 `MAGPIE_BUN` 与 `WEBKIT_DISABLE_COMPOSITING_MODE=0`。构建缓存见 `modules/nixos/nix.nix` 的 `magpie.cachix.org`。升级用 `nix flake update magpie`，不使用应用内自更新。
+- `flake.nix` / `flake.lock`：nixpkgs `nixos-unstable`、HM `master`、Catppuccin `main`、OMP、`sugar/magpie`。
+- `lib/mkNixosHost.nix` / `lib/mkDarwinHost.nix`：组合系统与内嵌 HM，并传入 `mylib`；NixOS 侧还传 `magpieApp`。
+- `hosts/x86_64-linux/nixos-vm/hardware-configuration.nix`：VM 的磁盘、挂载和 swap。
+- `modules/nixos/system/user.nix`：账户与公钥；改用户名需同步 flake 的 `username`。`home/common/cli/git.nix` 管 Git 身份。
+- `modules/nixos/system/ssh.nix`：sshd 策略；不得擅自改变认证方式。
+- `home/common/ssh.nix` / `home/linux/ssh-agent.nix`：客户端配置与 agent；私钥只放 `~/.ssh/`。
+- `home/linux/im/rime/default.nix`：固定万象语法模型 URL 与 hash；只部署静态补丁和模型，用户词库、缓存、凭据不入仓库。
+- `home/common/agents/omp.nix`：OMP 用户配置与 Bun 覆盖；`home/linux/gui/magpie.nix`：Linux 专用 Magpie 安装。
+- `home/linux/wm/niri/`：用户 KDL；`modules/nixos/desktop/niri.nix`：系统 session、portal、keyring。两者职责不同，不能互相替代。
+- `home/linux/ws/noctalia/`：Noctalia 用户 TOML 与壁纸；`modules/nixos/desktop/greeter.nix`：Noctalia Greeter 登录管理器。
 
 ## Runtime/Tooling Preferences
 
-- Nix 是软件与环境的声明来源，HM 管 dotfiles；不恢复 chezmoi，不用 mise 维护另一份全局工具清单。无项目专用 Node/Bun/Python 运行时要求。
-- 普通用户 `horonlee` 默认 Fish，root 保留 Bash。用户拥有仓库，日常编辑和 Git/Lazygit 不用 sudo；应用系统配置才提权。
-- 不默认提交、推送或生成 `before-*` 备份；私钥、密码、令牌不写入仓库或日志。
-- `/etc/nixos` 是用户仓库的链接。仅移除链接用 `sudo unlink /etc/nixos`；禁止对其执行递归删除，尤其不能带末尾 `/`。
+- Nix 是软件与环境的声明来源，HM 管 dotfiles；不恢复 chezmoi，不用 mise 维护另一份全局工具清单。
+- 普通用户 `horonlee` 默认 Fish，root 保留 Bash。日常编辑和 Git/Lazygit 不用 sudo；应用系统配置才提权。
+- 默认不提交、推送或生成 `before-*` 备份；私钥、密码、令牌不写入仓库或日志。
+- `/etc/nixos` 是用户仓库的链接。移除链接只用 `sudo unlink /etc/nixos`，禁止递归删除。
 
 ## Testing & QA
 
-- 无测试框架、覆盖率目标、CI 或仓库脚本。`nix flake check` 可检查输出求值，但无自定义 `checks`，不能代替整机构建。
-- 配置改动至少完成 `build`；用户自行验证功能，默认不启动 GUI、不做交互验收、不运行 `switch/boot`，明确要求应用时除外。区分构建通过与功能验证。
-- 文档改动只核对路径、命令和事实，不为此添加测试设施。HM 接管文件遇到冲突时保留用户内容，不强制覆盖或删除来绕过检查。
-- 维护笔记写到宿主机 `~/nixos.md`，不写进 `~/Niri.md`。Nix 回滚不恢复文档、数据库等动态数据。
+- 无测试框架、覆盖率目标、CI 或仓库脚本。`nix flake check` 可检查输出求值，但不能代替整机构建。
+- 配置改动至少完成 `build` 或对应平台的 `nix eval`；用户自行验证功能。默认不启动 GUI、不做交互验收、不运行 `switch/boot`，明确要求应用时除外。
+- 文档改动只核对路径、命令和事实，不为此添加测试设施。
+- 维护笔记写到宿主机 `~/nixos.md`。Nix 回滚不恢复文档、数据库等动态数据。
 
 ## 参考资料
 

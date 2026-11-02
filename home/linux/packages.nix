@@ -1,12 +1,6 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
-    # 文件浏览器
-    nautilus
-
-    # 网页浏览器
-    microsoft-edge
-
     # 性能与资源监控
     iotop
     iftop

@@ -5,18 +5,11 @@
   imports = [
     ./hardware-configuration.nix
     ../../../modules/nixos/system
-    ../../../modules/nixos/desktop/niri.nix
-    ../../../modules/nixos/desktop/input-method.nix
     ../../../modules/nixos/server.nix
-    ../../../modules/nixos/apps.nix
   ];
 
   networking.hostName = "dell-r430";
 
+  # 使用 26.05 ISO 安装，状态版本保持安装时的 release。
   system.stateVersion = "26.05";
-
-  my.apps = {
-    clash-verge.enable = true;
-    ghostty.enable = true;
-  };
 }
