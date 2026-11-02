@@ -33,7 +33,7 @@
 - 输入法：`linux/im/`
 - 桌面组合：`linux/desktops/`
 
-可选跨平台应用（Clash Verge、Ghostty）用 `my.apps` 开关，选项在 `modules/common/apps.nix`。
+可选跨平台应用（Clash Verge、Ghostty、OBS、Obsidian）用 `my.apps` 开关，选项在 `modules/common/apps.nix`。
 
 ## scanPaths
 

@@ -102,16 +102,18 @@ home/
 
 ## 跨平台应用开关
 
-`clash-verge` 和 `ghostty` 用 `my.apps` 控制：
+`clash-verge`、`ghostty`、`obs` 和 `obsidian` 用 `my.apps` 控制：
 
 ```nix
 my.apps = {
   clash-verge.enable = true;
   ghostty.enable = true;
+  obs.enable = true;
+  obsidian.enable = true;
 };
 ```
 
-选项定义在 `modules/common/apps.nix`。NixOS 侧由 `modules/nixos/apps.nix` 安装，macOS 侧由 `modules/darwin/apps.nix` 安装 cask。它负责“这台桌面主机装不装某个跨平台应用”，不负责 GUI/无 GUI 的划分。
+选项定义在 `modules/common/apps.nix`。NixOS 侧由 `modules/nixos/apps.nix` 安装，macOS 侧由 `modules/darwin/apps.nix` 安装 cask。它负责“这台桌面主机装不装某个跨平台应用”，不负责 GUI/无 GUI 的划分。Obsidian 只安装本体，vault、插件和 `.obsidian` 配置由同步插件管理。
 
 ## 服务器 Mihomo / ClashTui
 

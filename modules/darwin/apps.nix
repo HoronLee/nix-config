@@ -1,7 +1,6 @@
 { config, lib, ... }:
 {
   imports = [ ../common/apps.nix ];
-
   config = lib.mkMerge [
     # nixpkgs 的 clash-verge-rev 只支持 Linux，macOS 使用官方 cask。
     (lib.mkIf config.my.apps.clash-verge.enable {
@@ -9,6 +8,12 @@
     })
     (lib.mkIf config.my.apps.ghostty.enable {
       homebrew.casks = [ "ghostty" ];
+    })
+    (lib.mkIf config.my.apps.obs.enable {
+      homebrew.casks = [ "obs" ];
+    })
+    (lib.mkIf config.my.apps.obsidian.enable {
+      homebrew.casks = [ "obsidian" ];
     })
     (lib.mkIf config.my.apps.orbstack.enable {
       homebrew.casks = [ "orbstack" ];
