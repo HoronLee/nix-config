@@ -24,7 +24,13 @@ nixpkgs.lib.nixosSystem {
         omp.homeManagerModules.default
       ];
       home-manager.extraSpecialArgs = {
-        magpieApp = magpie.packages.${system}.magpie-app;
+        # 上游用 os.Executable() 写启动项，会绕过 wrapGAppsHook3 的环境。
+        magpieApp = magpie.packages.${system}.magpie-app.overrideAttrs (old: {
+          patches = (old.patches or [ ]) ++ [ ../pkgs/magpie/exec-wrapper.patch ];
+          preFixup = (old.preFixup or "") + ''
+            gappsWrapperArgs+=(--set MAGPIE_EXECUTABLE "$out/bin/magpie-app")
+          '';
+        });
       };
       home-manager.users.${username} = homeModule;
     }

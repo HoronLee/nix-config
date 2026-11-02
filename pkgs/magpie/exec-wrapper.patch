@@ -1,0 +1,31 @@
+--- a/internal/autostart/autostart.go
++++ b/internal/autostart/autostart.go
+@@ -71,6 +71,9 @@
+ 	if p := os.Getenv("APPIMAGE"); p != "" {
+ 		return p, nil
+ 	}
++	if p := os.Getenv("MAGPIE_EXECUTABLE"); p != "" {
++		return p, nil
++	}
+ 	exe, err := os.Executable()
+ 	if err != nil {
+ 		return "", err
+--- a/internal/gui/scheme_linux.go
++++ b/internal/gui/scheme_linux.go
+@@ -40,9 +40,13 @@
+ 	if os.Getenv("FLATPAK_ID") != "" {
+ 		return nil
+ 	}
+-	exe, err := os.Executable()
+-	if err != nil {
+-		return err
++	exe := os.Getenv("MAGPIE_EXECUTABLE")
++	if exe == "" {
++		var err error
++		exe, err = os.Executable()
++		if err != nil {
++			return err
++		}
+ 	}
+ 	data := dataHome()
+ 	iconErr := installIcon(data)
