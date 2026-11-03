@@ -21,6 +21,7 @@
     interactiveShellInit = ''
       fish_config theme choose catppuccin
       set -g fish_greeting
+      mise activate fish | source
     '';
   };
 

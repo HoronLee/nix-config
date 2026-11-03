@@ -22,7 +22,7 @@
 - `modules/nixos/system/`：`default.nix` 聚合 `base.nix`、`nix.nix`、`user.nix`、`ssh.nix`。
 - `modules/nixos/desktop/`：`default.nix` 聚合 `services.nix`、`firefox.nix`、`niri.nix`、`input-method.nix`；`greeter.nix` 单独导入。
 - `modules/nixos/apps.nix`：`my.apps` 的 NixOS 安装实现；`modules/darwin/apps.nix`：macOS cask 实现；`modules/common/apps.nix`：选项声明。
-- `modules/nixos/server.nix`：服务器通用项，目前是固件和 `smartd`。
+- `modules/nixos/server.nix`：服务器通用项，包含固件、`smartd` 和 `server/mihomo`。
 - `home/core.nix`：无 GUI 的用户层，含 CLI、TUI、Neovim、OMP、字体、主题。
 - `home/gui.nix`：`core.nix` 加 `home/common/gui`，供桌面和 macOS 使用。
 - `home/common/`：`cli/`、`tui/`、`terminals/`、`gui/`、`editor/`、`agents/`、`packages.nix`、`shell.nix`、`ssh.nix`、`fonts.nix`、`theme.nix`。
@@ -31,11 +31,11 @@
 
 ## GUI 与服务器
 
-- `linux-server` 只导入 `core.nix`、`linux` 和 `ssh-agent`，不导入 `common/gui`、`linux/gui`、桌面组合或 Rime。
-- `linux-desktop-niri` 导入 `gui.nix`、`linux`、`linux/gui`、`desktops/niri-noctalia.nix`、`im/rime` 和 `ssh-agent`。
+- `linux-server` 只导入 `core.nix` 和 `linux`，不导入 `common/gui`、`linux/gui`、桌面组合或 Rime。
+- `linux-desktop-niri` 导入 `gui.nix`、`linux`、`linux/gui`、`desktops/niri-noctalia.nix` 和 `im/rime`。
 - `darwin` 导入 `gui.nix`。
-- `my.apps` 只决定桌面主机上可选跨平台应用是否安装，例如 `clash-verge` 和 `ghostty`；它不负责 GUI/无 GUI 的划分。
-- 服务器当前没有代理软件。需要代理时用 `services.mihomo`，配置文件放在 Nix store 之外；不要为了代理把 Clash Verge GUI 加进 server profile。
+- `my.apps` 只决定桌面主机上可选跨平台应用是否安装，例如 `clash-verge`、`ghostty` 和 `obs`；它不负责 GUI/无 GUI 的划分。
+- 服务器需要代理时用 `services.mihomo`，配置文件放在 Nix store 之外；不要为了代理把 Clash Verge GUI 加进 server profile。
 
 ## Development Commands
 
@@ -73,15 +73,16 @@ sudo darwin-rebuild switch --flake .#mbp-m2pro
 - `hosts/x86_64-linux/nixos-vm/hardware-configuration.nix`：VM 的磁盘、挂载和 swap。
 - `modules/nixos/system/user.nix`：账户与公钥；改用户名需同步 flake 的 `username`。`home/common/cli/git.nix` 管 Git 身份。
 - `modules/nixos/system/ssh.nix`：sshd 策略；不得擅自改变认证方式。
-- `home/common/ssh.nix` / `home/linux/ssh-agent.nix`：客户端配置与 agent；私钥只放 `~/.ssh/`。
+- `home/common/ssh.nix`：客户端配置与 agent；私钥只放 `~/.ssh/`。
 - `home/linux/im/rime/default.nix`：固定万象语法模型 URL 与 hash；只部署静态补丁和模型，用户词库、缓存、凭据不入仓库。
-- `home/common/agents/omp.nix`：OMP 用户配置与 Bun 覆盖；`home/linux/gui/magpie.nix`：Linux 专用 Magpie 安装。
+- `home/common/agents/`：OMP、Codex、Claude 等 agent 工具；`home/linux/gui/magpie.nix`：Linux 专用 Magpie 安装。
 - `home/linux/wm/niri/`：用户 KDL；`modules/nixos/desktop/niri.nix`：系统 session、portal、keyring。两者职责不同，不能互相替代。
 - `home/linux/ws/noctalia/`：Noctalia 用户 TOML 与壁纸；`modules/nixos/desktop/greeter.nix`：Noctalia Greeter 登录管理器。
 
 ## Runtime/Tooling Preferences
 
-- Nix 是软件与环境的声明来源，HM 管 dotfiles；不恢复 chezmoi，不用 mise 维护另一份全局工具清单。
+- Nix 声明系统级与用户级软件环境；Home Manager 管用户级软件包和 dotfiles，系统级配置由 NixOS/nix-darwin 模块负责。
+- `mise` 只用于 nixpkgs 难以打包的 npm 工具和项目版本切换；其余工具优先用 Nix，重复项由使用者主动避免。
 - 普通用户 `horonlee` 默认 Fish，root 保留 Bash。日常编辑和 Git/Lazygit 不用 sudo；应用系统配置才提权。
 - 默认不提交、推送或生成 `before-*` 备份；私钥、密码、令牌不写入仓库或日志。
 - `/etc/nixos` 是用户仓库的链接。移除链接只用 `sudo unlink /etc/nixos`，禁止递归删除。

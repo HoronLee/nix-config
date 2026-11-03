@@ -12,7 +12,9 @@ modules/
 │   ├── docker.nix           # Docker Engine、Compose、Buildx
 │   ├── server.nix           # 服务器通用项
 │   └── server/mihomo/       # Mihomo 服务
-└── darwin/apps.nix          # macOS cask 与差异实现
+└── darwin/
+    ├── default.nix          # Darwin 公共入口：Homebrew 策略
+    └── apps.nix             # macOS cask 与差异实现
 ```
 
 ## NixOS
@@ -21,6 +23,13 @@ modules/
 - `desktop/default.nix` 聚合桌面服务、Firefox、Niri 和输入法；`greeter.nix` 单独导入，服务器不会启动图形登录。
 - `apps.nix` 实现需要 NixOS 集成的应用，例如 `programs.clash-verge`。
 - `server.nix` 放服务器通用项：固件、`smartd`，并导入 `server/mihomo`。
+
+## Darwin
+
+- `default.nix` 是所有 Darwin 主机共用的入口，启用 Homebrew 并将 activation 更新/升级设为 `false`。
+- `apps.nix` 声明 cask；`homebrew.enable` 只调用已有 `brew`，不会安装 Homebrew 本体。
+- `nix-homebrew` 未引入；brew 包更新继续手动执行 `brew upgrade`。
+- `system.primaryUser` 由 host 提供，Homebrew 默认使用该用户。
 
 ## 应用开关
 

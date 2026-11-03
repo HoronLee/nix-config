@@ -1,7 +1,7 @@
 { ... }:
 {
   imports = [
-    ../../../modules/darwin/apps.nix
+    ../../../modules/darwin
   ];
   networking.hostName = "mbp-m2pro";
   system.stateVersion = 7;
@@ -10,7 +10,6 @@
     name = "horonlee";
     home = "/Users/horonlee";
   };
-  homebrew.enable = true;
   my.apps = {
     clash-verge.enable = true;
     ghostty.enable = true;
