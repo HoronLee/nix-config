@@ -25,7 +25,6 @@
     nmap
     wget
     # 基础工具。
-    cowsay
     file
     which
     tree
@@ -33,12 +32,11 @@
     gnutar
     gawk
     gnupg
+    viddy
+    lsof
     # Nix 构建日志。
     nix-output-monitor
-    # 资源监控与文件占用。
-    lsof
-    # 开发工具。
-    # 语言。
+    # 编程语言。
     go_latest
     python315
     nodejs_latest
@@ -53,7 +51,10 @@
     (yarn.override { nodejs = nodejs_latest; })
     cargo
     lua55Packages.luarocks
-    # LSP & fmt
+    # Protobuf 与接口定义。
+    buf
+    protobuf
+    # LSP 与格式化。
     nixd
     nixfmt
     tombi
@@ -64,7 +65,7 @@
     golangci-lint
     just-lsp
     typescript
-    # 构建工具。
+    # 构建与发布。
     cmake
     gnumake
     just
@@ -72,46 +73,42 @@
     stdenv.cc
     pkg-config
     nsis
-    # 代码统计与内容提取。
-    cloc
-    defuddle
-    # 开发辅助。
-    agent-browser
-    buf
-    chezmoi
-    gh
-    helix
-    emacs
-    imagemagick
-    protobuf
-    rtk
-    tea
-    tmux
-    tokei
     upx
-    viddy
-    viu
-    watch
-    chafa
+    # 代码统计。
+    tokei
+    # 代码托管与协作。
+    gh
+    tea
+    # 权限与身份。
+    openfga-cli
+    # AI 工具。
+    agent-browser
+    rtk
+    # 终端文本与图像展示。
+    cowsay
     figlet
+    chafa
+    viu
     # 文档与媒体。
     ffmpeg
     poppler
+    imagemagick
+    defuddle
     # 网络诊断与自动化。
     grpcurl
     sshpass
-    # 分布式存储。
-    etcd
     # Kubernetes。
     kubebuilder
     kubectl
     kubernetes-helm
     # 负载测试。
     k6
-    # 权限服务。
-    openfga
     # 虚拟化。
     qemu
+    # 配置管理。
+    chezmoi
+    # 终端会话。
+    tmux
   ];
   # Go / Cargo / uv 等用户安装的命令不写入只读 Nix profile。
   home.sessionPath = [
