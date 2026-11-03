@@ -45,9 +45,27 @@ community_ids = ["telegram"]
 # 壁纸
 [wallpaper]
 directory = "~/Pictures/Wallpapers"
+directory_light = "~/Pictures/Wallpapers/light"
+directory_dark = "~/Pictures/Wallpapers/dark"
 
 [wallpaper.default]
-path = "~/Pictures/Wallpapers/nixos-1.png"
+path = "~/Pictures/Wallpapers/nixos-long.jpg"
+
+# 启动时按已解析的主题选择壁纸；默认图作为 IPC 就绪前的回退。
+# 主题在亮暗之间切换时立即替换壁纸。
+[hooks]
+started = '''
+case "$(noctalia msg theme-mode-get)" in
+  light) noctalia msg wallpaper-set "$HOME/Pictures/Wallpapers/light/nixos-catppuccin-latte-2560x1440.png" ;;
+  dark) noctalia msg wallpaper-set "$HOME/Pictures/Wallpapers/dark/nixos-catppuccin-mocha-2560x1440.png" ;;
+esac
+'''
+theme_mode_changed = '''
+case "$NOCTALIA_THEME_MODE" in
+  light) noctalia msg wallpaper-set "$HOME/Pictures/Wallpapers/light/nixos-catppuccin-latte-2560x1440.png" ;;
+  dark) noctalia msg wallpaper-set "$HOME/Pictures/Wallpapers/dark/nixos-catppuccin-mocha-2560x1440.png" ;;
+esac
+'''
 
 # 时钟
 [widget.clock]

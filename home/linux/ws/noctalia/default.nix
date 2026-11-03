@@ -7,11 +7,17 @@
     adw-gtk3
   ];
 
-  # 原生 TOML 指向仓库，编辑后由 Noctalia 热加载。
-  xdg.configFile."noctalia/config.toml".source =
-    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/projects/nix-config/home/linux/ws/noctalia/config.toml";
-  xdg.configFile."noctalia/bar.toml".source =
-    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/projects/nix-config/home/linux/ws/noctalia/bar.toml";
+  # 声明式配置由 Home Manager 部署，Noctalia 的运行时改动写入 settings.toml。
+  xdg.configFile."noctalia/config.toml".source = ./config.toml;
+  xdg.configFile."noctalia/bar.toml".source = ./bar.toml;
 
-  home.file."Pictures/Wallpapers/nixos-1.png".source = ../../../../assets/wallpapers/nixos-1.png;
+  # 壁纸资源不是应用运行时状态；目录通过动态链接指向仓库，便于增删图片。
+  home.file = {
+    "Pictures/Wallpapers/nixos-long.jpg".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/projects/nix-config/assets/wallpapers/nixos-long.jpg";
+    "Pictures/Wallpapers/light".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/projects/nix-config/assets/wallpapers/light";
+    "Pictures/Wallpapers/dark".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/projects/nix-config/assets/wallpapers/dark";
+  };
 }

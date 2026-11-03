@@ -47,5 +47,21 @@
   "terminal": {
     "font_family": "Maple Mono NF CN",
     "font_size": 14.0
+  },
+  "theme": {
+    "mode": "system",
+    "light": "Catppuccin Latte (pink)",
+    "dark": "Catppuccin Mocha (pink)"
+  },
+  "icon_theme": {
+    "light": "Catppuccin Latte",
+    "dark": "Catppuccin Mocha"
+  },
+  "auto_install_extensions": {
+    "catppuccin-icons": true,
+    "nix": true,
+    "sql": true,
+    "toml": true,
+    "json5": true
   }
 }

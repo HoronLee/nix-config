@@ -1,30 +1,24 @@
-{ lib, config, ... }:
-let
-  accent = " (${config.catppuccin.zed.accent})";
-  settings = lib.importJSON ./settings.json;
-in
+{ config, lib, ... }:
 {
   programs.zed-editor = {
     enable = true;
-    # 扩展在 Zed 首次启动时自动安装；catppuccin-icons 由 catppuccin 模块追加。
-    extensions = [
-      "nix"
-      "sql"
-      "toml"
-      "json5"
-    ];
-    userSettings = settings // {
-      # Catppuccin 模块默认把 light/dark 都写成 mocha；这里强制改为跟随系统亮暗。
-      theme = lib.mkForce {
-        mode = "system";
-        light = "Catppuccin Latte${accent}";
-        dark = "Catppuccin Mocha${accent}";
-      };
-      icon_theme = lib.mkForce {
-        light = "Catppuccin Latte";
-        dark = "Catppuccin Mocha";
-      };
-    };
-    userKeymaps = lib.importJSON ./keymap.json;
+    # 设置和快捷键由仓库文件提供，Zed 负责写入。
+    mutableUserSettings = false;
+    mutableUserKeymaps = false;
+
+    # Catppuccin 模块会注入 theme/icon_theme 和 catppuccin-icons；
+    # 这里清空生成项，避免和下面的可写符号链接冲突。
+    userSettings = lib.mkForce { };
+    userKeymaps = lib.mkForce [ ];
+    extensions = lib.mkForce [ ];
   };
+
+  # Zed 写入 settings.json 前会 canonicalize，keymap.json 直接写入；
+  # 文件符号链接会保留，GUI 修改会落到仓库。
+  xdg.configFile."zed/settings.json".source =
+    config.lib.file.mkOutOfStoreSymlink
+      "${config.home.homeDirectory}/projects/nix-config/home/common/editor/zed/settings.json";
+  xdg.configFile."zed/keymap.json".source =
+    config.lib.file.mkOutOfStoreSymlink
+      "${config.home.homeDirectory}/projects/nix-config/home/common/editor/zed/keymap.json";
 }
