@@ -4,7 +4,9 @@
 
 ```text
 modules/
-├── common/apps.nix          # 有平台差异的应用开关
+├── common/
+│   ├── apps.nix             # 有平台差异的应用开关
+│   └── nix.nix              # Linux 与 macOS 共用的 Nix/nixpkgs 设置
 ├── nixos/
 │   ├── system/              # base、nix、user、ssh
 │   ├── desktop/             # services、firefox、niri、greeter、input-method
@@ -17,16 +19,21 @@ modules/
     └── apps.nix             # macOS cask 与差异实现
 ```
 
+## Common
+
+- `nix.nix` 统一开启 `allowUnfree` 和 `nix-command`、`flakes`。
+- `auto-allocate-uids`、`configurable-impure-env` 属于 NixOS 专属设置，留在 `nixos/system/nix.nix`。
+
 ## NixOS
 
-- `system/default.nix` 聚合 `base.nix`、`nix.nix`、`user.nix`、`ssh.nix`。
+- `system/default.nix` 聚合 `common/nix.nix`、`base.nix`、`nix.nix`、`user.nix`、`ssh.nix`。
 - `desktop/default.nix` 聚合桌面服务、Firefox、Niri 和输入法；`greeter.nix` 单独导入，服务器不会启动图形登录。
 - `apps.nix` 实现需要 NixOS 集成的应用，例如 `programs.clash-verge`。
 - `server.nix` 放服务器通用项：固件、`smartd`，并导入 `server/mihomo`。
 
 ## Darwin
 
-- `default.nix` 是所有 Darwin 主机共用的入口，启用 Homebrew 并将 activation 更新/升级设为 `false`。
+- `default.nix` 是所有 Darwin 主机共用的入口，导入 `common/nix.nix` 并启用 Homebrew；activation 不自动更新或升级 brew 包。
 - `apps.nix` 声明 cask；`homebrew.enable` 只调用已有 `brew`，不会安装 Homebrew 本体。
 - `nix-homebrew` 未引入；brew 包更新继续手动执行 `brew upgrade`。
 - `system.primaryUser` 由 host 提供，Homebrew 默认使用该用户。
@@ -48,5 +55,6 @@ my.apps = {
 ## 新增模块
 
 - 系统服务、用户、启动：`modules/nixos/system/` 或 `modules/nixos/desktop/`。
+- 两个平台都需要的基础设置：`modules/common/`，再由两侧入口导入。
 - 需要平台差异的应用：在 `modules/common/apps.nix` 加选项，再在两侧实现。
 - 只在服务器使用的服务：`modules/nixos/server.nix` 或新建子模块，由 host 显式导入。
