@@ -5,5 +5,6 @@
     ./firefox.nix
     ./niri.nix
     ./input-method.nix
+    ./keyd.nix
   ];
 }

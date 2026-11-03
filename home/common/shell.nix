@@ -19,6 +19,7 @@
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
+      fish_vi_key_bindings
       fish_config theme choose catppuccin
       set -g fish_greeting
       mise activate fish | source
