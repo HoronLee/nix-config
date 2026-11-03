@@ -15,10 +15,6 @@
       url = "github:catppuccin/nix/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    omp = {
-      url = "github:can1357/oh-my-pi";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     # 固定上游源码的 Magpie 打包，附 magpie.cachix.org 缓存。
     magpie = {
       url = "git+https://forge.asnk.io/sugar/magpie";
@@ -29,7 +25,6 @@
       nixpkgs,
       home-manager,
       catppuccin,
-      omp,
       magpie,
       darwin,
       ...
@@ -40,7 +35,6 @@
           nixpkgs
           home-manager
           catppuccin
-          omp
           magpie
           ;
       };
@@ -49,7 +43,6 @@
           home-manager
           darwin
           catppuccin
-          omp
           ;
       };
     in

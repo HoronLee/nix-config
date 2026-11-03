@@ -1,6 +1,4 @@
 {
-  lib,
-  options,
   pkgs,
   ...
 }:
@@ -64,24 +62,7 @@ let
   configFile = (pkgs.formats.yaml { }).generate "omp-config.yml" settings;
 in
 {
-  programs.omp = {
-    enable = true;
-    # 修正锁定 nix-bun 的旧平台判断，保留相同依赖与构建输出。
-    package = options.programs.omp.package.default.override (args: {
-      bun = args.bun.overrideAttrs (_: {
-        nativeBuildInputs = [
-          pkgs.unzip
-        ]
-        ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [ pkgs.autoPatchelfHook ];
-        buildInputs = lib.optionals pkgs.stdenv.hostPlatform.isLinux [
-          pkgs.stdenv.cc.cc.lib
-          pkgs.zlib
-        ];
-      });
-    });
-    # 不使用 HM 模块的每次覆盖；下面只在 config.yml 缺失时注入一次。
-    settings = null;
-  };
+  home.packages = [ pkgs.omp ];
 
   # Magpie 把 modelRoles 和 provider 写进 OMP 配置；后续 switch 不能覆盖。
   # 新机器第一次 activation 注入静态设置，已有机器直接跳过。

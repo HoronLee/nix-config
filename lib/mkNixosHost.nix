@@ -2,7 +2,6 @@
   nixpkgs,
   home-manager,
   catppuccin,
-  omp,
   magpie,
 }:
 {
@@ -17,13 +16,8 @@ nixpkgs.lib.nixosSystem {
     hostModule
     home-manager.nixosModules.home-manager
     {
-      home-manager.useGlobalPkgs = true;
-      home-manager.useUserPackages = true;
-      # 首次部署可写 dotfiles 时保留手动版本，避免 activation 因冲突中止。
-      home-manager.backupFileExtension = "hm-backup";
       home-manager.sharedModules = [
         catppuccin.homeModules.catppuccin
-        omp.homeManagerModules.default
       ];
       home-manager.extraSpecialArgs = {
         mylib = import ../lib;

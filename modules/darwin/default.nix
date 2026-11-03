@@ -1,5 +1,6 @@
 {
   imports = [
+    ../common/home-manager.nix
     ../common/nix.nix
     ./apps.nix
   ];
