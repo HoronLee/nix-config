@@ -8,8 +8,9 @@ common/
 ├── terminals/    # Ghostty、Kitty
 ├── gui/          # 跨平台 GUI 包
 ├── editor/       # Neovim、Zed
+├── im/rime/      # Fcitx5 与 Squirrel 共用的 Rime 配置
 ├── fonts.nix
-├── packages.nix  # 语言、CLI 与开发工具
+├── packages.nix  # 语言、构建、LSP、CLI 与开发工具
 ├── shell.nix     # Fish、Bash、Starship
 ├── ssh.nix       # SSH 客户端与 agent
 └── theme.nix     # Catppuccin
@@ -18,6 +19,7 @@ common/
 - `gui/` 只放两个平台都使用同一个 nix 包的应用；Linux 专属放 `home/linux/gui/`。
 - `gui/default.nix` 显式导入 `packages.nix`；`packages.nix` 只放无条件安装的 GUI 包。
 - `cli/`、`tui/`、`terminals/`、`agents/` 的 `default.nix` 使用 `mylib.scanPaths ./.`。
+- `packages.nix` 按语言、包管理器、LSP、构建、开发辅助等用途分组；只提供 Darwin 版本的 CLI 放 `home/darwin/packages.nix`。
 - `mise` 只放 nixpkgs 难以打包的 npm 工具；其余工具优先用 Nix，重复项由使用者主动避免。
 - 需要系统级集成的应用不在这里安装，例如 Clash Verge 的 service/TUN 由 `modules/nixos/apps.nix` 处理。
 - 应用放置的完整规则见 [`home/README.md`](../README.md#gui-应用放置规则)。

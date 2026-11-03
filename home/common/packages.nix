@@ -10,6 +10,7 @@
     xz
     unzip
     p7zip
+    _7zz
     zstd
     # 搜索、数据处理与目录列表。
     ripgrep
@@ -22,6 +23,7 @@
     aria2
     socat
     nmap
+    wget
     # 基础工具。
     cowsay
     file
@@ -46,6 +48,7 @@
     # 包管理器。
     mise
     uv
+    pipx
     pnpm
     (yarn.override { nodejs = nodejs_latest; })
     cargo
@@ -56,12 +59,59 @@
     tombi
     rustfmt
     clippy
+    biome
+    pyright
+    golangci-lint
+    just-lsp
+    typescript
     # 构建工具。
+    cmake
     gnumake
     just
     prek
     stdenv.cc
     pkg-config
+    nsis
+    # 代码统计与内容提取。
+    cloc
+    defuddle
+    # 开发辅助。
+    agent-browser
+    buf
+    chezmoi
+    gh
+    helix
+    emacs
+    imagemagick
+    protobuf
+    rtk
+    tea
+    tmux
+    tokei
+    upx
+    viddy
+    viu
+    watch
+    chafa
+    figlet
+    # 文档与媒体。
+    ffmpeg
+    poppler
+    # 网络诊断与自动化。
+    grpcurl
+    sshpass
+    # 分布式存储。
+    etcd
+    # Kubernetes。
+    kubebuilder
+    kubectl
+    kubernetes-helm
+    # 负载测试。
+    k6
+    # 权限服务。
+    openfga
+    # 虚拟化。
+    qemu
   ];
   # Go / Cargo / uv 等用户安装的命令不写入只读 Nix profile。
   home.sessionPath = [

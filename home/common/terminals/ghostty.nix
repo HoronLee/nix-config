@@ -15,8 +15,8 @@
     home.packages = [ pkgs.maple-mono.NF-CN ];
     programs.ghostty = {
       enable = true;
-      # macOS 由 cask 安装；Home Manager 只负责配置。
-      package = if pkgs.stdenv.hostPlatform.isDarwin then null else pkgs.ghostty;
+      # nixpkgs 的 ghostty 仅支持 Linux；macOS 使用官方预编译包。
+      package = if pkgs.stdenv.hostPlatform.isDarwin then pkgs.ghostty-bin else pkgs.ghostty;
       settings = {
         theme = "light:catppuccin-latte,dark:catppuccin-mocha";
         # 字体
@@ -29,7 +29,7 @@
         window-padding-x = 0;
         window-padding-y = 0;
         unfocused-split-opacity = 1;
-        # macOS 上的光标 smear 拖尾。
+        # 光标 smear 拖尾。
         custom-shader = "${./ghostty/shaders/cursor_smear.glsl}";
         custom-shader-animation = true;
         # 新标签和分窗继承当前目录，由 shell 集成跟踪 cd。

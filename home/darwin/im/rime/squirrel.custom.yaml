@@ -1,0 +1,24 @@
+patch:
+  app_options:
+    com.mitchellh.ghostty:
+      vim_mode: true
+    com.neovide.neovide:
+      vim_mode: true
+    com.xunyong.hapigo:
+      ascii_mode: true
+    md.obsidian:
+      vim_mode: true
+    ru.keepcoder.Telegram:
+      inline: true
+    com.microsoft.VSCode:
+      vim_mode: true
+    org.tabby:
+      vim_mode: true
+    com.google.antigravity:
+      vim_mode: true
+    net.kovidgoyal.kitty:
+      vim_mode: true
+    dev.zed.Zed:
+      ascii_mode: true
+    so.pen.herdr-gpui:
+      vim_mode: true
