@@ -18,6 +18,11 @@
 
   programs.fish = {
     enable = true;
+    shellAliases = {
+      c = "clear";
+      kssh = "kitty +kitten ssh";
+      zj = "zellij";
+    };
     interactiveShellInit = ''
       fish_vi_key_bindings
       fish_config theme choose catppuccin

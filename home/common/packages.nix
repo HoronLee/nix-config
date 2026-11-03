@@ -1,4 +1,8 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  ...
+}:
 {
   home.packages = with pkgs; [
     # 通用工具。
@@ -110,8 +114,8 @@
     # 终端会话。
     tmux
   ];
-  # Nix profile 在 useUserPackages 下位于 /etc/profiles/per-user/<user>，
-  # Fish 不会继承 nix-darwin 的 zshenv PATH，这里显式放在最前面。
+  # Nix profile 在 useUserPackages 下位于 /etc/profiles/per-user/<user>。
+  # Go / Cargo / uv 等用户安装的命令放后面。
   home.sessionPath = [
     "${config.home.profileDirectory}/bin"
     "$HOME/go/bin"
