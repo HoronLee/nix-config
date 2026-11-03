@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ pkgs, ... }:
 {
   home.packages = with pkgs; [
     # 密码管理
@@ -12,9 +12,5 @@
     prismlauncher
     # 笔记
     obsidian
-  ]
-  ++ lib.optionals (!stdenv.hostPlatform.isDarwin) [
-    # macOS 上 Telegram 官方 cask 版本更新，Linux 使用 nixpkgs。
-    telegram-desktop
   ];
 }

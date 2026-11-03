@@ -21,6 +21,7 @@ SSH agent 由 `common/ssh.nix` 统一启用，Linux 使用 systemd，macOS 使�
 | --- | --- |
 | 两个平台都有同一个 nix 包 | `common/gui/packages.nix` |
 | 只支持当前平台且始终安装的 nix 包 | 该平台 `gui/packages.nix` |
+| Linux 使用 nix 包、macOS 使用 cask，且始终安装 | `home/linux/gui/packages.nix` + `modules/darwin/apps.nix` |
 | nixpkg 只支持 Linux，macOS 需要 cask | `my.apps` + `modules/nixos/apps.nix` + `modules/darwin/apps.nix` |
 | 只支持 macOS、无可用 nix 包且始终安装 | `modules/darwin/apps.nix` 的 cask |
 | 两个平台实现不同，且需要统一开关 | `my.apps` + 两侧实现 |

@@ -4,6 +4,7 @@
     # 文件浏览器
     nautilus
     # 即时通讯
+    telegram-desktop
     qq
     wechat
     # 办公套件
