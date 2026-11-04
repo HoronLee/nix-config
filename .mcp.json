@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "nix": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "mcp-nixos"
+      ],
+      "directTools": true
+    }
+  }
+}
