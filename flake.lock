@@ -48,11 +48,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793193205,
-        "narHash": "sha256-X6xa6sGA7RnJQuZGbFMC+K+KToWAlBDCCjJXfTwEPsw=",
+        "lastModified": 1793757180,
+        "narHash": "sha256-gyV7AtCwLnOImcrfSETP4J3Ie96bz19DY47B7m7Y3HM=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "095fef2f265c3c0da4fe315efba8f8a04495ab34",
+        "rev": "b787c48e2ec57a9d098f5c2721882a3bc1e16f97",
         "type": "github"
       },
       "original": {
@@ -67,11 +67,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1793526439,
-        "narHash": "sha256-Hso68OoHjhlmFp4l/DWii+SX9r3aR1l8sYmJA3ixW+w=",
+        "lastModified": 1793761480,
+        "narHash": "sha256-A8ywdY+unEamtjCea7A9mXow1Rada1OgeEpI0ZwW0zk=",
         "ref": "refs/heads/main",
-        "rev": "a82e1ffb3f13025fbb4267b378eda177e30b1e38",
-        "revCount": 25,
+        "rev": "59a1fb4a14c6acdd9633e1daed8ffc051e8c0d56",
+        "revCount": 28,
         "type": "git",
         "url": "https://forge.asnk.io/sugar/magpie"
       },
