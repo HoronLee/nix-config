@@ -1,0 +1,44 @@
+{
+  "skill_name": "nix-add-software",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "我想在 MacBook 上装 Raycast，帮我把 nix-config 配好。",
+      "expected_output": "确认 macOS 与 GUI 用途，查证 nixpkgs 无包、brew cask 存在，确认后放 modules/darwin/apps.nix；不得未确认就改。",
+      "files": [],
+      "assertions": [
+        "报告识别出 Raycast 并判断为 macOS GUI 应用",
+        "报告给出 nixpkgs 查证：raycast 存在且 platforms 只含 Darwin",
+        "报告给出 Homebrew 查证：cask raycast 存在且带 auto_updates",
+        "报告把 nixpkgs 版本与 cask 版本做了比较",
+        "放置建议指向 modules/darwin/apps.nix 的 homebrew.casks",
+        "在用户确认前没有修改仓库文件（diff 为空或仅报告）",
+        "报告列出需要用户确认的问题"
+      ]
+    },
+    {
+      "id": 1,
+      "prompt": "把 ripgrep 和 fd 加进去，NixOS 和 mac 都要。",
+      "expected_output": "发现 home/common/packages.nix 已有 ripgrep 和 fd，说明无需新增。",
+      "files": [],
+      "assertions": [
+        "报告指出 ripgrep 已在 home/common/packages.nix",
+        "报告指出 fd 已在 home/common/packages.nix",
+        "没有重复添加 ripgrep 或 fd 的声明",
+        "diff 为空或不包含新增的 ripgrep/fd 行"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "https://github.com/sharkdp/hyperfine 这个能不能装？",
+      "expected_output": "识别 hyperfine，查 nixpkgs 两平台支持与版本，先询问平台再给放置方案。",
+      "files": [],
+      "assertions": [
+        "报告从 URL 识别出 hyperfine",
+        "报告给出 nixpkgs platforms 与 version",
+        "用户未说明平台时，报告明确询问平台",
+        "在平台确认前没有修改仓库文件（diff 为空或仅报告）"
+      ]
+    }
+  ]
+}
