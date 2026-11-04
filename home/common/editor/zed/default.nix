@@ -16,9 +16,7 @@
   # Zed 写入 settings.json 前会 canonicalize，keymap.json 直接写入；
   # 文件符号链接会保留，GUI 修改会落到仓库。
   xdg.configFile."zed/settings.json".source =
-    config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/projects/nix-config/home/common/editor/zed/settings.json";
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/projects/nix-config/home/common/editor/zed/settings.json";
   xdg.configFile."zed/keymap.json".source =
-    config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/projects/nix-config/home/common/editor/zed/keymap.json";
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/projects/nix-config/home/common/editor/zed/keymap.json";
 }
