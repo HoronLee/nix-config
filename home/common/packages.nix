@@ -96,7 +96,7 @@
     viu
     # 文档与媒体。
     ffmpeg
-    poppler
+    poppler-utils # 提供 pdftotext/pdfinfo 等 CLI；poppler 只是 glib 库。
     imagemagick
     defuddle
     # 网络诊断与自动化。
