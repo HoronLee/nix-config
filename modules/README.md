@@ -40,6 +40,8 @@ modules/
 
 ## 应用开关
 
+Home Manager 优先：能在 `home/` 用 `home.packages` 或程序模块装好的应用，不放进 `modules/`。`modules/` 只处理需要系统服务、系统扩展、privileged helper 或系统级路径的软件。
+
 `my.apps` 只用于 Linux 和 macOS 实现不同、且需要统一开关的应用。选项在 `modules/common/apps.nix`，Linux 实现在 `modules/nixos/apps.nix`，macOS 实现在 `modules/darwin/apps.nix`。
 
 ```nix
