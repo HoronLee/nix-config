@@ -153,63 +153,18 @@ home/
 
 ## 新增软件
 
-按 Home Manager → 系统模块 → Homebrew 的顺序选择落点。Home Manager 管用户级软件和 dotfiles，不需要 root，随用户 profile 一起切换；系统模块只处理必须有系统权限或系统集成的东西；Homebrew 是 macOS 上 nixpkgs 不可用时的最后选择。
+按 Home Manager → 系统模块 → Homebrew 的顺序选择落点。完整的确认流程、查证命令和文件职责矩阵在 [`.agents/skills/nix-add-software/SKILL.md`](.agents/skills/nix-add-software/SKILL.md)。
 
-### 1. 判断需要哪一层
+让 agent 加载该 skill 并给出软件名、GitHub 仓库或官网链接。它会先确认平台、用途和文件位置，确认后才修改仓库。
 
-| 需求 | 层 | 位置 |
-| --- | --- | --- |
-| 用户级 CLI 或 GUI，nixpkgs 有包 | Home Manager | `home/` |
-| 需要 systemd/launchd 服务、系统扩展、privileged helper、系统级路径 | 系统模块 | `modules/` |
-| macOS 无 nix 包、版本明显落后，或必须用 pkg/helper 安装 | Homebrew | `modules/darwin/apps.nix` |
-
-同一个应用只要能在 Home Manager 里装好，就不要放进 `modules/`。`modules/` 里的包以 root 安装、对所有用户可见，回滚粒度也更粗。
-
-### 2. 查 nixpkgs 与 Homebrew
+需要手动处理时，最少查这两项：
 
 ```sh
 nix eval --json nixpkgs#<pkg>.meta.platforms
-nix eval --raw nixpkgs#<pkg>.version
-brew info <formula>
 brew info --cask <cask>
 ```
 
-关注 platforms 是否包含 `aarch64-darwin` 和 `x86_64-linux`，以及 brew 侧是否有 `auto_updates`、是否安装 pkg 或 helper。用 `nix` MCP 可以查同样的信息。
-
-### 3. Home Manager 内部的位置
-
-| 情况 | 文件 |
-| --- | --- |
-| 跨平台 CLI、构建工具、语言运行时 | `home/common/packages.nix` |
-| 跨平台 GUI，两个平台都有 nix 包 | `home/common/gui/packages.nix` |
-| 跨平台 GUI，需要选项、override 或额外配置 | `home/common/<category>/<app>.nix` |
-| Linux 专属 CLI | `home/linux/packages.nix` |
-| Linux 专属 GUI | `home/linux/gui/packages.nix` |
-| Darwin 专属 CLI | `home/darwin/packages.nix` |
-| Darwin 专属 GUI，nix 包有 Darwin 版 | `home/common/gui/packages.nix`；需要配置时放 `home/darwin/<category>/` |
-
-`home/common/` 是用户层跨平台配置，`modules/common/` 是系统层共享设置（`nix.nix`、`my.apps` 选项），两者不互相替代。
-
-### 4. 系统模块的位置
-
-| 情况 | 文件 |
-| --- | --- |
-| 需要 `programs.<name>`、NixOS service 或系统级依赖 | `modules/nixos/apps.nix` |
-| 通用 NixOS 系统或桌面配置 | `modules/nixos/system/`、`modules/nixos/desktop/` |
-| 只在服务器启用的服务 | `modules/nixos/server.nix` 或子模块 |
-| macOS cask / brew formula | `modules/darwin/apps.nix`；第三方 tap 同时写 `homebrew.taps` |
-| 两个平台都要，但实现不同 | `my.apps` 选项在 `modules/common/apps.nix`，再分别在 `modules/nixos/apps.nix` 和 `modules/darwin/apps.nix` 实现 |
-
-`modules/common/apps.nix` 只定义选项，不安装软件；`modules/darwin/apps.nix` 只把选项映射到 cask。Nix 包不要放进这两个文件。
-
-### 5. 检查清单
-
-- 第三方 tap 必须同时写进 `homebrew.taps`，否则 `cleanup = "check"` 会在 activation 前中止 switch。
-- 不要手动 `brew install` 长期使用的包；未声明的包会让下次 switch 中止。
-- 新增 `.nix` 文件后 `git add`，flake 只读取 Git 跟踪的文件。
-- 改完跑 `nixfmt` 和对应平台的求值命令。
-
-完整规则见 [`home/README.md`](home/README.md#gui-应用放置规则) 和 [`modules/README.md`](modules/README.md#应用开关)。
+细节规则见 [`home/README.md`](home/README.md#gui-应用放置规则) 和 [`modules/README.md`](modules/README.md#应用开关)。
 
 ## 跨平台应用开关
 
@@ -250,7 +205,32 @@ sudo clashtui
 
 `hardware-configuration.nix` 按主机提交到仓库，包含文件系统 UUID、subvol 和内核模块，不含密钥。换磁盘或重装后重新生成并提交。
 
-## 验证
+## 日常命令
+
+仓库根目录的 `justfile` 封装常用操作：
+
+```sh
+just              # 列出当前平台可用的任务
+just fmt          # 格式化所有 Nix 文件
+just eval         # 求值 nixos-vm 和 mbp-m2pro
+just build-darwin # 构建，默认 mbp-m2pro
+just build-nixos  # 构建，默认 nixos-vm
+just switch-darwin
+just switch-nixos
+just check
+just update       # 仅明确升级依赖时
+```
+
+`build-*` 和 `switch-*` 的 `host` 是位置参数，默认值分别是 `mbp-m2pro` 和 `nixos-vm`：
+
+```sh
+just switch-darwin other-mac
+just switch-nixos other-host
+```
+
+`[macos]` 和 `[linux]` 属性让 `just --list` 只显示当前平台能跑的任务。`build-*` 只构建不切换；`switch-*` 会提权并应用。
+
+没有 just 时使用原始命令：
 
 ```sh
 nixfmt $(git ls-files '*.nix')
