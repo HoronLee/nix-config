@@ -25,5 +25,9 @@
     (lib.mkIf config.my.apps.obs.enable {
       homebrew.casks = [ "obs" ];
     })
+    {
+      # mole 的 nixpkgs Darwin 构建标记为 broken，使用官方 formula。
+      homebrew.brews = [ "mole" ];
+    }
   ];
 }
