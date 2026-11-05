@@ -62,12 +62,12 @@
         };
         # 生成 hosts/x86_64-linux/dell-r430/hardware-configuration.nix
         # 并 git add 后，取消下面的注释。
-        # dell-r430 = mkNixosHost {
-        #   system = "x86_64-linux";
-        #   hostModule = ./hosts/x86_64-linux/dell-r430;
-        #   username = "horonlee";
-        #   homeModule = ./home/profiles/linux-server.nix;
-        # };
+        dell-r430 = mkNixosHost {
+          system = "x86_64-linux";
+          hostModule = ./hosts/x86_64-linux/dell-r430;
+          username = "horonlee";
+          homeModule = ./home/profiles/linux-server.nix;
+        };
       };
       darwinConfigurations = {
         mbp-m2pro = mkDarwinHost {
