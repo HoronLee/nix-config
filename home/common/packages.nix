@@ -59,13 +59,16 @@
     # Protobuf 与接口定义。
     buf
     protobuf
-    # LSP 与格式化；编辑器进程内的工具在 home/common/editor/nvim/default.nix。
+    # LSP 与格式化。
+    nixd
     nixfmt
     tombi
     rustfmt
     clippy
     biome
+    pyright
     golangci-lint
+    just-lsp
     typescript
     # 构建与发布。
     cmake
