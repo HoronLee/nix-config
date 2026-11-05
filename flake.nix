@@ -19,6 +19,10 @@
     magpie = {
       url = "git+https://forge.asnk.io/sugar/magpie";
     };
+    # CachyOS latest 内核；release 分支带二进制缓存。
+    nix-cachyos-kernel = {
+      url = "git+https://github.com/xddxdd/nix-cachyos-kernel?ref=release";
+    };
   };
   outputs =
     {
@@ -26,6 +30,7 @@
       home-manager,
       catppuccin,
       magpie,
+      nix-cachyos-kernel,
       darwin,
       ...
     }:
@@ -36,6 +41,7 @@
           home-manager
           catppuccin
           magpie
+          nix-cachyos-kernel
           ;
       };
       mkDarwinHost = import ./lib/mkDarwinHost.nix {
@@ -54,7 +60,6 @@
           username = "horonlee";
           homeModule = ./home/profiles/linux-desktop-niri.nix;
         };
-
         # 生成 hosts/x86_64-linux/dell-r430/hardware-configuration.nix
         # 并 git add 后，取消下面的注释。
         # dell-r430 = mkNixosHost {
@@ -64,7 +69,6 @@
         #   homeModule = ./home/profiles/linux-server.nix;
         # };
       };
-
       darwinConfigurations = {
         mbp-m2pro = mkDarwinHost {
           system = "aarch64-darwin";

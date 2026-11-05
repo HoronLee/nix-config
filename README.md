@@ -6,7 +6,7 @@
 
 | 主机 | 平台 | 入口 | 说明 |
 | --- | --- | --- | --- |
-| `nixos-vm` | NixOS x86_64 | `nixosConfigurations.nixos-vm` | UEFI + systemd-boot，Niri + Noctalia，Fcitx5-Rime |
+| `nixos-vm` | NixOS x86_64 | `nixosConfigurations.nixos-vm` | UEFI + systemd-boot，Niri + Noctalia，Fcitx5-Rime，CachyOS latest 内核 |
 | `mbp-m2pro` | nix-darwin aarch64 | `darwinConfigurations.mbp-m2pro` | Apple Silicon，Homebrew cask |
 | `dell-r430` | NixOS x86_64 | 待注册 | 1U 服务器，装机时生成硬件配置 |
 
@@ -90,7 +90,7 @@
    sudo darwin-rebuild switch --flake ~/projects/nix-config#mbp-m2pro
    ```
 
-7. activation 前会执行 `brew bundle cleanup`（`cleanup = "check"`）。手动 `brew install` 但未声明的包会让 switch 中止并列出清单；先写进 `modules/darwin/apps.nix`，或运行 `brew bundle cleanup --force`。
+7. activation 前会执行 `brew bundle`；`cleanup = "none"` 保留未声明的 Homebrew 包，不会自动卸载。需要清理时手动检查 `brew leaves` 和 `brew list --cask`。
 
 ### 日常应用
 
@@ -107,9 +107,9 @@ sudo darwin-rebuild switch --flake ~/projects/nix-config#mbp-m2pro
 ## 目录
 
 ```text
-flake.nix                  # 输入、host 输出
+flake.nix                  # 输入、host 输出；含 CachyOS 内核输入
 lib/
-  mkNixosHost.nix          # NixOS + 内嵌 HM
+  mkNixosHost.nix          # NixOS + 内嵌 HM，提供 CachyOS overlay
   mkDarwinHost.nix         # nix-darwin + 内嵌 HM
   scanPaths.nix            # 叶子目录自动导入
 hosts/<system>/<host>/     # 机器级系统配置
@@ -140,6 +140,61 @@ home/
 - `home/gui.nix`：`core.nix` 加上跨平台 GUI，桌面和 macOS 使用。
 - `home/linux/default.nix`：Linux 专属 CLI/TUI；`home/linux/gui/`：Linux GUI 应用。
 - `home/profiles/`：把上面的层组合成某类主机。
+
+## 内核
+
+默认使用 NixOS 自带内核。
+
+`flake.nix` 引入了 `nix-cachyos-kernel`，`lib/mkNixosHost.nix` 只注入对应的 overlay，使 `pkgs.cachyosKernels` 可用；它不会自动切换任何主机的内核。
+
+需要 CachyOS 的 host 在自己的模块中声明：
+
+```nix
+{ pkgs, ... }:
+{
+  boot.kernelPackages =
+    pkgs.cachyosKernels.linuxPackages-cachyos-latest;
+}
+```
+
+当前只有 `nixos-vm` 使用 CachyOS latest：
+
+```nix
+boot.kernelPackages =
+  pkgs.cachyosKernels.linuxPackages-cachyos-latest;
+```
+
+其他 host 不写 `boot.kernelPackages`，继续使用 NixOS 默认内核。
+
+也可以自由选择 NixOS 自带内核：
+
+```nix
+boot.kernelPackages = pkgs.linuxPackages_latest;
+boot.kernelPackages = pkgs.linuxPackages_zen;
+```
+
+注意事项：
+
+- CachyOS 内核当前只支持 `x86_64-linux`。
+- `nix-cachyos-kernel` 使用 `release` 分支和 pinned overlay。
+- 更新 CachyOS 版本使用：
+
+  ```sh
+  nix flake update nix-cachyos-kernel
+  ```
+
+验证当前内核：
+
+```sh
+nix eval --raw \
+  .#nixosConfigurations.nixos-vm.config.boot.kernelPackages.kernel.name
+```
+
+运行中的系统：
+
+```sh
+uname -r
+```
 
 ## 桌面与服务器
 

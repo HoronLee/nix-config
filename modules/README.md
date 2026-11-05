@@ -30,6 +30,7 @@ modules/
 - `desktop/default.nix` 聚合桌面服务、Firefox、Niri 和输入法；`greeter.nix` 单独导入，服务器不会启动图形登录。
 - `apps.nix` 实现需要 NixOS 集成的应用，例如 `programs.clash-verge`。
 - `server.nix` 放服务器通用项：固件、`smartd`，并导入 `server/mihomo`。
+- `lib/mkNixosHost.nix` 注入 `nix-cachyos-kernel` overlay，提供 `pkgs.cachyosKernels`；内核由各 host 的 `boot.kernelPackages` 选择。
 
 ## Darwin
 
@@ -40,7 +41,7 @@ modules/
 
 ## 应用开关
 
-Home Manager 优先：能在 `home/` 用 `home.packages` 或程序模块装好的应用，不放进 `modules/`。`modules/` 只处理需要系统服务、系统扩展、privileged helper 或系统级路径的软件。
+Home Manager 优先：能在 `home/` 用 `home.packages` 或程序模块装好的应用，不放进 `modules/`。`modules/` 只处理需要系统服务、系统扩展、privileged helper 或系统级配置的应用。
 
 `my.apps` 只用于 Linux 和 macOS 实现不同、且需要统一开关的应用。选项在 `modules/common/apps.nix`，Linux 实现在 `modules/nixos/apps.nix`，macOS 实现在 `modules/darwin/apps.nix`。
 

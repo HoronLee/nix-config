@@ -3,6 +3,7 @@
   home-manager,
   catppuccin,
   magpie,
+  nix-cachyos-kernel,
 }:
 {
   system,
@@ -14,6 +15,14 @@ nixpkgs.lib.nixosSystem {
   inherit system;
   modules = [
     hostModule
+    (
+      { ... }:
+      {
+        nixpkgs.overlays = [
+          nix-cachyos-kernel.overlays.pinned
+        ];
+      }
+    )
     home-manager.nixosModules.home-manager
     {
       home-manager.sharedModules = [

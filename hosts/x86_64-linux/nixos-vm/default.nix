@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -15,6 +15,8 @@
   # 限制启动菜单代次数量及对应的启动分区文件。
   boot.loader.systemd-boot.configurationLimit = 10;
   boot.loader.efi.canTouchEfiVariables = true;
+  # 使用 CachyOS latest 内核
+  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
   my.apps = {
     clash-verge.enable = true;
     ghostty.enable = true;
