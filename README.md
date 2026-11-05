@@ -8,40 +8,46 @@
 | --- | --- | --- | --- |
 | `nixos-vm` | NixOS x86_64 | `nixosConfigurations.nixos-vm` | UEFI + systemd-boot，Niri + Noctalia，Fcitx5-Rime，CachyOS latest 内核 |
 | `mbp-m2pro` | nix-darwin aarch64 | `darwinConfigurations.mbp-m2pro` | Apple Silicon，Homebrew cask |
-| `dell-r430` | NixOS x86_64 | 待注册 | 1U 服务器，装机时生成硬件配置 |
+| `dell-r430` | NixOS x86_64 | `nixosConfigurations.dell-r430` | 1U 服务器，UEFI + systemd-boot，默认内核，无 GUI |
 
 ## 快速开始
 
 ### 新 NixOS 主机
 
-1. 用 UEFI 模式启动安装介质。
-2. 分区并挂载到 `/mnt`，生成硬件配置：
+1. 用 UEFI 模式启动安装介质，先装好系统并进入新系统。
+2. 开启 flakes。`/etc/nix/nix.conf` 是 Nix store 软链，改写成 root 的用户级配置：
 
    ```sh
-   nixos-generate-config --root /mnt
+   sudo mkdir -p /root/.config/nix
+   printf 'experimental-features = nix-command flakes\n' \
+     | sudo tee /root/.config/nix/nix.conf
    ```
 
-3. 克隆仓库：
+3. 克隆仓库并生成硬件配置（先把新机器的公钥加到 GitHub；`--show-hardware-config` 只输出内容，不会覆盖 `/etc/nixos/configuration.nix`）：
 
    ```sh
    nix-shell -p git
-   git clone https://github.com/HoronLee/nix-config.git ~/projects/nix-config
+   git clone git@github.com:HoronLee/nix-config.git ~/projects/nix-config
+   cd ~/projects/nix-config
+   sudo nixos-generate-config --show-hardware-config \
+     > hosts/x86_64-linux/<host>/hardware-configuration.nix
    ```
 
-4. 把 `/mnt/etc/nixos/hardware-configuration.nix` 复制到目标 host 目录：
+4. 在 host 模块补 bootloader，并在 `flake.nix` 注册 `nixosConfigurations.<host>`。
+5. `git add` 硬件配置与 `flake.nix`。flake 只包含 Git 跟踪的文件，漏掉就报路径不存在。
+6. 首次切换，在文本终端执行；新配置若停用图形会话，图形终端会连同进程一起被关闭：
 
    ```sh
-   cp /mnt/etc/nixos/hardware-configuration.nix \
-     ~/projects/nix-config/hosts/x86_64-linux/<host>/hardware-configuration.nix
+   sudo nixos-rebuild switch --flake .#<host>
    ```
 
-5. 在 host 模块补 bootloader。`nixos-generate-config` 同时生成的 `configuration.nix` 里有 systemd-boot 或 GRUB 的参考配置。
-6. 在 `flake.nix` 注册 host，并 `git add` 新文件。flake 只包含 Git 跟踪的文件。
-7. 安装：
+7. 重启后主机名与 flake 属性名一致，之后可省略：
 
    ```sh
-   nixos-install --flake ~/projects/nix-config#<host>
+   sudo nixos-rebuild switch --flake .
    ```
+
+未装系统时也可以直接安装：`nixos-install --flake .#<host>`。
 
 ### 新 macOS 主机
 
@@ -296,7 +302,7 @@ nix eval --raw \
   .#darwinConfigurations.mbp-m2pro.config.system.build.toplevel.drvPath
 ```
 
-`dell-r430` 在生成 `hardware-configuration.nix` 前不会注册到 `flake.nix`，避免整个 flake 求值失败。
+注册新 host 前先 `git add` 它的 `hardware-configuration.nix`：host 模块首行就 `import ./hardware-configuration.nix`，文件未跟踪时整个 flake 求值失败。
 
 ## 更多文档
 
