@@ -1,4 +1,6 @@
 return {
+  -- LazyVim 自带 tokyonight；这里只用 Catppuccin，禁用以免下载。
+  { "folke/tokyonight.nvim", enabled = false },
   {
     "LazyVim/LazyVim",
     opts = {
