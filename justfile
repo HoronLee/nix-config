@@ -2,6 +2,9 @@
 default:
     @just --list
 
+# 未传 host 时使用当前主机名；flake 属性名与主机名保持一致。
+default_host := `hostname -s`
+
 # 格式化所有 Nix 文件。
 fmt:
     nixfmt $(git ls-files '*.nix')
@@ -15,30 +18,30 @@ eval:
     @nix eval --raw .#darwinConfigurations.mbp-m2pro.config.system.build.toplevel.drvPath
     @echo ""
 
-# 构建 NixOS 配置，不切换。
+# 构建 NixOS 配置
 [linux]
-build-nixos host="nixos-vm":
-    nixos-rebuild build --flake .#{{host}} --no-link
+build-nixos host="":
+    nixos-rebuild build --flake .#{{ if host == "" { default_host } else { host } }} --no-link
 
-# 构建 Darwin 配置，不切换。
+# 构建 Darwin 配置
 [macos]
-build-darwin host="mbp-m2pro":
-    darwin-rebuild build --flake .#{{host}} --no-link
+build-darwin host="":
+    darwin-rebuild build --flake .#{{ if host == "" { default_host } else { host } }} --no-link
 
 # 切换 NixOS。
 [linux]
-switch-nixos host="nixos-vm":
-    sudo nixos-rebuild switch --flake .#{{host}}
+switch-nixos host="":
+    sudo nixos-rebuild switch --flake .#{{ if host == "" { default_host } else { host } }}
 
 # 切换 Darwin。
 [macos]
-switch-darwin host="mbp-m2pro":
-    sudo darwin-rebuild switch --flake .#{{host}}
+switch-darwin host="":
+    sudo darwin-rebuild switch --flake .#{{ if host == "" { default_host } else { host } }}
 
-# 检查 flake 输出求值，不构建。
+# 检查 flake 输出求值
 check:
     nix flake check
 
-# 升级 flake 输入，仅在明确需要时运行。
+# 升级 flake 输入
 update:
     nix flake update

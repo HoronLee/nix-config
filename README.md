@@ -282,7 +282,7 @@ just check
 just update       # 仅明确升级依赖时
 ```
 
-`build-*` 和 `switch-*` 的 `host` 是位置参数，默认值分别是 `mbp-m2pro` 和 `nixos-vm`：
+`build-*` 和 `switch-*` 的 `host` 是可选位置参数，省略时取 `hostname -s`，所以主机名要与 flake 属性名一致：
 
 ```sh
 just switch-darwin other-mac
