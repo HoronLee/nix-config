@@ -13,8 +13,9 @@
       homebrew.casks = [
         # nixpkgs 的 orbstack 只从 dmg 解包 App，不安装 privileged helper；使用官方 cask。
         "orbstack"
-        # Karabiner 需要系统扩展和后台 helper，使用官方 cask。
-        "karabiner-elements"
+        # Karabiner 已停用：Hyper 键与 hyper 快捷键改由 Tinycast 提供。
+        # 配置保留在 home/darwin/input/karabiner，需要时取消注释即可恢复。
+        # "karabiner-elements"
         # Telegram 的 nixpkg 版本明显落后，使用官方 cask。
         "telegram"
         # 鼠须管；nixpkgs 没有可用的 Squirrel Darwin 包。
