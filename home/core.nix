@@ -8,7 +8,6 @@
     ./common/tui
     ./common/shell.nix
     ./common/ssh.nix
-    ./common/fonts.nix
     ./common/editor/nvim
   ];
 

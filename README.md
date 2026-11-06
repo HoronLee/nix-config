@@ -142,9 +142,9 @@ home/
 - `modules/nixos/system/`：所有 NixOS 主机共享的系统基础。
 - `modules/nixos/desktop/`：桌面服务、Firefox、Niri、输入法。`greeter.nix` 单独导入，服务器默认不启动图形登录。
 - `modules/nixos/apps.nix`：需要 NixOS 系统集成的应用，例如 Clash Verge 的 service；`modules/darwin/apps.nix` 负责 macOS cask。
-- `home/core.nix`：CLI、TUI、Neovim、字体和主题，不含 GUI。服务器使用这一层。
-- `home/gui.nix`：`core.nix` 加上跨平台 GUI，桌面和 macOS 使用。
-- `home/linux/default.nix`：Linux 专属 CLI/TUI；`home/linux/gui/`：Linux GUI 应用。
+- `home/core.nix`：CLI、TUI、Neovim和主题，不含桌面字体与 GUI。服务器使用这一层。
+- `home/gui.nix`：`core.nix` 加上桌面字体和跨平台 GUI，桌面和 macOS 使用。
+- `home/linux/default.nix`：Linux 专属 CLI/TUI；`home/linux/gui/`：Linux GUI 应用、fontconfig 和 Yazi 图形剪贴板支持。
 - `home/profiles/`：把上面的层组合成某类主机。
 
 ## 内核
@@ -271,25 +271,25 @@ sudo clashtui
 仓库根目录的 `justfile` 封装常用操作：
 
 ```sh
-just              # 列出当前平台可用的任务
+just              # 列出可用任务
+just hosts        # 动态列出全部 NixOS、Darwin 主机
 just fmt          # 格式化所有 Nix 文件
-just eval         # 求值 nixos-vm 和 mbp-m2pro
-just build-darwin # 构建，默认 mbp-m2pro
-just build-nixos  # 构建，默认 nixos-vm
-just switch-darwin
-just switch-nixos
-just check
-just update       # 仅明确升级依赖时
+just eval         # 动态求值全部主机的 toplevel
+just build        # 按当前平台和 hostname -s 构建，不应用
+just switch       # 按当前平台和 hostname -s 提权并应用
+just check        # 全部主机求值 + 跨平台 flake 检查，不构建
+just update       # 更新全部输入，仅明确升级依赖时使用
+just update nixpkgs home-manager # 只更新指定输入
 ```
 
-`build-*` 和 `switch-*` 的 `host` 是可选位置参数，省略时取 `hostname -s`，所以主机名要与 flake 属性名一致：
+`build` 和 `switch` 的 `host` 是可选位置参数，省略时取 `hostname -s`，所以主机名要与 flake 属性名一致：
 
 ```sh
-just switch-darwin other-mac
-just switch-nixos other-host
+just build other-host
+just switch other-host
 ```
 
-`[macos]` 和 `[linux]` 属性让 `just --list` 只显示当前平台能跑的任务。`build-*` 只构建不切换；`switch-*` 会提权并应用。
+macOS 使用 `darwin-rebuild`，Linux 使用 `nixos-rebuild`；显式指定主机仍在本机执行，并非远程部署。新增主机后，`hosts`、`eval` 和 `check` 无需更新主机列表。`hosts`、`eval`、`check` 不写入 `flake.lock`。
 
 没有 just 时使用原始命令：
 

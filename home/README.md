@@ -3,10 +3,10 @@
 ## 入口
 | 文件 | 内容 | 用途 |
 | --- | --- | --- |
-| `core.nix` | CLI、TUI、Neovim、OMP、字体、主题 | 服务器 |
-| `gui.nix` | `core.nix` + `common/gui` | 桌面和 macOS |
-| `linux/default.nix` | Linux CLI 包、Yazi | Linux core |
-| `linux/gui/` | Linux 专属 GUI | Linux 桌面 |
+| `core.nix` | CLI、TUI、Neovim、OMP、主题 | 服务器 |
+| `gui.nix` | `core.nix` + 桌面字体 + `common/gui` | 桌面和 macOS |
+| `linux/default.nix` | Linux CLI 包，默认关闭 fontconfig | Linux core |
+| `linux/gui/` | Linux GUI、fontconfig、Yazi 图形剪贴板支持 | Linux 桌面 |
 | `profiles/` | 按主机角色组合 | flake 的 `homeModule` |
 ## Profiles
 | Profile | 导入 | 适用 |
@@ -15,6 +15,9 @@
 | `linux-desktop-niri.nix` | `gui.nix` + `linux` + `linux/gui` + Niri/Noctalia + Rime | Linux 桌面 |
 | `darwin.nix` | `gui.nix` + `darwin/packages.nix` + Karabiner + Rime | macOS |
 SSH agent 由 `common/ssh.nix` 统一启用，Linux 使用 systemd，macOS 使用 launchd。
+## Neovim 的 Nix 补全
+`common/editor/nvim/config/lua/plugins/nix.lua` 从自身真实路径向上寻找 `flake.nix`，解析配置目录的符号链接，不依赖启动目录或固定克隆位置；遇到没有 flake 的 Git 仓库根目录就停止。
+按当前平台及短主机名选择 `nixosConfigurations.<host>` 或 `darwinConfigurations.<host>`；Home Manager 选项来自同一主机。主机名应与 flake 属性名一致。主机未注册时不提供主机选项，配置仓库缺失时保留 nixd 默认补全，不选择其他主机替代。
 ## GUI 应用放置规则
 Home Manager 优先于系统模块：能由用户级 `home.packages` 安装的 GUI 不放进 `modules/`。只有需要系统服务、系统扩展或 privileged helper 时才落到系统模块。
 优先使用 nixpkgs。只有 nixpkgs 没有 Darwin 支持、版本明显落后，或应用依赖 macOS 系统扩展/后台 helper 时，才使用 Homebrew cask。

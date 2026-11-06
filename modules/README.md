@@ -27,7 +27,7 @@ modules/
 ## NixOS
 
 - `system/default.nix` 聚合 `common/nix.nix`、`base.nix`、`nix.nix`、`user.nix`、`ssh.nix`。
-- `desktop/default.nix` 聚合桌面服务、Firefox、Niri 和输入法；`greeter.nix` 单独导入，服务器不会启动图形登录。
+- `desktop/default.nix` 聚合桌面服务、Firefox、Niri 和输入法，并追加 Magpie 所需的图形 `nix-ld` 库与 `TERMINAL`；公共层只启用基础 `nix-ld`。`greeter.nix` 单独导入，服务器不会启动图形登录。
 - `apps.nix` 实现需要 NixOS 集成的应用，例如 `programs.clash-verge`。
 - `server.nix` 放服务器通用项：固件、`smartd`，并导入 `server/mihomo`。
 - `lib/mkNixosHost.nix` 注入 `nix-cachyos-kernel` overlay，提供 `pkgs.cachyosKernels`；内核由各 host 的 `boot.kernelPackages` 选择。

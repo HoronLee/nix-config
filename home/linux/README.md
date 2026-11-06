@@ -4,10 +4,10 @@ Linux 专属用户配置，分为 core 和 gui 两层。
 
 ```text
 linux/
-├── default.nix        # Linux core：CLI 包、Yazi
+├── default.nix        # Linux core：CLI 包，默认关闭 fontconfig
 ├── packages.nix       # Linux CLI/诊断/硬件工具
-├── tui/yazi.nix       # Yazi 的 Linux 附加包
-├── gui/               # Nautilus、QQ、WeChat、LibreOffice、NyaTerm、Magpie、OBS
+├── tui/yazi.nix       # Yazi 图形剪贴板支持，仅由 gui/ 导入
+├── gui/               # Linux GUI 应用、fontconfig、图形剪贴板支持
 ├── wm/niri/           # Niri 用户配置
 ├── ws/noctalia/       # Noctalia 用户配置
 ├── desktops/          # WM + WS 组合
@@ -35,6 +35,7 @@ linux/
 - `gui/packages.nix`：无条件安装的 Linux GUI 包。
 - `gui/magpie.nix`：特殊参数和平台判断。
 - `gui/obs.nix`：受 `my.apps.obs` 控制。
+- `gui/default.nix`：启用 fontconfig，导入 `tui/yazi.nix` 的 Wayland/X11 剪贴板工具；服务器不导入这些设置。
 
 跨平台 GUI 放到 `home/common/gui/`；完整规则见 [`home/README.md`](../README.md#gui-应用放置规则)。
 
