@@ -1,4 +1,18 @@
 {
+  "ssh_connections": [
+    {
+      "host": "wrtv4.horon.top",
+      "port": 20003,
+      "args": [],
+      "projects": [
+        {
+          "paths": [
+            "/home/horonlee/projects/wisdom-temple/./"
+          ]
+        }
+      ]
+    }
+  ],
   "base_keymap": "Zed",
   "relative_line_numbers": "enabled",
   "soft_wrap": "editor_width",
