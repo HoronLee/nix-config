@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   imports = [
     ./services.nix
@@ -6,18 +6,7 @@
     ./niri.nix
     ./input-method.nix
     ./keyd.nix
-  ];
-  # 支持 Magpie 官方桌面二进制及其自更新下载的版本。
-  programs.nix-ld.libraries = with pkgs; [
-    gtk3
-    webkitgtk_4_1
-    libsoup_3
-    wayland
-    libX11
-    fontconfig
-    gdk-pixbuf
-    glib
-    dbus
+    ./magpie.nix
   ];
   # 应用启动器为 Terminal=true 的桌面项选择终端。
   environment.sessionVariables.TERMINAL = "kitty";
