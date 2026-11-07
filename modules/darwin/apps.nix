@@ -9,6 +9,10 @@
         "penso/tap"
       ];
     }
+    # brew formula 形式的 CLI 工具。
+    {
+      homebrew.brews = [ "mole" ];
+    }
     {
       homebrew.casks = [
         # nixpkgs 的 orbstack 只从 dmg 解包 App，不安装 privileged helper；使用官方 cask。
