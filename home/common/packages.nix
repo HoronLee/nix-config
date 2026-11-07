@@ -1,6 +1,5 @@
 {
   config,
-  lib,
   pkgs,
   ...
 }:
@@ -116,17 +115,10 @@
     tmux
   ];
   # Nix profile 在 useUserPackages 下位于 /etc/profiles/per-user/<user>。
-  # nix-darwin 的系统 profile 只写进 /etc/zshenv，fish 不读取该文件，需在此补充；
-  # NixOS 的 fish 由 nixos-env-preinit.fish source /etc/set-environment，两条已在 PATH 中。
+  # 系统路径由 NixOS/nix-darwin 的 Fish 集成提供。
   # Go / Cargo / uv 等用户安装的命令放后面。
   home.sessionPath = [
     "${config.home.profileDirectory}/bin"
-  ]
-  ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
-    "/run/current-system/sw/bin"
-    "/nix/var/nix/profiles/default/bin"
-  ]
-  ++ [
     "$HOME/go/bin"
     "$HOME/.cargo/bin"
     "$HOME/.local/bin"

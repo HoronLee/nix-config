@@ -35,7 +35,8 @@ modules/
 
 ## Darwin
 
-- `default.nix` 是所有 Darwin 主机共用的入口，导入 `common/nix.nix` 并启用 Homebrew；activation 不自动更新或升级 brew 包。
+- `default.nix` 是所有 Darwin 主机共用的入口，导入 `common/nix.nix`，启用系统 Fish 集成和 Homebrew；activation 不自动更新或升级 brew 包。
+- `programs.fish.enable` 负责加载 nix-darwin 系统环境，防止登录 Fish 将 macOS 自带命令排到 Nix profile 前面。Home Manager 管交互设置和用户路径，不补写系统 PATH。
 - `apps.nix` 声明 cask；`homebrew.enable` 只调用已有 `brew`，不会安装 Homebrew 本体。
 - `nix-homebrew` 未引入；brew 包更新继续手动执行 `brew upgrade`。
 - `system.primaryUser` 由 host 提供，Homebrew 默认使用该用户。
