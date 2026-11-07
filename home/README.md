@@ -11,7 +11,7 @@
 ## Profiles
 | Profile | 导入 | 适用 |
 | --- | --- | --- |
-| `linux-server.nix` | `core.nix` + `linux` | 无 GUI 服务器 |
+| `linux-server.nix` | `core.nix` + `linux` + `linux/tui/magpie.nix` | 无 GUI 服务器 |
 | `linux-desktop-niri.nix` | `gui.nix` + `linux` + `linux/gui` + Niri/Noctalia + Rime | Linux 桌面 |
 | `darwin.nix` | `gui.nix` + `darwin/packages.nix` + Karabiner + Rime | macOS |
 SSH agent 由 `common/ssh.nix` 统一启用，Linux 使用 systemd，macOS 使用 launchd。

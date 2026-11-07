@@ -6,6 +6,7 @@ Linux 专属用户配置，分为 core 和 gui 两层。
 linux/
 ├── default.nix        # Linux core：CLI 包，默认关闭 fontconfig
 ├── packages.nix       # Linux CLI/诊断/硬件工具
+├── tui/magpie.nix     # Magpie TUI 与 CLI
 ├── tui/yazi.nix       # Yazi 图形剪贴板支持，仅由 gui/ 导入
 ├── gui/               # Linux GUI 应用、fontconfig、图形剪贴板支持
 ├── wm/niri/           # Niri 用户配置
@@ -33,7 +34,7 @@ linux/
 ## GUI
 
 - `gui/packages.nix`：无条件安装的 Linux GUI 包。
-- `gui/magpie.nix`：特殊参数和平台判断。
+- `gui/magpie.nix`：安装 `magpie-app`，包定义与补丁在 `pkgs/magpie/`。
 - `gui/obs.nix`：受 `my.apps.obs` 控制。
 - `gui/default.nix`：启用 fontconfig，导入 `tui/yazi.nix` 的 Wayland/X11 剪贴板工具；服务器不导入这些设置。
 
@@ -41,4 +42,4 @@ linux/
 
 ## 服务器
 
-`home/profiles/linux-server.nix` 导入 `core.nix` 和 `linux`，不导入 `gui/`、`wm/`、`ws/`、`desktops/`、`im/`。SSH agent 由 `home/common/ssh.nix` 提供。
+`home/profiles/linux-server.nix` 导入 `core.nix`、`linux` 和 `tui/magpie.nix`，不导入 `gui/`、`wm/`、`ws/`、`desktops/`、`im/`。SSH agent 由 `home/common/ssh.nix` 提供。服务器可通过 SSH 使用 `magpie-cli tui`；桌面由 `gui/magpie.nix` 安装 `magpie-app`。

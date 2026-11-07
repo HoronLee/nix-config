@@ -28,10 +28,10 @@ modules/
 
 - `system/default.nix` 聚合 `common/nix.nix`、`base.nix`、`nix.nix`、`user.nix`、`ssh.nix`。
 - `desktop/default.nix` 聚合桌面服务、Firefox、Niri、输入法和 Magpie 运行支持，并设置 `TERMINAL`；`greeter.nix` 单独导入，服务器不会启动图形登录。
-- `desktop/magpie.nix` 追加 Magpie 所需的图形 `nix-ld` 库；公共层只启用基础 `nix-ld`，用户包仍由 `home/linux/gui/magpie.nix` 安装。
+- `desktop/magpie.nix` 追加 Magpie 所需的图形 `nix-ld` 库；公共层只启用基础 `nix-ld`，用户包仍由 `home/linux/tui/magpie.nix` 和 `home/linux/gui/magpie.nix` 安装。
 - `apps.nix` 实现需要 NixOS 集成的应用，例如 `programs.clash-verge`。
 - `server.nix` 放服务器通用项：固件、`smartd`，并导入 `server/mihomo`。
-- `lib/mkNixosHost.nix` 注入 `nix-cachyos-kernel` overlay，提供 `pkgs.cachyosKernels`；内核由各 host 的 `boot.kernelPackages` 选择。
+- `lib/mkNixosHost.nix` 只组合系统与 Home Manager；`nix-cachyos-kernel` 和 Magpie 的 overlay 由 `flake.nix` 传入，内核仍由各 host 的 `boot.kernelPackages` 选择。
 
 ## Darwin
 

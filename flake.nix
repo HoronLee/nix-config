@@ -40,9 +40,11 @@
           nixpkgs
           home-manager
           catppuccin
-          magpie
-          nix-cachyos-kernel
           ;
+        overlays = [
+          nix-cachyos-kernel.overlays.pinned
+          (import ./pkgs/magpie { inherit magpie; })
+        ];
       };
       mkDarwinHost = import ./lib/mkDarwinHost.nix {
         inherit
