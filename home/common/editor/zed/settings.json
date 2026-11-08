@@ -55,6 +55,7 @@
   "buffer_font_size": 15.0,
   "agent_buffer_font_size": 13.0,
   "markdown_preview": {
+    "open_markdown_files_in_preview": true,
     "font_family": "LXGW WenKai",
     "code_font_family": "Maple Mono NF CN",
     "font_size": 17.0
