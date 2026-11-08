@@ -54,6 +54,11 @@
         "alias": null,
         "showInLauncher": true
       },
+      "dev.zed.Zed": {
+        "shortcut": "hyper+z",
+        "alias": null,
+        "showInLauncher": true
+      },
       "net.kovidgoyal.kitty": {
         "shortcut": "hyper+t",
         "alias": null,
@@ -105,7 +110,7 @@
   },
   "dictation": {
     "mode": "toggle",
-    "shortcut": "f20",
+    "shortcut": null,
     "playsSounds": true,
     "model": "qwen-0.6b",
     "microphone": null,
