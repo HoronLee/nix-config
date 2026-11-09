@@ -74,6 +74,7 @@
     "dark": "Catppuccin Mocha"
   },
   "auto_install_extensions": {
+    "catppuccin": true,
     "catppuccin-icons": true,
     "nix": true,
     "sql": true,

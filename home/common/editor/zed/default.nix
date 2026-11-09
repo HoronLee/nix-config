@@ -1,16 +1,12 @@
-{ config, lib, ... }:
+{ config, ... }:
 {
+  catppuccin.zed.enable = false;
+
   programs.zed-editor = {
     enable = true;
     # 设置和快捷键由仓库文件提供，Zed 负责写入。
     mutableUserSettings = false;
     mutableUserKeymaps = false;
-
-    # Catppuccin 模块会注入 theme/icon_theme 和 catppuccin-icons；
-    # 这里清空生成项，避免和下面的可写符号链接冲突。
-    userSettings = lib.mkForce { };
-    userKeymaps = lib.mkForce [ ];
-    extensions = lib.mkForce [ ];
   };
 
   # Zed 写入 settings.json 前会 canonicalize，keymap.json 直接写入；
