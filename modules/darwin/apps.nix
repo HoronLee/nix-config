@@ -9,9 +9,13 @@
         "penso/tap"
       ];
     }
-    # brew formula 形式的 CLI 工具。
+    # brew formula 形式的 CLI 工具与运行依赖。
     {
-      homebrew.brews = [ "mole" ];
+      homebrew.brews = [
+        "mole"
+        # GitNexus / LadybugDB 的 macOS 预编译库依赖 Homebrew OpenSSL。
+        "openssl@3"
+      ];
     }
     {
       homebrew.casks = [
