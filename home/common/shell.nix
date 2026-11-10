@@ -20,6 +20,7 @@
     enable = true;
     shellAliases = {
       c = "clear";
+      gssh = "ghostty +ssh --";
       kssh = "kitty +kitten ssh";
       zj = "zellij";
     };

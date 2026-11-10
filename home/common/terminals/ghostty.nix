@@ -44,6 +44,9 @@
           "ctrl+alt+]=goto_split:next"
         ];
       }
+      // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+        macos-option-as-alt = true;
+      }
       // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
         gtk-tabs-location = "top";
       };

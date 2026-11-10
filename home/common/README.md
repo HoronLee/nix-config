@@ -24,3 +24,5 @@ common/
 - 需要系统级集成的应用不在这里安装，例如 Clash Verge 的 service/TUN 由 `modules/nixos/apps.nix` 处理。
 - 应用放置的完整规则见 [`home/README.md`](../README.md#gui-应用放置规则)。
 - Zed 的设置和快捷键通过可写符号链接同步；Catppuccin 配色与图标由 `settings.json` 的 `auto_install_extensions` 安装，应用按系统亮暗选择 Latte/Mocha，关闭 `catppuccin.zed` 集成以避免重复管理。
+- Ghostty、Kitty 在 macOS 上均将左右 Option 作为 Alt 使用。
+- Fish 的 `kssh` 使用 Kitty SSH 集成，`gssh` 使用 Ghostty SSH 集成。
