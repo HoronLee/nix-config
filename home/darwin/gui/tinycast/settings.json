@@ -54,13 +54,13 @@
         "alias": null,
         "showInLauncher": true
       },
-      "dev.zed.Zed": {
-        "shortcut": "hyper+z",
+      "com.mitchellh.ghostty": {
+        "shortcut": "hyper+t",
         "alias": null,
         "showInLauncher": true
       },
-      "net.kovidgoyal.kitty": {
-        "shortcut": "hyper+t",
+      "dev.zed.Zed": {
+        "shortcut": "hyper+z",
         "alias": null,
         "showInLauncher": true
       }
