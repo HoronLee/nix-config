@@ -101,11 +101,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1794107081,
-        "narHash": "sha256-WMMI4t0vPyNrLTtgmhKoLLMYa5krorevnSQJFPVzMJ0=",
+        "lastModified": 1794279894,
+        "narHash": "sha256-Ya2rEYdepcpCqExRTk+SfsHxSi4Ee/6Qfo8SVfzkQ5g=",
         "ref": "refs/heads/main",
-        "rev": "a4189fdc612fba4c5cb1deb83e2c48f01d020d84",
-        "revCount": 32,
+        "rev": "551eb7b3052dccd38b3a9f248c180534aad06b7e",
+        "revCount": 34,
         "type": "git",
         "url": "https://forge.asnk.io/sugar/magpie"
       },
@@ -184,11 +184,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1793876309,
-        "narHash": "sha256-Wojg9lIH/hDH91iDVH2/EPw8oDSpxjxhXONbU1yf4Zg=",
+        "lastModified": 1794042290,
+        "narHash": "sha256-ziZn2PvCJE5JEEpqTdxXwJpPB+L3YqoCpTAMCzyaP3U=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f9a75f41be3a74eab55d3a7679d34ad6cc0da977",
+        "rev": "f4a03c008967841f2a0b3cb7c436fc6fc31671f6",
         "type": "github"
       },
       "original": {
