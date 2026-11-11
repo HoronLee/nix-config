@@ -1,14 +1,17 @@
 [tools]
 # Nix 中打包成本高或没有稳定 nixpkg 的 npm 工具放这里。
 # 与 nixpkgs 重复的工具由使用者主动避免，不在此重复声明。
-"npm:@mindfoldhq/trellis" = "latest"
-"npm:gitnexus" = "latest"
 
 # Coding Agents
 agy = "latest"
 claude = "latest"
 codex = "latest"
 oh-my-pi = { version = "latest", rename_exe = "omp" }
+
+# Agent辅助工具
+"npm:@mindfoldhq/trellis" = "latest"
+"npm:gitnexus" = "latest"
+"npm:billion-context" = "latest"
 
 [settings]
 # 项目里的 .node-version / .python-version 仍由 mise 处理。
