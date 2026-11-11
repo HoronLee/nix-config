@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
-  home.packages = [
-    pkgs.antigravity-cli
-  ];
+  # 改由 mise 管理。
+  # home.packages = [
+  #   pkgs.antigravity-cli
+  # ];
 }

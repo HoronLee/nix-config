@@ -4,6 +4,12 @@
 "npm:@mindfoldhq/trellis" = "latest"
 "npm:gitnexus" = "latest"
 
+# Coding Agents
+agy = "latest"
+claude = "latest"
+codex = "latest"
+oh-my-pi = { version = "latest", rename_exe = "omp" }
+
 [settings]
 # 项目里的 .node-version / .python-version 仍由 mise 处理。
 idiomatic_version_file_enable_tools = ["node", "python"]

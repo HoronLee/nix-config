@@ -1,4 +1,5 @@
 { pkgs, ... }:
 {
-  home.packages = [ pkgs.codex ];
+  # 改由 mise 管理。
+  # home.packages = [ pkgs.codex ];
 }

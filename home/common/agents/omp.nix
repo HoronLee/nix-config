@@ -62,7 +62,8 @@ let
   configFile = (pkgs.formats.yaml { }).generate "omp-config.yml" settings;
 in
 {
-  home.packages = [ pkgs.omp ];
+  # 改由 mise 管理（github:can1357/oh-my-pi），nixpkgs 版本落后于上游 release。
+  # home.packages = [ pkgs.omp ];
 
   # Magpie 把 modelRoles 和 provider 写进 OMP 配置；后续 switch 不能覆盖。
   # 新机器第一次 activation 注入静态设置，已有机器直接跳过。

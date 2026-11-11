@@ -23,7 +23,7 @@
 - `modules/nixos/desktop/`：`default.nix` 聚合 `services.nix`、`firefox.nix`、`niri.nix`、`input-method.nix`；`greeter.nix` 单独导入。
 - `modules/nixos/apps.nix`：`my.apps` 的 NixOS 安装实现；`modules/darwin/apps.nix`：macOS cask 实现；`modules/common/apps.nix`：选项声明。
 - `modules/nixos/server.nix`：服务器通用项，包含固件、`smartd` 和 `server/mihomo`。
-- `home/core.nix`：无 GUI 的用户层，含 CLI、TUI、Neovim、OMP、字体、主题。
+- `home/core.nix`：无 GUI 的用户层，含 CLI、TUI、Neovim、agent 配置、字体、主题。
 - `home/gui.nix`：`core.nix` 加 `home/common/gui`，供桌面和 macOS 使用。
 - `home/common/`：`cli/`、`tui/`、`terminals/`、`gui/`、`editor/`、`agents/`、`packages.nix`、`shell.nix`、`ssh.nix`、`fonts.nix`、`theme.nix`。
 - `home/linux/`：`default.nix` 是 Linux core；`gui/` 是 Linux GUI；`wm/niri/`、`ws/noctalia/`、`desktops/`、`im/rime/` 是桌面、Shell、输入法配置。
@@ -75,7 +75,7 @@ sudo darwin-rebuild switch --flake .#mbp-m2pro
 - `modules/nixos/system/ssh.nix`：sshd 策略；不得擅自改变认证方式。
 - `home/common/ssh.nix`：客户端配置与 agent；私钥只放 `~/.ssh/`。
 - `home/linux/im/rime/default.nix`：固定万象语法模型 URL 与 hash；只部署静态补丁和模型，用户词库、缓存、凭据不入仓库。
-- `home/common/agents/`：OMP、Codex、Claude 等 agent 工具；`home/linux/gui/magpie.nix`：Linux 专用 Magpie 安装。
+- `home/common/agents/`：OMP、Codex、Claude、Antigravity 的静态配置；四个 CLI 由 mise 安装（`home/common/cli/mise/config.toml`），`home.packages` 行已注释保留。`home/linux/gui/magpie.nix`：Linux 专用 Magpie 安装。
 - `home/linux/wm/niri/`：用户 KDL；`modules/nixos/desktop/niri.nix`：系统 session、portal、keyring。两者职责不同，不能互相替代。
 - `home/linux/ws/noctalia/`：Noctalia 用户 TOML 与壁纸；`modules/nixos/desktop/greeter.nix`：Noctalia Greeter 登录管理器。
 
