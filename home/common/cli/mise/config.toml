@@ -1,6 +1,36 @@
 [tools]
-# Nix 中打包成本高或没有稳定 nixpkg 的 npm 工具放这里。
+# 编程语言运行时、包管理器与高频更新的开发 CLI 统一由 mise 管理。
 # 与 nixpkgs 重复的工具由使用者主动避免，不在此重复声明。
+
+# 编程语言
+go = "latest"
+python = "3.13"
+node = "lts"
+rust = "stable"
+java = "25"
+
+# 包管理器
+uv = "latest"
+pipx = "latest"
+pnpm = "latest"
+yarn = "latest"
+
+# Protobuf、LSP、格式化与构建辅助
+buf = "latest"
+tombi = "latest"
+biome = "latest"
+"npm:pyright" = "latest"
+golangci-lint = "latest"
+"npm:typescript" = "latest"
+prek = "latest"
+
+# Kubernetes
+kubebuilder = "latest"
+kubectl = "latest"
+helm = "latest"
+
+# 负载测试
+k6 = "latest"
 
 # Coding Agents
 agy = "latest"
@@ -8,11 +38,13 @@ claude = "latest"
 codex = "latest"
 oh-my-pi = { version = "latest", rename_exe = "omp" }
 
-# Agent辅助工具
+# Agent 辅助工具
 "npm:@mindfoldhq/trellis" = "latest"
 "npm:gitnexus" = "latest"
 "npm:billion-context" = "latest"
+"npm:agent-browser" = "latest"
+rtk = "latest"
 
 [settings]
-# 项目里的 .node-version / .python-version 仍由 mise 处理。
-idiomatic_version_file_enable_tools = ["node", "python"]
+# 项目里的版本文件（.node-version / .python-version / go.mod / rust-toolchain.toml 等）由 mise 处理。
+idiomatic_version_file_enable_tools = ["node", "python", "go", "java", "rust"]

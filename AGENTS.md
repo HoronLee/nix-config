@@ -82,7 +82,7 @@ sudo darwin-rebuild switch --flake .#mbp-m2pro
 ## Runtime/Tooling Preferences
 
 - Nix 声明系统级与用户级软件环境；Home Manager 管用户级软件包和 dotfiles，系统级配置由 NixOS/nix-darwin 模块负责。
-- `mise` 只用于 nixpkgs 难以打包的 npm 工具和项目版本切换；其余工具优先用 Nix，重复项由使用者主动避免。
+- `mise` 管理编程语言运行时、包管理器、高频更新的开发 CLI 与 npm 工具；底层构建与通用 CLI 优先用 Nix，重复项由使用者主动避免。
 - 普通用户 `horonlee` 默认 Fish，root 保留 Bash。日常编辑和 Git/Lazygit 不用 sudo；应用系统配置才提权。
 - 默认不提交、推送或生成 `before-*` 备份；私钥、密码、令牌不写入仓库或日志。
 - `/etc/nixos` 是用户仓库的链接。移除链接只用 `sudo unlink /etc/nixos`，禁止递归删除。
