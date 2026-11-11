@@ -7,10 +7,10 @@
     "nix-command"
     "flakes"
   ];
-  # 两个平台一致的 store 维护：每周回收，删除超过 14 天的历史代次。
+  # 两个平台一致的 store 维护：每周回收，删除超过 7 天的历史代次。
   nix.gc = {
     automatic = true;
-    options = "--delete-older-than 14d";
+    options = "--delete-older-than 7d";
   };
   nix.settings = {
     # 将内容相同的 store 文件合并为硬链接。
