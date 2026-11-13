@@ -45,7 +45,9 @@ switch host="":
 check: eval
     nix flake check --no-build --all-systems --no-write-lock-file
 
-# 更新 flake 输入；可传入零个或多个 input 名。
+# GitHub 未认证 API 限速 60 次/小时，分支输入靠 API 解析，共享出口 IP 时会 403。
+# 令牌从 gh 钥匙串现取；未登录或取不到时退回匿名请求。
 [positional-arguments]
 update *inputs:
-    nix flake update -- "$@"
+    @token="$(gh auth token 2>/dev/null || true)"; \
+      NIX_CONFIG="${token:+access-tokens = github.com=$token}" nix flake update -- "$@"
