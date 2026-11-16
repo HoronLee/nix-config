@@ -39,7 +39,6 @@
         "motrix"
         "nyaterm"
         "apifox"
-        "herdr-gpui"
         "another-redis-desktop-manager"
         "background-music"
       ];
