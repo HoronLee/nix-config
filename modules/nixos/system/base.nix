@@ -17,6 +17,8 @@
     LC_TELEPHONE = "zh_CN.UTF-8";
     LC_TIME = "zh_CN.UTF-8";
   };
+  # 启用可再分发硬件固件与微码更新。
+  hardware.enableRedistributableFirmware = true;
   programs.nix-ld.enable = true;
   # 系统级软件包。
   environment.systemPackages = with pkgs; [
