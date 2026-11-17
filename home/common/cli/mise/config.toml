@@ -48,3 +48,8 @@ rtk = "latest"
 [settings]
 # 项目里的版本文件（.node-version / .python-version / go.mod / rust-toolchain.toml 等）由 mise 处理。
 idiomatic_version_file_enable_tools = ["node", "python", "go", "java", "rust"]
+
+# NixOS 上 mise 默认 all_compile=true（会把 node/python/ruby/erlang 从源码编译，
+# 且该隐式默认在 2027.8.0 移除）。本机已启用 nix-ld，直接用预编译二进制；
+# 源码编译需要 zlib/openssl 等 dev 头文件，普通环境里没有，会导致 python 缺 zlib。
+all_compile = false
