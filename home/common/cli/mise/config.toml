@@ -3,7 +3,7 @@
 # 与 nixpkgs 重复的工具由使用者主动避免，不在此重复声明。
 
 # 编程语言
-go = "latest"
+go = "1.27.3"
 python = "3.13"
 node = "lts"
 rust = "stable"
