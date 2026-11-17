@@ -12,6 +12,7 @@ modules/
 │   ├── desktop/             # services、firefox、niri、greeter、input-method
 │   ├── apps.nix             # NixOS 侧应用安装
 │   ├── docker.nix           # Docker Engine、Compose、Buildx
+│   ├── frpc.nix             # 按需启用的 frpc 客户端（my.frpc）
 │   ├── server.nix           # 服务器通用项
 │   └── server/mihomo/       # Mihomo 服务
 └── darwin/
@@ -26,11 +27,12 @@ modules/
 
 ## NixOS
 
-- `system/default.nix` 聚合 `common/nix.nix`、`base.nix`、`nix.nix`、`user.nix`、`ssh.nix`。
+- `system/default.nix` 聚合 `common/nix.nix`、`base.nix`、`nix.nix`、`user.nix`、`ssh.nix` 与可选的 `frpc.nix`。
 - `desktop/default.nix` 聚合桌面服务、Firefox、Niri、输入法和 Magpie 运行支持，并设置 `TERMINAL`；`greeter.nix` 单独导入，服务器不会启动图形登录。
 - `desktop/magpie.nix` 追加 Magpie 所需的图形 `nix-ld` 库；公共层只启用基础 `nix-ld`，用户包仍由 `home/linux/tui/magpie.nix` 和 `home/linux/gui/magpie.nix` 安装。
 - `apps.nix` 实现需要 NixOS 集成的应用，例如 `programs.clash-verge`。
 - `base.nix` 开启可再分发固件；`server.nix` 放服务器通用项（`smartd`），并导入 `server/mihomo`。
+- `frpc.nix` 提供 `my.frpc` 选项（默认关闭）；启用后注册 `frp.service`，通过 systemd `LoadCredential` 读取 `/etc/frp/token`（文件不存在时自动跳过 unit）。
 - `lib/mkNixosHost.nix` 只组合系统与 Home Manager；`nix-cachyos-kernel` 和 Magpie 的 overlay 由 `flake.nix` 传入，内核仍由各 host 的 `boot.kernelPackages` 选择。
 
 ## Darwin

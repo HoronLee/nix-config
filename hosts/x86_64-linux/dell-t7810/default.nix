@@ -2,6 +2,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./services.nix
     ../../../modules/nixos/system
     ../../../modules/nixos/docker.nix
     ../../../modules/nixos/desktop

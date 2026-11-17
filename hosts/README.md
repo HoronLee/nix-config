@@ -4,6 +4,7 @@
 | --- | --- |
 | `default.nix` | hostname、bootloader、`system.stateVersion`、系统模块 imports |
 | `hardware-configuration.nix` | `nixos-generate-config` 生成的文件系统与内核模块 |
+| `services.nix` | 本机特有的服务配置（可选，如 `my.frpc`） |
 ## 新增 NixOS 主机
 1. 用 UEFI 模式装好系统，进入新系统后开启 flakes。`/etc/nix/nix.conf` 是 Nix store 软链，改写成 root 的用户级配置：
    ```sh

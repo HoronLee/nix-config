@@ -7,5 +7,6 @@
     ./nix.nix
     ./user.nix
     ./ssh.nix
+    ../frpc.nix
   ];
 }
