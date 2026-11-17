@@ -20,8 +20,15 @@
 
    ```sh
    sudo mkdir -p /root/.config/nix
-   printf 'experimental-features = nix-command flakes\n' \
+   printf 'extra-experimental-features = nix-command flakes\n' \
      | sudo tee /root/.config/nix/nix.conf
+   ```
+
+   必须用 `extra-` 前缀。写 `experimental-features` 会整条覆盖 `/etc/nix/nix.conf` 的值，把本仓库启用的 `auto-allocate-uids` 挤掉，之后每次真正构建都报 `experimental Nix feature 'auto-allocate-uids' is disabled`。装好系统后这个文件也不再需要（系统 `/etc/nix/nix.conf` 已由 `modules/nixos/system/nix.nix` 提供同样的 feature），可以整个删掉：
+
+   ```sh
+   sudo rm /root/.config/nix/nix.conf
+   sudo systemctl restart nix-daemon
    ```
 
 3. 克隆仓库并生成硬件配置（先把新机器的公钥加到 GitHub；`--show-hardware-config` 只输出内容，不会覆盖 `/etc/nixos/configuration.nix`）：

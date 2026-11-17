@@ -9,9 +9,10 @@
 1. 用 UEFI 模式装好系统，进入新系统后开启 flakes。`/etc/nix/nix.conf` 是 Nix store 软链，改写成 root 的用户级配置：
    ```sh
    sudo mkdir -p /root/.config/nix
-   printf 'experimental-features = nix-command flakes\n' \
+   printf 'extra-experimental-features = nix-command flakes\n' \
      | sudo tee /root/.config/nix/nix.conf
    ```
+   必须用 `extra-` 前缀；写 `experimental-features` 会覆盖系统值，挤掉 `auto-allocate-uids` 并导致后续构建报错。系统装好后整个文件都可以删掉。
 2. 克隆仓库并生成硬件配置。先把新机器的公钥加到 GitHub；`--show-hardware-config` 只取输出，避免覆盖 `/etc/nixos/configuration.nix`：
    ```sh
    nix-shell -p git
