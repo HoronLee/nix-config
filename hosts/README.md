@@ -44,7 +44,7 @@
     pkgs.cachyosKernels.linuxPackages-cachyos-latest;
 }
 ```
-当前只有 `nixos-vm` 使用 CachyOS latest。其他 host 不写 `boot.kernelPackages` 即使用默认内核。
+当前 `nixos-vm` 和 `dell-t7810` 使用 CachyOS latest。其他 host 不写 `boot.kernelPackages` 即使用默认内核。
 
 也可以使用 NixOS 自带的其他内核：
 ```nix
@@ -52,6 +52,25 @@ boot.kernelPackages = pkgs.linuxPackages_zen;
 boot.kernelPackages = pkgs.linuxPackages_latest;
 ```
 CachyOS 内核目前只支持 `x86_64-linux`。
+
+## 首次安装注意
+
+`cache.lantian.pub/lantian` 写在 `nixos/system/nix.nix`，但它渲染成 `/etc/nix/nix.conf` 属于 activation 产物；构建发生在 activation 之前，所以**新机器第一次**构建读不到这个缓存，会空编内核。ISO 的 `/etc` 是只读 squashfs，`tee /etc/nix/nix.conf` 会报“只读文件系统”。
+
+解决：写 root 的用户级配置，它先于系统配置生效。
+
+```sh
+sudo mkdir -p /root/.config/nix
+sudo tee -a /root/.config/nix/nix.conf >/dev/null <<'EOF'
+extra-substituters = https://cache.lantian.pub/lantian
+extra-trusted-public-keys = lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ=
+EOF
+sudo systemctl restart nix-daemon
+sudo nix show-config | grep -E '^(substituters|trusted-public-keys)'
+```
+
+用 `extra-` 前缀追加，直接写 `substituters =` 会挤掉清华镜像和 magpie。验证必须带 `sudo`：配置在 root 名下。装好之后 `/etc/nix/nix.conf` 已含 lantian，不再需要这一步。
+
 ## 约定
 - 只放系统层配置；用户 dotfiles 放 `home/`。
 - `system.stateVersion` 使用首次安装的 release，升级 nixpkgs 后不要改。

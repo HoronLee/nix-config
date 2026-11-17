@@ -9,6 +9,7 @@
 | `nixos-vm` | NixOS x86_64 | `nixosConfigurations.nixos-vm` | UEFI + systemd-boot，Niri + Noctalia，Fcitx5-Rime，CachyOS latest 内核 |
 | `mbp-m2pro` | nix-darwin aarch64 | `darwinConfigurations.mbp-m2pro` | Apple Silicon，Homebrew cask |
 | `dell-r430` | NixOS x86_64 | `nixosConfigurations.dell-r430` | 1U 服务器，UEFI + systemd-boot，默认内核，无 GUI |
+| `dell-t7810` | NixOS x86_64 | `nixosConfigurations.dell-t7810` | 桌面工作站，Niri + Noctalia，CachyOS latest 内核 |
 
 ## 快速开始
 
@@ -163,7 +164,7 @@ home/
 }
 ```
 
-当前只有 `nixos-vm` 使用 CachyOS latest：
+当前 `nixos-vm` 和 `dell-t7810` 使用 CachyOS latest：
 
 ```nix
 boot.kernelPackages =
@@ -258,7 +259,7 @@ sudo clashtui
 
 ## 状态版本
 
-- NixOS 的 `system.stateVersion` 使用首次安装的 release。`nixos-vm` 和 `dell-r430` 是 `26.05`，升级 nixpkgs 后不要跟着改。
+- NixOS 的 `system.stateVersion` 使用首次安装的 release。`nixos-vm`、`dell-r430` 和 `dell-t7810` 是 `26.05`，升级 nixpkgs 后不要跟着改。
 - nix-darwin 的 `system.stateVersion` 是整数，当前为 `7`。
 - Home Manager 的 `home.stateVersion` 在 `home/core.nix`，当前为 `26.05`。
 
