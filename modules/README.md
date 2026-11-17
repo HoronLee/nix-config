@@ -22,7 +22,7 @@ modules/
 ## Common
 
 - `nix.nix` 统一开启 `allowUnfree` 和 `nix-command`、`flakes`。
-- `auto-allocate-uids`、`configurable-impure-env` 属于 NixOS 专属设置，留在 `nixos/system/nix.nix`。
+- `auto-allocate-uids`、`configurable-impure-env`、`cache.lantian.pub/lantian`（`nix-cachyos-kernel` 的上游缓存）属于 NixOS 专属设置，留在 `nixos/system/nix.nix`。
 
 ## NixOS
 
