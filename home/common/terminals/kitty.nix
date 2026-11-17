@@ -9,7 +9,6 @@
       noPreference = "Catppuccin-Mocha";
     };
     font = {
-      package = pkgs.maple-mono.NF-CN;
       name = "Maple Mono NF CN";
       size = 12;
     };

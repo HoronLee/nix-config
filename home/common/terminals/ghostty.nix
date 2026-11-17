@@ -12,7 +12,6 @@
       "${config.catppuccin.sources.ghostty}/catppuccin-latte.conf";
     xdg.configFile."ghostty/themes/catppuccin-mocha".source =
       "${config.catppuccin.sources.ghostty}/catppuccin-mocha.conf";
-    home.packages = [ pkgs.maple-mono.NF-CN ];
     programs.ghostty = {
       enable = true;
       # nixpkgs 的 ghostty 仅支持 Linux；macOS 使用官方预编译包。
@@ -25,7 +24,9 @@
         # 透明背景
         background-opacity = 0.85;
         background-blur = 1;
-        alpha-blending = "native";
+        # 必须显式：Ghostty 缺省按 native 混合，会在 sRGB 上二次编码，
+        # 把 mocha 底色 #1E1E2E 渲染成 #606076，整块背景泛白。
+        alpha-blending = "linear-corrected";
         window-padding-x = 0;
         window-padding-y = 0;
         unfocused-split-opacity = 1;

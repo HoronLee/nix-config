@@ -8,6 +8,8 @@
     ./keyd.nix
     ./magpie.nix
   ];
+  # GVfs 提供 trash://、network:// 等虚拟文件系统后端，文件浏览器需要它。
+  services.gvfs.enable = true;
   # 应用启动器为 Terminal=true 的桌面项选择终端。
   environment.sessionVariables.TERMINAL = "ghostty";
   # Qt 6 默认平台主题不上报桌面亮暗，QStyleHints::colorScheme() 返回 Unknown，
