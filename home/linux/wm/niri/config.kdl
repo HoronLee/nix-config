@@ -1,5 +1,6 @@
 // Based on niri v26.04/resources/default-config.kdl:
 // https://github.com/YaLTeR/niri/blob/v26.04/resources/default-config.kdl
+include "./cfg/outputs.kdl"
 include "./cfg/input.kdl"
 include "./cfg/layout.kdl"
 include "./cfg/rules.kdl"
