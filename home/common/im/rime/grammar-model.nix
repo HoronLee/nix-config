@@ -11,5 +11,5 @@ pkgs.fetchurl {
   # 2. 用输出替换下面的 hash。
   # 3. 重新构建/switch，然后在 Fcitx5 或鼠须管中重新部署 Rime。
   url = "https://github.com/amzxyz/RIME-LMDG/releases/download/LTS/wanxiang-lts-zh-hans.gram";
-  hash = "sha256-40UAq0RibcA5oGQXkuy6mKtjMHZG6z0pGGvlZgj/4JQ=";
+  hash = "sha256-1PZDViMXZP8nt5ybDbec2dZlATRkz1VE4vvZpx4PHFo=";
 }
