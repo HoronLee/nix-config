@@ -7,7 +7,12 @@
     nautilus
     # 即时通讯
     telegram-desktop
-    qq
+    # QQ 是 Electron：默认走 XWayland，GTK 在未设 GTK_IM_MODULE 时按 locale 回落 im-xim，
+    # Fcitx5 的 XIM 前端转发不同步，快打时按键绕过预编辑直接落进输入框。
+    # 强制原生 Wayland + text-input-v3，改用 fcitx5 的 wayland 前端。
+    (qq.override {
+      commandLineArgs = "--ozone-platform=wayland --enable-features=WaylandWindowDecorations --enable-wayland-ime --wayland-text-input-version=3";
+    })
     wechat
     # 办公套件
     libreoffice
