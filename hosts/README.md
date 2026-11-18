@@ -46,7 +46,7 @@
     pkgs.cachyosKernels.linuxPackages-cachyos-latest;
 }
 ```
-当前 `nixos-vm` 和 `dell-t7810` 使用 CachyOS latest。其他 host 不写 `boot.kernelPackages` 即使用默认内核。
+当前 `dell-t7810` 使用 CachyOS latest。其他 host 不写 `boot.kernelPackages` 即使用默认内核。
 
 也可以使用 NixOS 自带的其他内核：
 ```nix
@@ -72,6 +72,10 @@ sudo nix show-config | grep -E '^(substituters|trusted-public-keys)'
 ```
 
 用 `extra-` 前缀追加，直接写 `substituters =` 会挤掉清华镜像和 magpie。验证必须带 `sudo`：配置在 root 名下。装好之后 `/etc/nix/nix.conf` 已含 lantian，不再需要这一步。
+
+## 停用主机
+
+`nixos-vm/` 已停用，目录保留作存档；它的 `nixosConfigurations` 入口在 `flake.nix` 中注释，文档与命令示例不再引用它。
 
 ## 约定
 - 只放系统层配置；用户 dotfiles 放 `home/`。

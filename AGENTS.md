@@ -4,9 +4,9 @@
 
 这是 HoronLee 的个人 Nix 配置仓库，用 Nix Flakes 管理 NixOS、nix-darwin 和内嵌 Home Manager。当前输出：
 
-- `nixosConfigurations.nixos-vm`：`x86_64-linux`，UEFI + systemd-boot，Niri + Noctalia，Fcitx5-Rime。
+- `nixosConfigurations.dell-t7810`：`x86_64-linux`，UEFI + systemd-boot，Niri + Noctalia，Fcitx5-Rime。
 - `darwinConfigurations.mbp-m2pro`：`aarch64-darwin`，Homebrew cask。
-- `dell-r430`：host 模块已存在，`hardware-configuration.nix` 尚未生成，暂未注册到 flake。
+- `nixosConfigurations.dell-r430`：`x86_64-linux`，1U 服务器，无 GUI（`linux-server` profile）。
 
 ## Architecture & Data Flow
 
@@ -43,12 +43,12 @@
 
 ```sh
 git add path/to/new-module.nix  # 新增文件必须先进入 Git，flake 才能读取。
-nix eval .#nixosConfigurations.nixos-vm.config.system.build.toplevel.drvPath
-nixos-rebuild build --flake .#nixos-vm --no-link
+nix eval .#nixosConfigurations.dell-t7810.config.system.build.toplevel.drvPath
+nixos-rebuild build --flake .#dell-t7810 --no-link
 nix eval --raw .#darwinConfigurations.mbp-m2pro.config.system.build.toplevel.drvPath
 
 # 用户明确要求应用时：
-sudo nixos-rebuild switch --flake .#nixos-vm
+sudo nixos-rebuild switch --flake .#dell-t7810
 sudo darwin-rebuild switch --flake .#mbp-m2pro
 ```
 
@@ -70,7 +70,7 @@ sudo darwin-rebuild switch --flake .#mbp-m2pro
 
 - `flake.nix` / `flake.lock`：nixpkgs `nixos-unstable`、HM `master`、Catppuccin `main`、OMP、`sugar/magpie`。
 - `lib/mkNixosHost.nix` / `lib/mkDarwinHost.nix`：组合系统与内嵌 HM，并传入 `mylib`；NixOS 侧还传 `magpieApp`。
-- `hosts/x86_64-linux/nixos-vm/hardware-configuration.nix`：VM 的磁盘、挂载和 swap。
+- `hosts/x86_64-linux/dell-t7810/hardware-configuration.nix`：桌面工作站的磁盘、挂载和 swap。
 - `modules/nixos/system/user.nix`：账户与公钥；改用户名需同步 flake 的 `username`。`home/common/cli/git.nix` 管 Git 身份。
 - `modules/nixos/system/ssh.nix`：sshd 策略；不得擅自改变认证方式。
 - `home/common/ssh.nix`：客户端配置与 agent；私钥只放 `~/.ssh/`。

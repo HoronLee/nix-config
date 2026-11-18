@@ -100,7 +100,7 @@ nixfmt <changed files>
 nix eval --raw .#darwinConfigurations.mbp-m2pro.config.system.build.toplevel.drvPath
 
 # NixOS
-nix eval --raw .#nixosConfigurations.nixos-vm.config.system.build.toplevel.drvPath
+nix eval --raw .#nixosConfigurations.dell-t7810.config.system.build.toplevel.drvPath
 ```
 
 需要确认包真的进入 profile 时，查 `home.packages`：

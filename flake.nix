@@ -56,14 +56,13 @@
     in
     {
       nixosConfigurations = {
-        nixos-vm = mkNixosHost {
-          system = "x86_64-linux";
-          hostModule = ./hosts/x86_64-linux/nixos-vm;
-          username = "horonlee";
-          homeModule = ./home/profiles/linux-desktop-niri.nix;
-        };
-        # 生成 hosts/x86_64-linux/dell-r430/hardware-configuration.nix
-        # 并 git add 后，取消下面的注释。
+        # nixos-vm 已停用；host 文件保留作存档，入口不再求值。
+        # nixos-vm = mkNixosHost {
+        #   system = "x86_64-linux";
+        #   hostModule = ./hosts/x86_64-linux/nixos-vm;
+        #   username = "horonlee";
+        #   homeModule = ./home/profiles/linux-desktop-niri.nix;
+        # };
         dell-r430 = mkNixosHost {
           system = "x86_64-linux";
           hostModule = ./hosts/x86_64-linux/dell-r430;
