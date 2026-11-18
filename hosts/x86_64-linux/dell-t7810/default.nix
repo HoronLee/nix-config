@@ -28,5 +28,6 @@
     clash-verge.enable = true;
     ghostty.enable = true;
     obs.enable = true;
+    steam.enable = true;
   };
 }
