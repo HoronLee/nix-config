@@ -16,6 +16,8 @@
     wechat
     # 办公套件
     libreoffice
+    # VNC 服务端；走 wlr-screencopy 抓屏，niri 下可用
+    wayvnc
     # 远程终端
     (pkgs.callPackage ../../../pkgs/nyaterm { })
   ];
