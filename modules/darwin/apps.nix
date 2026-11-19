@@ -43,6 +43,7 @@
         "another-redis-desktop-manager"
         "background-music"
         "sheprd"
+        "tigervnc-viewer"
       ];
     }
     # 以下软件在 nixpkgs 只支持 Linux；macOS 使用官方 cask，由 my.apps 统一开关。
