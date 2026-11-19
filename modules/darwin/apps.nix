@@ -7,6 +7,7 @@
       homebrew.taps = [
         "nyakang/nyaterm"
         "penso/tap"
+        "sheprd-labs/tap"
       ];
     }
     # brew formula 形式的 CLI 工具与运行依赖。
@@ -41,6 +42,7 @@
         "apifox"
         "another-redis-desktop-manager"
         "background-music"
+        "sheprd"
       ];
     }
     # 以下软件在 nixpkgs 只支持 Linux；macOS 使用官方 cask，由 my.apps 统一开关。
