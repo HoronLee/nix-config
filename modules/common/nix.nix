@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
   # 允许 unfree 包；Linux 与 macOS 都通过 Nix 管理应用。
   nixpkgs.config.allowUnfree = true;
@@ -7,10 +7,14 @@
     "nix-command"
     "flakes"
   ];
-  # 两个平台一致的 store 维护：每周回收，删除超过 7 天的历史代次。
-  nix.gc = {
-    automatic = true;
-    options = "--delete-older-than 7d";
+  # 用 nh 替代原 nix.gc：每周清理系统与用户代次及间接 gcroot，保底 5 代且 7 天内全留。
+  programs.nh = {
+    enable = true;
+    flake = "${config.users.users.horonlee.home}/projects/nix-config";
+    clean = {
+      enable = true;
+      extraArgs = "--keep-since 7d --keep 5";
+    };
   };
   nix.settings = {
     # 将内容相同的 store 文件合并为硬链接。

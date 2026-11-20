@@ -109,14 +109,11 @@
 
 ### 日常应用
 
-```sh
-sudo nixos-rebuild switch --flake ~/projects/nix-config#dell-t7810
-```
-
-macOS：
+安装完成后已启用 `nh` 并设置 `NH_FLAKE`，任意目录可直接切换（无需 `sudo`）：
 
 ```sh
-sudo darwin-rebuild switch --flake ~/projects/nix-config#mbp-m2pro
+nh os switch            # NixOS（默认匹配本机 hostname）
+nh darwin switch        # macOS
 ```
 
 ## 目录
@@ -277,28 +274,28 @@ sudo clashtui
 
 ## 日常命令
 
-仓库根目录的 `justfile` 封装常用操作：
+构建与切换直接使用 `nh`（`modules/common/nix.nix` 已设 `NH_FLAKE`，任意目录可执行，默认按本机主机名匹配，自动按需提权）：
+
+```sh
+nh os build             # NixOS 构建，不应用
+nh os switch            # NixOS 构建并应用（常用：-a 确认、-n 预演、-H <host> 指定主机）
+nh darwin build         # macOS 构建，不应用
+nh darwin switch        # macOS 构建并应用
+```
+
+仓库根目录的 `justfile` 封装校验、格式化与带 GitHub token 的锁文件更新：
 
 ```sh
 just              # 列出可用任务
 just hosts        # 动态列出全部 NixOS、Darwin 主机
 just fmt          # 格式化所有 Nix 文件
 just eval         # 动态求值全部主机的 toplevel
-just build        # 按当前平台和 hostname -s 构建，不应用
-just switch       # 按当前平台和 hostname -s 提权并应用
 just check        # 全部主机求值 + 跨平台 flake 检查，不构建
 just update       # 更新全部输入，仅明确升级依赖时使用
 just update nixpkgs home-manager # 只更新指定输入
 ```
 
-`build` 和 `switch` 的 `host` 是可选位置参数，省略时取 `hostname -s`，所以主机名要与 flake 属性名一致：
-
-```sh
-just build other-host
-just switch other-host
-```
-
-macOS 使用 `darwin-rebuild`，Linux 使用 `nixos-rebuild`；显式指定主机仍在本机执行，并非远程部署。新增主机后，`hosts`、`eval` 和 `check` 无需更新主机列表。`hosts`、`eval`、`check` 不写入 `flake.lock`。
+新增主机后，`hosts`、`eval` 和 `check` 无需更新主机列表，且都不写入 `flake.lock`。
 
 没有 just 时使用原始命令：
 

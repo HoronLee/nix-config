@@ -1,8 +1,6 @@
 { ... }:
 {
   nix = {
-    # NixOS 的 systemd 定时器使用 calendar 表达式；Darwin 默认每周。
-    gc.dates = "weekly";
     settings = {
       experimental-features = [
         "auto-allocate-uids"
