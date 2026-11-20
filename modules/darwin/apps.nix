@@ -36,6 +36,8 @@
         "rustdesk"
         # nixpkgs 只有 0.10.3-beta，官方 cask 是 0.12.8 且上游 auto_updates。
         "tinycast"
+        # nixpkgs 为 0.1.8，官方 cask 为 0.1.10 且上游 auto_updates。
+        "t3-code"
         # 以下应用没有可用的 Darwin nixpkg，保留官方 cask。
         "motrix"
         "nyaterm"

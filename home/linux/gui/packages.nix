@@ -20,5 +20,7 @@
     wayvnc
     # 远程终端
     (pkgs.callPackage ../../../pkgs/nyaterm { })
+    # Coding agents 控制面板（桌面端 + t3 CLI）；禁用默认捆绑的 codex，避免 --prefix PATH 遮挡 mise 管理的 codex。
+    (t3code.override { enableCodex = false; })
   ];
 }
