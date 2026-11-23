@@ -30,6 +30,11 @@
       set -g fish_greeting
       mise activate fish | source
     '';
+    shellInitLast = ''
+      if test -n "$REX_BIN_DIR"
+        fish_add_path --path --prepend --move "$REX_BIN_DIR"
+      end
+    '';
   };
 
   programs.bash.enable = true;
