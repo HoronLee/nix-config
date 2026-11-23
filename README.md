@@ -216,7 +216,7 @@ uname -r
 | `linux-desktop-niri.nix` | `gui.nix` + `linux` + `linux/gui` + Niri/Noctalia + Rime | Linux 桌面 |
 | `darwin.nix` | `gui.nix` | macOS |
 
-`linux-server` 仍包含 btop、yazi、OMP 等 TUI 工具，只是不安装 GUI 应用。SSH agent 由 `home/common/ssh.nix` 在 Linux 和 macOS 上统一启用。
+`linux-server` 仍包含 btop、yazi、OMP 等 TUI 工具，只是不安装 GUI 应用。SSH 客户端配置位于 `home/common/ssh.nix`（Linux 启用 Home Manager `ssh-agent`，macOS 直接使用系统 `launchd` agent 并开启 `UseKeychain`）。
 
 ## 新增软件
 

@@ -4,11 +4,17 @@
     enable = true;
     # 使用 OpenSSH 自身默认值，不生成 HM 的额外默认设置。
     enableDefaultConfig = false;
-    settings."*".AddKeysToAgent = "yes";
+    settings."*" = {
+      AddKeysToAgent = "yes";
+    }
+    // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+      IgnoreUnknown = "UseKeychain";
+      UseKeychain = "yes";
+    };
   };
 
-  # Home Manager 在 Linux 使用 systemd user service，在 macOS 使用 launchd agent。
-  services.ssh-agent.enable = true;
+  # Linux 由 Home Manager 托管 systemd ssh-agent；macOS 直接使用 launchd 原生 agent，避免与 GUI 应用割裂。
+  services.ssh-agent.enable = pkgs.stdenv.hostPlatform.isLinux;
 
   # macOS 上首次进入交互式 shell 时把默认密钥加入 agent 和 Keychain。
   programs.fish.interactiveShellInit = lib.mkAfter (

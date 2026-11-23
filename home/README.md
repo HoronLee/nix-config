@@ -14,7 +14,7 @@
 | `linux-server.nix` | `core.nix` + `linux` + `linux/tui/magpie.nix` | 无 GUI 服务器 |
 | `linux-desktop-niri.nix` | `gui.nix` + `linux` + `linux/gui` + Niri/Noctalia + Rime | Linux 桌面 |
 | `darwin.nix` | `gui.nix` + `darwin/packages.nix` + Karabiner + Rime | macOS |
-SSH agent 由 `common/ssh.nix` 统一启用，Linux 使用 systemd，macOS 使用 launchd。
+SSH 客户端配置位于 `common/ssh.nix`：Linux 启用 Home Manager 的 systemd `ssh-agent`，macOS 直接使用系统 `launchd` agent 并开启 `UseKeychain`。
 ## Neovim 的 Nix 补全
 `common/editor/nvim/config/lua/plugins/nix.lua` 从自身真实路径向上寻找 `flake.nix`，解析配置目录的符号链接，不依赖启动目录或固定克隆位置；遇到没有 flake 的 Git 仓库根目录就停止。
 按当前平台及短主机名选择 `nixosConfigurations.<host>` 或 `darwinConfigurations.<host>`；Home Manager 选项来自同一主机。主机名应与 flake 属性名一致。主机未注册时不提供主机选项，配置仓库缺失时保留 nixd 默认补全，不选择其他主机替代。
