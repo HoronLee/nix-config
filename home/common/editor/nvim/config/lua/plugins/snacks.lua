@@ -3,21 +3,21 @@ return {
   opts = function(_, opts)
     -- ```mermaid 由 mmdc 渲染；实际二进制来自 mise 的 mermaid-rs-renderer（rename_exe = "mmdc"）。
     -- mmdr 不吃 mmdc 的 -b/-s，用它自己的参数集。
-    opts.image = {
-      -- 浮窗渲染，不依赖终端 U=1 unicode placeholder。
-      -- max_width/max_height 同时限制图像格子数和浮窗宽度（默认 80x40 太小，图会被压糊）。
-      doc = {
-        inline = false,
-        max_width = vim.o.columns,
-        max_height = vim.o.lines,
-      },
-      convert = {
-        mermaid = function()
-          local theme = vim.o.background == "light" and "neutral" or "dark"
-          return { "-i", "{src}", "-o", "{file}", "-e", "png", "-t", theme }
-        end,
-      },
-    }
+    -- opts.image = {
+    --   -- 浮窗渲染，不依赖终端 U=1 unicode placeholder。
+    --   -- max_width/max_height 同时限制图像格子数和浮窗宽度（默认 80x40 太小，图会被压糊）。
+    --   doc = {
+    --     inline = false,
+    --     max_width = vim.o.columns,
+    --     max_height = vim.o.lines,
+    --   },
+    --   convert = {
+    --     mermaid = function()
+    --       local theme = vim.o.background == "light" and "neutral" or "dark"
+    --       return { "-i", "{src}", "-o", "{file}", "-e", "png", "-t", theme }
+    --     end,
+    --   },
+    -- }
 
     opts.dashboard.preset.header = [[
 ██╗  ██╗ ██████╗ ██████╗  ██████╗ ███╗   ██╗██╗   ██╗██╗███╗   ███╗
