@@ -54,7 +54,7 @@
         "alias": null,
         "showInLauncher": true
       },
-      "com.mitchellh.ghostty": {
+      "com.superlogical.rex": {
         "shortcut": "hyper+t",
         "alias": null,
         "showInLauncher": true
@@ -147,6 +147,7 @@
   "snippets": {
     "showInLauncher": true,
     "folder": null,
+    "defaultAction": "paste",
     "commands": {}
   },
   "navigation": {
@@ -232,7 +233,7 @@
     "gridColumns": 10,
     "commands": {
       "search-emoji": {
-        "shortcut": "cmd+.",
+        "shortcut": "shift+cmd+.",
         "alias": null,
         "showInLauncher": true
       }
