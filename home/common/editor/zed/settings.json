@@ -1,4 +1,5 @@
 {
+  "context_servers": {},
   "ssh_connections": [
     {
       "host": "wrtv4.horon.top",
