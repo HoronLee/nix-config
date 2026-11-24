@@ -1,4 +1,20 @@
 {
+  "lsp_results_location": "picker",
+  "outline_panel": {
+    "multi_buffer_hide_symbols": false
+  },
+  "document_symbols": "off",
+  "instrumentation": {
+    "performance_profiler": {
+      "enabled": false
+    }
+  },
+  "indent_guides": {
+    "background_coloring": "disabled"
+  },
+  "inlay_hints": {
+    "show_background": false
+  },
   "agent_servers": {
     "claude-acp": {
       "default_config_options": {
