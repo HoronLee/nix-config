@@ -207,5 +207,100 @@
     "bindings": {
       "ctrl-cmd-shift-g": "git_graph::Open"
     }
+  },
+  {
+    "context": "Pane",
+    "bindings": {
+      "space b o": [
+        "pane::CloseOtherItems",
+        {
+          "close_pinned": false
+        }
+      ]
+    }
+  },
+  {
+    "context": "Pane",
+    "unbind": {
+      "alt-cmd-t": [
+        "pane::CloseOtherItems",
+        {
+          "close_pinned": false
+        }
+      ]
+    }
+  },
+  {
+    "context": "Pane",
+    "bindings": {
+      "space b h": [
+        "pane::CloseItemsToTheLeft",
+        {
+          "close_pinned": false
+        }
+      ]
+    }
+  },
+  {
+    "context": "Pane",
+    "unbind": {
+      "cmd-k e": [
+        "pane::CloseItemsToTheLeft",
+        {
+          "close_pinned": false
+        }
+      ]
+    }
+  },
+  {
+    "context": "Pane",
+    "bindings": {
+      "space b l": [
+        "pane::CloseItemsToTheRight",
+        {
+          "close_pinned": false
+        }
+      ]
+    }
+  },
+  {
+    "context": "Pane",
+    "unbind": {
+      "cmd-k t": [
+        "pane::CloseItemsToTheRight",
+        {
+          "close_pinned": false
+        }
+      ]
+    }
+  },
+  {
+    "context": "(VimControl && !menu) || (!Editor && !Terminal)",
+    "bindings": {
+      "space b i": "workspace::CloseInactiveTabsAndPanes"
+    }
+  },
+  {
+    "context": "(VimControl && !menu) || (!Editor && !Terminal)",
+    "unbind": {
+      "ctrl-w o": "workspace::CloseInactiveTabsAndPanes"
+    }
+  },
+  {
+    "context": "Pane",
+    "bindings": {
+      "space b p": "pane::TogglePinTab"
+    }
+  },
+  {
+    "context": "Pane",
+    "unbind": {
+      "cmd-k shift-enter": "pane::TogglePinTab"
+    }
+  },
+  {
+    "bindings": {
+      "space u p": "pane::UnpinAllTabs"
+    }
   }
 ]

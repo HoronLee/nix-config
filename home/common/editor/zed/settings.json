@@ -1,4 +1,13 @@
 {
+  "agent_servers": {
+    "OMP": {
+      "type": "custom",
+      "command": "omp",
+      "args": [
+        "acp"
+      ]
+    }
+  },
   "context_servers": {},
   "ssh_connections": [
     {
@@ -38,6 +47,7 @@
     "dock": "left"
   },
   "git_panel": {
+    "group_by": "status",
     "tree_view": true,
     "dock": "left"
   },
@@ -45,6 +55,7 @@
     "enabled": true
   },
   "agent": {
+    "single_file_review": false,
     "dock": "right",
     "threads_sidebar": {
       "position": "right"
