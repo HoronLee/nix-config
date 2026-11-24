@@ -1,5 +1,11 @@
 {
   "agent_servers": {
+    "claude-acp": {
+      "type": "registry"
+    },
+    "codex-acp": {
+      "type": "registry"
+    },
     "OMP": {
       "type": "custom",
       "command": "omp",
@@ -8,7 +14,18 @@
       ]
     }
   },
-  "context_servers": {},
+  "context_servers": {
+    "mcp-server-github": {
+      "enabled": false,
+      "remote": false,
+      "settings": {}
+    },
+    "mcp-server-context7": {
+      "enabled": false,
+      "remote": false,
+      "settings": {}
+    }
+  },
   "ssh_connections": [
     {
       "host": "wrtv4.horon.top",
