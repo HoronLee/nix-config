@@ -21,5 +21,8 @@
     ethtool
     pciutils
     usbutils
+
+    # C/C++ 工具链（macOS 使用系统 Xcode/CLT，避免 Nix clang-wrapper 遮蔽 /usr/bin/clang）
+    stdenv.cc
   ];
 }

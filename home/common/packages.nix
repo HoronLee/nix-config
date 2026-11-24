@@ -55,7 +55,6 @@
     cmake
     gnumake
     just
-    stdenv.cc
     pkg-config
     nsis
     upx
