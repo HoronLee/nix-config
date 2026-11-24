@@ -302,5 +302,29 @@
     "bindings": {
       "space u p": "pane::UnpinAllTabs"
     }
+  },
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      "] h": "editor::GoToHunk"
+    }
+  },
+  {
+    "context": "vim_mode == normal",
+    "unbind": {
+      "] c": "editor::GoToHunk"
+    }
+  },
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      "[ h": "editor::GoToPreviousHunk"
+    }
+  },
+  {
+    "context": "vim_mode == normal",
+    "unbind": {
+      "[ c": "editor::GoToPreviousHunk"
+    }
   }
 ]
