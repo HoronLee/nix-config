@@ -4,9 +4,15 @@
 
   programs.git = {
     enable = true;
-    settings.user = {
-      name = "HoronLee";
-      email = "horonlee@foxmail.com";
+    settings = {
+      user = {
+        name = "HoronLee";
+        email = "horonlee@foxmail.com";
+      };
+      # 在冲突块中同时展示共同祖先，便于判断双方改动。
+      merge.conflictStyle = "zdiff3";
+      # 记住已解决的同类冲突，减少反复 rebase 时的重复处理。
+      rerere.enabled = true;
     };
   };
   programs.lazygit.enable = true;
