@@ -22,6 +22,8 @@
       homebrew.casks = [
         # nixpkgs 的 orbstack 只从 dmg 解包 App，不安装 privileged helper；使用官方 cask。
         "orbstack"
+        # 官方 Standalone .pkg 含 System Extension 与 auto_updates，nixpkgs 的 tailscale-gui 版本落后。
+        "tailscale-app"
         # Karabiner 已停用：Hyper 键与 hyper 快捷键改由 Tinycast 提供。
         # 配置保留在 home/darwin/input/karabiner，需要时取消注释即可恢复。
         # "karabiner-elements"
