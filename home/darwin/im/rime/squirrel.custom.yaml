@@ -20,5 +20,3 @@ patch:
       vim_mode: true
     dev.zed.Zed:
       ascii_mode: true
-    so.pen.herdr-gpui:
-      vim_mode: true

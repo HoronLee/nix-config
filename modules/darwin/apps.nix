@@ -6,8 +6,6 @@
     {
       homebrew.taps = [
         "nyakang/nyaterm"
-        "penso/tap"
-        "sheprd-labs/tap"
       ];
     }
     # brew formula 形式的 CLI 工具与运行依赖。
@@ -44,7 +42,6 @@
         "apifox"
         "another-redis-desktop-manager"
         "background-music"
-        "sheprd"
         "tigervnc-viewer"
       ];
     }
