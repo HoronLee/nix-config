@@ -45,11 +45,6 @@ oh-my-pi = { version = "latest", rename_exe = "omp" }
 "npm:agent-browser" = "latest"
 rtk = "latest"
 
-# nvim 的 Snacks.image 用 mmdc 渲染 mermaid 代码块。
-# mmdr（mermaid-rs-renderer，纯 Rust）比官方 mermaid-cli 快两个数量级且不依赖 Chromium，
-# 用 rename_exe 冒充 mmdc，供 snacks 的 executable 探测命中。
-"github:1jehuang/mermaid-rs-renderer" = { version = "0.3.1", rename_exe = "mmdc" }
-
 [settings]
 # 项目里的版本文件（.node-version / .python-version / go.mod / rust-toolchain.toml 等）由 mise 处理。
 idiomatic_version_file_enable_tools = ["node", "python", "go", "java", "rust"]
