@@ -326,5 +326,34 @@
     "unbind": {
       "[ c": "editor::GoToPreviousHunk"
     }
+  },
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      "] e": [
+        "editor::GoToDiagnostic",
+        {
+          "severity": "error"
+        }
+      ],
+      "[ e": [
+        "editor::GoToPreviousDiagnostic",
+        {
+          "severity": "error"
+        }
+      ],
+      "] w": [
+        "editor::GoToDiagnostic",
+        {
+          "severity": "warning"
+        }
+      ],
+      "[ w": [
+        "editor::GoToPreviousDiagnostic",
+        {
+          "severity": "warning"
+        }
+      ]
+    }
   }
 ]
